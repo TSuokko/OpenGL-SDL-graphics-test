@@ -1,0 +1,15 @@
+﻿  Sprite.cpp
+  picoPNG.cpp
+  MainGame.cpp
+c:\users\tuomassuo\desktop\gametest1\gametest1\maingame.cpp(57): warning C4305: '+=': truncation from 'double' to 'float'
+  main.cpp
+  IOManager.cpp
+c:\users\tuomassuo\desktop\gametest1\gametest1\iomanager.cpp(14): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\gametest1\gametest1\iomanager.cpp(17): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
+  ImageLoader.cpp
+  GLSLprogram.cpp
+  Errors.cpp
+  Generating Code...
+     Creating library C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.lib and object C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.exp
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.exe
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.pdb (Partial PDB)
