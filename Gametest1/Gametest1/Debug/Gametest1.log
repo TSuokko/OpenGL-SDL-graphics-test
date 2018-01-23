@@ -1,15 +1,11 @@
-﻿  Sprite.cpp
-  picoPNG.cpp
+﻿  main.cpp
   MainGame.cpp
-c:\users\tuomassuo\desktop\gametest1\gametest1\maingame.cpp(57): warning C4305: '+=': truncation from 'double' to 'float'
-  main.cpp
-  IOManager.cpp
-c:\users\tuomassuo\desktop\gametest1\gametest1\iomanager.cpp(14): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\gametest1\gametest1\iomanager.cpp(17): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
-  ImageLoader.cpp
-  GLSLprogram.cpp
-  Errors.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\gametest1\maingame.cpp(48): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\gametest1\maingame.cpp(62): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\gametest1\maingame.cpp(81): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\gametest1\maingame.cpp(149): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\gametest1\maingame.cpp(151): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
   Generating Code...
-     Creating library C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.lib and object C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.exp
-  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.exe
-  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\Gametest1\Debug\Gametest1.pdb (Partial PDB)
+     Creating library C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Gametest1\Debug\Gametest1.lib and object C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Gametest1\Debug\Gametest1.exp
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Gametest1\Debug\Gametest1.exe
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Gametest1\Debug\Gametest1.pdb (Partial PDB)
