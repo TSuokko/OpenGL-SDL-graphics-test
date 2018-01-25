@@ -1,10 +1,11 @@
 #pragma once
 #include <SDL/SDL.h>
 #include <GL/glew.h>
-#include "Sprite.h"
-#include "GLSLprogram.h"
-#include "GLTexture.h"
+#include <DevyEngine/Sprite.h>
+#include <DevyEngine/GLSLprogram.h>
+#include <DevyEngine/GLTexture.h>
 #include <vector>
+#include <DevyEngine/Window.h>
 enum class GameState{PLAY, EXIT};
 
 class MainGame
@@ -24,20 +25,22 @@ private:
 	void calculateFPS();
 
 
-	SDL_Window* _window;
+	DevyEngine::Window* _window;
+
 	int _screenWidth;
 	int _screenHeight;
 	GameState _game;
 	SDL_Event _event;
-	Sprite _sprite;
-	GLSLprogram _colorProgram;
+
+	DevyEngine::Sprite _sprite;
+	DevyEngine::GLSLprogram _colorProgram;
 
 	float _maxFPS;
 	float _time;
 	float _fps;
 	float _frameTime;
 
-	std::vector<Sprite*> _sprites;
+	std::vector<DevyEngine::Sprite*> _sprites;
 
 
 };

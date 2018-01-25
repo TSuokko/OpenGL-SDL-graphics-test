@@ -1,10 +1,11 @@
 #include "MainGame.h"
 #include <iostream>
 #include <string>
-#include "Errors.h"
+#include <DevyEngine/Errors.h>
+#include <DevyEngine/Window.h>
+#include <DevyEngine/DevyEngine.h>
 
-
-MainGame::MainGame(): _window(nullptr), 
+MainGame::MainGame(): 
 	_screenWidth(1024), 
 	_screenHeight(768),
 	_game(GameState::PLAY), 
@@ -52,7 +53,7 @@ void MainGame::drawGame()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	_colorProgram.unuse();
 	
-	SDL_GL_SwapWindow(_window);
+	_window->swapBuffer();
 }
 
 void MainGame::gameloop()
@@ -86,13 +87,13 @@ void MainGame::run()
 {
 	initSystems();
 
-	_sprites.push_back(new Sprite());
+	_sprites.push_back(new DevyEngine::Sprite());
 	_sprites.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "Textures/jumpgame/PNG/Tails.png");
-	_sprites.push_back(new Sprite());
+	_sprites.push_back(new DevyEngine::Sprite());
 	_sprites.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "Textures/jumpgame/PNG/Tails.png");
-	_sprites.push_back(new Sprite());
+	_sprites.push_back(new DevyEngine::Sprite());
 	_sprites.back()->init(-1.0f, 0.0f, 1.0f, 1.0f, "Textures/jumpgame/PNG/Tails.png");
-	_sprites.push_back(new Sprite());
+	_sprites.push_back(new DevyEngine::Sprite());
 	_sprites.back()->init(0.0f, 0.0f, 1.0f, 1.0f, "Textures/jumpgame/PNG/Tails.png");
 
 	gameloop();
@@ -100,33 +101,9 @@ void MainGame::run()
 }
 void MainGame::initSystems()
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	DevyEngine::init();
 
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	_window = SDL_CreateWindow("GameTest", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
-	if (_window == nullptr)
-	{
-		fatalError("SDL window could not open");
-	}
-	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
-	if (glContext == nullptr)
-	{
-		fatalError("SDL_GL context could not be created");
-	}
-
-	GLenum error = glewInit();
-
-	if (error != GLEW_OK)
-	{
-		fatalError("Could not init glew");
-	}
-	//check opengl version
-	std::printf("*** OpenGL Version: %s ***", glGetString(GL_VERSION));
-	//set background color
-	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-	//set vsync
-	SDL_GL_SetSwapInterval(0);
+	_window->create("Game Engine", _screenWidth, _screenHeight, 0);
 
 	initShaders();
 }

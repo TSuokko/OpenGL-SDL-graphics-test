@@ -140,6 +140,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DevyEngine.cpp" />
     <ClCompile Include="Errors.cpp" />
     <ClCompile Include="GLSLprogram.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
@@ -148,8 +149,10 @@
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TextureCache.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DevyEngine.h" />
     <ClInclude Include="Errors.h" />
     <ClInclude Include="GLSLprogram.h" />
     <ClInclude Include="GLTexture.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

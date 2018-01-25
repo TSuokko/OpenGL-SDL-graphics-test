@@ -3,7 +3,7 @@
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 #include "MainGame.h"
-#include "Sprite.h"
+#include <DevyEngine/Sprite.h>
 int main(int argc, char** argv)
 {
 	MainGame game;

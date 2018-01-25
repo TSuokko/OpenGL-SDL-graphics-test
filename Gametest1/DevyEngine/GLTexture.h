@@ -1,9 +1,11 @@
 #pragma once
 #include <GL/glew.h>
-
-struct GLTexture
+namespace DevyEngine
 {
-	GLuint id;
-	int width;
-	int height;
-};
+	struct GLTexture
+	{
+		GLuint id;
+		int width;
+		int height;
+	};
+}
