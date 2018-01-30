@@ -11,6 +11,9 @@ namespace DevyEngine
 
 		void init(int screenWidth, int screenHeight);
 		void update();
+
+		glm::vec2 convertScreenToWorld(glm::vec2 screenCoords);
+
 		void setPosition(glm::vec2& newPosition) { _position = newPosition; _matrixUpdate = true; }
 		void setScale(float newScale) { _scale = newScale; _matrixUpdate = true;}
 

@@ -16,13 +16,23 @@ MainGame::MainGame():
 	_camera.init(_screenWidth, _screenHeight);
 }
 	
-	
+void MainGame::initSystems()
+{
+	DevyEngine::init();
+
+	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
+
+	initShaders();
+
+	_spriteBatch.init();
+	_fpslimiter.init(_maxFPS);
+}
 
 MainGame::~MainGame(){}
 
 void MainGame::processInput()
 {
-	const float cameraSpeed = 20.0f;
+	const float cameraSpeed = 7.0f;
 	const float scaleSpeed = 0.1f;
 
 	while (SDL_PollEvent(&_event))
@@ -32,35 +42,59 @@ void MainGame::processInput()
 		case SDL_QUIT:
 			_game = GameState::EXIT;
 			break;
-		case SDL_KEYDOWN:
-			switch (_event.key.keysym.sym)
-			{
-			case SDLK_w:
-				_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, -cameraSpeed));
-				break;
-			
-			case SDLK_s:
-				_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, cameraSpeed));
-				break;
-			case SDLK_a:
-				_camera.setPosition(_camera.getPosition() + glm::vec2(cameraSpeed, 0.0f));
-				break;
-			case SDLK_d:
-				_camera.setPosition(_camera.getPosition() + glm::vec2(-cameraSpeed, 0.0f));
-				break;
-			case SDLK_q:
-				_camera.setScale(_camera.getScale() - scaleSpeed);
-				break;
-			case SDLK_e:
-				_camera.setScale(_camera.getScale() + scaleSpeed);
-				break;
-			}
+		case SDL_MOUSEMOTION:
+			_input.setMouseCoords(_event.motion.x, _event.motion.y);
 			break;
-		//case SDL_MOUSEMOTION:
-			//std::cout << _event.motion.x<<" "<< _event.motion.y<<std::endl;
+		case SDL_KEYDOWN:
+			_input.keyPress(_event.key.keysym.sym);
+			break;
+		case SDL_KEYUP:
+			_input.keyRelease(_event.key.keysym.sym);
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			_input.keyPress(_event.button.button);
+			break;
+		case SDL_MOUSEBUTTONUP:
+			_input.keyRelease(_event.button.button);
+			break;
+	
 		}
 	}
+
+	if (_input.isKeyPressed(SDLK_w))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, -cameraSpeed));
+	}
+	if (_input.isKeyPressed(SDLK_s))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, cameraSpeed));
+	}
+	if (_input.isKeyPressed(SDLK_a))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(cameraSpeed, 0.0f));
+	}
+	if (_input.isKeyPressed(SDLK_d))
+	{
+		_camera.setPosition(_camera.getPosition() + glm::vec2(-cameraSpeed, 0.0f));
+	}
+	if (_input.isKeyPressed(SDLK_q))
+	{
+		_camera.setScale(_camera.getScale() - scaleSpeed);
+	}
+	if (_input.isKeyPressed(SDLK_e))
+	{
+		_camera.setScale(_camera.getScale() + scaleSpeed);
+	}
+	if (_input.isKeyPressed(SDL_BUTTON_LEFT))
+	{
+		glm::vec2 mouseCoords = _input.getMouseCoords();
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
+	}
+		
 }
+	
+
 
 void MainGame::drawGame()
 {
@@ -72,9 +106,6 @@ void MainGame::drawGame()
 
 	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
 	glUniform1i(textureLocation, 0);
-
-	GLuint timeLocation = _colorProgram.getUniformLocation("time");
-	glUniform1f(timeLocation, _time);
 
 	GLuint pLocation = _colorProgram.getUniformLocation("P");
 	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
@@ -92,8 +123,12 @@ void MainGame::drawGame()
 	color.b = 255;
 	color.a = 255;
 
-
+	
 	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+	
+	
+
+	
 	_spriteBatch.end();
 	_spriteBatch.renderBatch();
 
@@ -107,7 +142,7 @@ void MainGame::gameloop()
 {
 	while (_game != GameState::EXIT)
 	{
-		float startTicks = SDL_GetTicks();
+		_fpslimiter.begin();
 
 		processInput();
 		_time += 0.1f;
@@ -115,21 +150,17 @@ void MainGame::gameloop()
 		_camera.update();
 
 		drawGame();
-		calculateFPS();
+
+
+		_fps = _fpslimiter.end();
+
 		//print only once every 10 frames
 		static int frameCounter = 0;
 		frameCounter++;
-		if (frameCounter == 5)
+		if (frameCounter == 1000)
 		{
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
-		}
-		//limit fps to max fps
-
-		float frameTicks = SDL_GetTicks() - startTicks;
-		if (1000.0f / _maxFPS > frameTicks)
-		{
-			SDL_Delay(1000.0f / _maxFPS - frameTicks);
 		}
 	}
 }
@@ -140,16 +171,7 @@ void MainGame::run()
 	gameloop();
 
 }
-void MainGame::initSystems()
-{
-	DevyEngine::init();
 
-	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
-
-	initShaders();
-
-	_spriteBatch.init();
-}
 
 void MainGame::initShaders()
 {
@@ -160,45 +182,3 @@ void MainGame::initShaders()
 	_colorProgram.linkShaders();
 }
 
-void MainGame::calculateFPS()
-{
-	static const int NUM_SAMPLES = 10;
-	static float frameTimes[NUM_SAMPLES];
-	static int currentFrame = 0;
-	
-	static float prevTicks = SDL_GetTicks();
-	float currentTicks;
-	currentTicks = SDL_GetTicks();
-
-	_frameTime = currentTicks - prevTicks;
-	frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
-	prevTicks = currentTicks;
-
-	int count;
-	currentFrame++;
-
-	if (currentFrame < NUM_SAMPLES)
-	{
-		count = currentFrame;
-	}
-	else 
-	{
-		count = NUM_SAMPLES;
-	}
-
-	float frameTimeAverage = 0;
-	for (int i = 0; i < count; i++)
-	{
-		frameTimeAverage += frameTimes[i];
-	}
-	frameTimeAverage /= count;
-	if (frameTimeAverage > 0)
-	{
-		_fps = 1000.0f / frameTimeAverage;
-	}
-	else
-	{
-		_fps = 60.0f;
-	}
-	
-}

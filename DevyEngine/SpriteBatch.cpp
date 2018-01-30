@@ -22,6 +22,10 @@ namespace DevyEngine {
 		_renderBatches.clear();
 		// Makes _glpyhs.size() == 0, however it does not free internal memory.
 		// So when we later call emplace_back it doesn't need to internally call new.
+		for (int i = 0; i < _glyphs.size(); i++)
+		{
+			delete _glyphs[i];
+		}
 		_glyphs.clear();
 	}
 	void SpriteBatch::end()
