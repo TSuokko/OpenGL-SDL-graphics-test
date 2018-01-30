@@ -20,11 +20,13 @@ namespace DevyEngine {
 	{
 		_sortType = sortType;
 		_renderBatches.clear();
+		// Makes _glpyhs.size() == 0, however it does not free internal memory.
+		// So when we later call emplace_back it doesn't need to internally call new.
 		_glyphs.clear();
 	}
 	void SpriteBatch::end()
 	{
-		//sortGlyphs();
+		sortGlyphs();
 		createRenderBatches();
 	}
 
@@ -55,14 +57,14 @@ namespace DevyEngine {
 
 	void SpriteBatch::renderBatch()
 	{
-		
-
+		// Bind our VAO. This sets up the opengl state we need, including the 
+		// vertex attribute pointers and it binds the VBO
 		glBindVertexArray(_vao);
 
 		for (int i = 0; i < _renderBatches.size(); i++)
 		{
 			glBindTexture(GL_TEXTURE_2D, _renderBatches[i].texture);
-			glDrawArrays(GL_TEXTURE_2D, _renderBatches[i].offset, _renderBatches[i].numVertices);
+			glDrawArrays(GL_TRIANGLES, _renderBatches[i].offset, _renderBatches[i].numVertices);
 		}
 		glBindVertexArray(0);
 		
@@ -70,8 +72,11 @@ namespace DevyEngine {
 
 	void SpriteBatch::createRenderBatches()
 	{
+		// This will store all the vertices that we need to upload
 		std::vector<Vertex> vertices;
 		vertices.resize(_glyphs.size() * 6);
+		// Resize the buffer to the exact size we need so we can treat
+		// it like an array
 
 		if (_glyphs.empty())
 		{
@@ -80,6 +85,8 @@ namespace DevyEngine {
 
 		int currentVertex = 0;
 		int offset = 0;
+
+
 		_renderBatches.emplace_back(offset, 6, _glyphs[0]->texture);
 		vertices[currentVertex++] = _glyphs[0]->topLeft;
 		vertices[currentVertex++] = _glyphs[0]->bottomLeft;
@@ -89,14 +96,19 @@ namespace DevyEngine {
 		vertices[currentVertex++] = _glyphs[0]->topLeft;
 		offset += 6;
 		
+		//Add all the rest of the glyphs
+
 		for (int cg = 1; cg < _glyphs.size(); cg++)
 		{
+			// Check if this glyph can be part of the current batch
 			if (_glyphs[cg]->texture != _glyphs[cg - 1]->texture)
 			{
+				// Make a new batch
 				_renderBatches.emplace_back(offset, 6, _glyphs[cg]->texture);
 			}
 			else
 			{
+				// If its part of the current batch, just increase numVertices
 				_renderBatches.back().numVertices += 6;
 			}
 			vertices[currentVertex++] = _glyphs[cg]->topLeft;
@@ -108,25 +120,34 @@ namespace DevyEngine {
 			offset += 6;
 		}
 
+		// Bind our VBO
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		// Orphan the buffer (for speed)
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+		// Upload the data
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
+
+		// Unbind the VBO
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	}
 
 	void SpriteBatch::createVertexArray()
 	{
+		// Generate the VAO if it isn't already generated
 		if (_vao == 0)
 		{
 			glGenVertexArrays(1, &_vao);
 		}
+		// Bind the VAO. All subsequent opengl calls will modify it's state.
+		glBindVertexArray(_vao);
+		//Generate the VBO if it isn't already generated
 		if (_vbo == 0)
 		{
 			glGenBuffers(1, &_vbo);
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-
+		//Tell opengl what attribute arrays we need
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
