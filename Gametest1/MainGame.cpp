@@ -89,7 +89,11 @@ void MainGame::processInput()
 	{
 		glm::vec2 mouseCoords = _input.getMouseCoords();
 		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		std::cout << mouseCoords.x << " " << mouseCoords.y << std::endl;
+		
+		glm::vec2 playerPosition(0.0f);
+		glm::vec2 direction = mouseCoords - playerPosition;
+		direction = glm::normalize(direction);
+		_bullets.emplace_back(playerPosition, direction, 5.00f, 1000);
 	}
 		
 }
@@ -126,7 +130,10 @@ void MainGame::drawGame()
 	
 	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	
-	
+	for ( int i = 0; i < _bullets.size(); i++)
+	{
+		_bullets[i].draw(_spriteBatch);
+	}
 
 	
 	_spriteBatch.end();
@@ -148,6 +155,18 @@ void MainGame::gameloop()
 		_time += 0.1f;
 
 		_camera.update();
+
+		//update bullets
+		for ( int i = 0; i < _bullets.size();)
+		{
+			if (_bullets[i].update() == true)
+			{
+				_bullets[i] = _bullets.back();
+				_bullets.pop_back();
+			} else {
+				i++;
+			}
+		}
 
 		drawGame();
 
