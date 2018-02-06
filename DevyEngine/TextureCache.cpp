@@ -22,10 +22,10 @@ namespace DevyEngine
 			GLTexture newTexture = ImageLoader::loadPNG(texturePath);
 
 			_textureMap.insert(make_pair(texturePath, newTexture));
-			std::cout << "Loaded cached texture \n";
+			//std::cout << "Loaded cached texture \n";
 			return newTexture;
 		}
-		std::cout << "Loaded texture\n";
+		//std::cout << "Loaded texture\n";
 		return mit->second;
 
 	}

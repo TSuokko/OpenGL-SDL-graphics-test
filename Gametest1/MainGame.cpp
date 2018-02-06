@@ -36,12 +36,21 @@ void MainGame::initSystems()
 	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
 
 	initShaders();
+	//Level1
+	_levels.push_back(new Level("Level1.txt"));
+	_currentLevel = 0;
 
 	_spriteBatch.init();
 	_fpslimiter.init(_maxFPS);
 }
 
-MainGame::~MainGame(){}
+MainGame::~MainGame()
+{
+	for (int i = 0; i < _levels.size(); i++)
+	{
+		delete _levels[i];
+	}
+}
 
 void MainGame::processInput()
 {
@@ -76,19 +85,19 @@ void MainGame::processInput()
 
 	if (_input.isKeyPressed(SDLK_w))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, -cameraSpeed));
+		_camera.setPosition(_camera.getPosition() - glm::vec2(0.0, -cameraSpeed));
 	}
 	if (_input.isKeyPressed(SDLK_s))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(0.0, cameraSpeed));
+		_camera.setPosition(_camera.getPosition() - glm::vec2(0.0, cameraSpeed));
 	}
 	if (_input.isKeyPressed(SDLK_a))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(cameraSpeed, 0.0f));
+		_camera.setPosition(_camera.getPosition() - glm::vec2(cameraSpeed, 0.0f));
 	}
 	if (_input.isKeyPressed(SDLK_d))
 	{
-		_camera.setPosition(_camera.getPosition() + glm::vec2(-cameraSpeed, 0.0f));
+		_camera.setPosition(_camera.getPosition() - glm::vec2(-cameraSpeed, 0.0f));
 	}
 	if (_input.isKeyPressed(SDLK_q))
 	{
@@ -129,6 +138,9 @@ void MainGame::drawGame()
 
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
+	_levels[_currentLevel]->draw();
+
+
 	_spriteBatch.begin();
 
 	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
@@ -139,8 +151,6 @@ void MainGame::drawGame()
 	color.g = 255;
 	color.b = 255;
 	color.a = 255;
-
-	
 	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 	
 	for ( int i = 0; i < _bullets.size(); i++)
@@ -198,8 +208,9 @@ void MainGame::gameloop()
 }
 void MainGame::run()
 {
-	initSystems();
 	drawDungeon();
+	initSystems();
+
 	gameloop();
 
 }
@@ -216,6 +227,8 @@ void MainGame::initShaders()
 
 void MainGame::drawDungeon()
 {
+	
+
 	srand(time(NULL));
 
 	int MAX_LEAF_SIZE = 30;
@@ -229,9 +242,11 @@ void MainGame::drawDungeon()
 
 	// need a char map (space is char 40, wall is char 179);
 	char map[100][100]; // same width / height as the root leaf
-	for (int i = 0; i < 100; i++) {
-		for (int j = 0; j < 100; j++) {
-			map[i][j] = 178;
+	for (int i = 0; i < 100; i++) 
+	{
+		for (int j = 0; j < 100; j++) 
+		{
+			map[i][j] = 35; //creates ASCII wall symbol
 		}
 	}
 
@@ -251,8 +266,9 @@ void MainGame::drawDungeon()
 		if (right - left > 3 && bottom - top > 3) {
 
 			for (int i = left; i <= right; i++) {
-				for (int j = top; j <= bottom; j++) {
-					map[i][j] = 32;
+				for (int j = top; j <= bottom; j++) 
+				{
+					map[i][j] = 46;
 				}
 			}
 		}
@@ -277,7 +293,7 @@ void MainGame::drawDungeon()
 
 		for (int i = left; i <= right; i++) {
 			for (int j = top; j <= bottom; j++) {
-				map[i][j] = 32;
+				map[i][j] = 46;
 			}
 		}
 	}
@@ -285,11 +301,14 @@ void MainGame::drawDungeon()
 	std::cout << "\n=== DUNGEON GENERATOR v0.1 ===\n\n";
 	std::ofstream myfile("Level1.txt");
 
-	for (int j = 0; j < 100; j++) {
-		std::cout << "  ";
-		for (int i = 0; i < 100; i++) {
-			std::cout << map[i][j];
-			
+	myfile << "_numNPC: 100\n";
+
+	for (int j = 0; j < 100; j++)
+	{
+		//std::cout << "  ";
+		for (int i = 0; i < 100; i++)
+		{
+			//std::cout << map[i][j];
 			if (myfile.is_open())
 			{
 				myfile << map[i][j];
@@ -297,14 +316,12 @@ void MainGame::drawDungeon()
 				{
 					myfile << "\n";
 				}
-				
 			}
 			else std::cout << "Unable to open file";
 		}
-		std::cout << "\n" << std::endl;
+		//std::cout << "\n" << std::endl;
 	}
 
-	int d;
-	std::cin >> d;
+	
 }
 

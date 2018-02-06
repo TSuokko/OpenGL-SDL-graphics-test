@@ -45,8 +45,10 @@ private:
 	DevyEngine::InputManager _input;
 	DevyEngine::SpriteBatch _spriteBatch;
 	DevyEngine::FpsLimiter _fpslimiter;
+	
 	std::vector<Bullet> _bullets;
-	std::vector<Level> _levels;
+	std::vector<Level*> _levels;
+	int _currentLevel;
 
 	float _fps;
 	float _maxFPS;

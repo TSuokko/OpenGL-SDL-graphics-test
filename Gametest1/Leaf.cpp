@@ -114,7 +114,7 @@ Rectangle* Leaf::getRoom() {
 			lRoom = leftChild->getRoom();
 		}
 		if (NULL != rightChild) {
-			rRoom = rightChild->getRoom();
+			rRoom = rightChild->getRoom(); 
 		}
 		if ((NULL == lRoom) && (NULL == rRoom)) {
 			return NULL;
