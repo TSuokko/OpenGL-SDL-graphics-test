@@ -19,44 +19,68 @@
 
 #include<fstream>
 
-MainGame::MainGame(): 
-	_screenWidth(1024), 
+MainGame::MainGame() :
+	_screenWidth(1024),
 	_screenHeight(768),
-	_game(GameState::PLAY), 
+	_game(GameState::PLAY),
 	_maxFPS(60.0f),
-	_time(0)
+	_time(0),
+	_player(nullptr)
 {
 	_camera.init(_screenWidth, _screenHeight);
 }
 	
+void MainGame::run()
+{
+	drawDungeon();
+	initSystems();
+	initLevels();
+	gameloop();
+
+}
+
+
+void MainGame::initShaders()
+{
+	_colorProgram.compileShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
+	_colorProgram.addAttribute("vertexPosition");
+	_colorProgram.addAttribute("vertexColor");
+	_colorProgram.addAttribute("vertexUV");
+	_colorProgram.linkShaders();
+}
+
 void MainGame::initSystems()
 {
 	DevyEngine::init();
 
 	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
-
+	glClearColor(0.6, 0.7f, 0.7f, 1.0f);
 	initShaders();
-	//Level1
-	_levels.push_back(new Level("Level1.txt"));
-	_currentLevel = 0;
-
+	
+	_agentSpriteBatch.init();
 	_spriteBatch.init();
+
+
 	_fpslimiter.init(_maxFPS);
 }
 
-MainGame::~MainGame()
+void MainGame::initLevels()
 {
-	for (int i = 0; i < _levels.size(); i++)
-	{
-		delete _levels[i];
-	}
+	_levels.push_back(new Level("Level1.txt"));
+	_currentLevel = 0;
+
+	_player = new Player();
+	_player->init(4.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
+	_agents.push_back(_player);
 }
+
+
 
 void MainGame::processInput()
 {
 	const float cameraSpeed = 7.0f;
-	const float scaleSpeed = 0.1f;
-
+	const float scaleSpeed = 0.01f;
+	
 	while (SDL_PollEvent(&_event))
 	{
 		switch (_event.type)
@@ -82,7 +106,7 @@ void MainGame::processInput()
 	
 		}
 	}
-
+	/*
 	if (_input.isKeyPressed(SDLK_w))
 	{
 		_camera.setPosition(_camera.getPosition() - glm::vec2(0.0, -cameraSpeed));
@@ -117,7 +141,7 @@ void MainGame::processInput()
 		direction = glm::normalize(direction);
 		_bullets.emplace_back(playerPosition, direction, 5.00f, 1000);
 	}
-		
+	*/
 }
 	
 
@@ -141,6 +165,16 @@ void MainGame::drawGame()
 	_levels[_currentLevel]->draw();
 
 
+	_agentSpriteBatch.begin();
+	for (int i = 0; i < _agents.size(); i++)
+	{
+		_agents[i]->draw(_agentSpriteBatch);
+	}
+	_agentSpriteBatch.end();
+	_agentSpriteBatch.renderBatch();
+
+
+	/*
 	_spriteBatch.begin();
 
 	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
@@ -152,17 +186,20 @@ void MainGame::drawGame()
 	color.b = 255;
 	color.a = 255;
 	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-	
+	/*
 	for ( int i = 0; i < _bullets.size(); i++)
 	{
 		_bullets[i].draw(_spriteBatch);
 	}
-
+	
 	
 	_spriteBatch.end();
 	_spriteBatch.renderBatch();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+	*/
+
+
 	_colorProgram.unuse();
 	
 	_window.swapBuffer();
@@ -176,6 +213,10 @@ void MainGame::gameloop()
 
 		processInput();
 		_time += 0.1f;
+
+		updateAgents();
+		
+		_camera.setPosition(_player->getPosition());
 
 		_camera.update();
 
@@ -206,24 +247,19 @@ void MainGame::gameloop()
 		}
 	}
 }
-void MainGame::run()
+
+
+void MainGame::updateAgents()
 {
-	drawDungeon();
-	initSystems();
-
-	gameloop();
-
+	//update player
+	for (int i = 0; i < _agents.size(); i++)
+	{
+		_agents[i]->update(_levels[_currentLevel]->getLevelData(), _zombies );
+	}
+	//
 }
 
 
-void MainGame::initShaders()
-{
-	_colorProgram.compileShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
-	_colorProgram.addAttribute("vertexPosition");
-	_colorProgram.addAttribute("vertexColor");
-	_colorProgram.addAttribute("vertexUV");
-	_colorProgram.linkShaders();
-}
 
 void MainGame::drawDungeon()
 {
@@ -316,12 +352,24 @@ void MainGame::drawDungeon()
 				{
 					myfile << "\n";
 				}
+				if (i == 2 && j == 98)
+				{
+					myfile << "@";
+					
+				}
 			}
 			else std::cout << "Unable to open file";
 		}
 		//std::cout << "\n" << std::endl;
 	}
 
-	
+	myfile.close();
 }
 
+MainGame::~MainGame()
+{
+	for (int i = 0; i < _levels.size(); i++)
+	{
+		delete _levels[i];
+	}
+}

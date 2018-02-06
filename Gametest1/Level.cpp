@@ -57,6 +57,11 @@ Level::Level(const std::string& FileName)
 			case '.':
 				_spriteBatch.draw(destRect, uvRect, DevyEngine::ResourceManager::getTexture("Textures/grass.png").id, 0.0f, whiteColor);
 				break;
+			case '@':
+				_levelData[y][x] = '.';
+				_startPlayerPos.x = x * TILE_WIDTH;
+				_startPlayerPos.y = y * TILE_WIDTH;
+				break;
 			default:
 				std::printf("Unexpected symbol %c at (%d, %d)", tile, x, y);
 			}

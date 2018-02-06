@@ -12,7 +12,11 @@
 #include <DevyEngine\Timing.h>
 #include "Bullet.h"
 #include "Level.h"
+#include "Player.h"
+#include "Zombie.h"
 enum class GameState{PLAY, EXIT};
+
+class Zombie;
 
 class MainGame
 {
@@ -25,10 +29,13 @@ public:
 private:
 	void initSystems();
 	void initShaders();
+	void initLevels();
 	void processInput();
 	void gameloop();
 	void drawGame();
 	void drawDungeon();
+
+	void updateAgents();
 
 
 
@@ -42,12 +49,18 @@ private:
 	DevyEngine::Sprite _sprite;
 	DevyEngine::GLSLprogram _colorProgram;
 	DevyEngine::Camera2D _camera;
+	DevyEngine::SpriteBatch _agentSpriteBatch;
+
 	DevyEngine::InputManager _input;
 	DevyEngine::SpriteBatch _spriteBatch;
 	DevyEngine::FpsLimiter _fpslimiter;
 	
 	std::vector<Bullet> _bullets;
 	std::vector<Level*> _levels;
+
+	Player* _player;
+	std::vector<Agent*> _agents;
+	std::vector<Zombie*> _zombies;
 	int _currentLevel;
 
 	float _fps;

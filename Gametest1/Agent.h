@@ -1,0 +1,35 @@
+#pragma once
+#include <glm/glm.hpp>
+#include <DevyEngine\SpriteBatch.h>
+
+
+const float AGENT_WIDTH = 60.0f;
+class Zombie;
+
+
+class Agent
+{
+public:
+	Agent();
+	virtual ~Agent();
+	virtual void update(const std::vector<std::string>& levelData,
+						std::vector<Zombie*>& zombies) = 0;
+	void collideWithLevel(const std::vector<std::string>& levelData);
+
+
+
+	void draw(DevyEngine::SpriteBatch& _spriteBatch);
+
+	glm::vec2 getPosition() const { return _position; };
+
+protected:
+	void checkTilePosition(const std::vector<std::string>& levelData, std::vector<glm::vec2>& collideTilePosition, float x, float y);
+	void collideWithTile(glm::vec2 tilePos);
+
+
+	glm::vec2 _position;
+	DevyEngine::Color _color;
+	float _speed;
+
+};
+
