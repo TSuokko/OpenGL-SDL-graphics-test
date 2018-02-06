@@ -6,6 +6,17 @@
 #include <DevyEngine/DevyEngine.h>
 #include <DevyEngine\ResourceManager.h>
 
+#include <string>
+#include <functional>
+#include <stdlib.h>
+#include <vector>
+#include <list>
+#include <cmath>
+#include <time.h>       /* time */
+#include "Point.h"
+#include "Rectangle.h"
+#include "Leaf.h"
+
 MainGame::MainGame(): 
 	_screenWidth(1024), 
 	_screenHeight(768),
@@ -186,6 +197,88 @@ void MainGame::gameloop()
 void MainGame::run()
 {
 	initSystems();
+
+	srand(time(NULL));
+
+	int MAX_LEAF_SIZE = 30;
+	Leaf* root = new Leaf(0, 0, 100, 100);
+	std::list<Leaf> leaf_edge_nodes;
+	std::list<Rectangle> halls;
+	root->generate(MAX_LEAF_SIZE);
+
+	root->createRooms(&leaf_edge_nodes, &halls);
+
+
+	// need a char map (space is char 40, wall is char 179);
+	char map[100][100]; // same width / height as the root leaf
+	for (int i = 0; i < 100; i++) {
+		for (int j = 0; j < 100; j++) {
+			map[i][j] = 178;
+		}
+	}
+
+	for (std::list<Leaf>::iterator l = leaf_edge_nodes.begin(); l != leaf_edge_nodes.end(); ++l) {
+
+		Rectangle* room = l->getRoom();
+		int left = room->left();
+		int right = room->right();
+		int top = room->top();
+		int bottom = room->bottom();
+
+		if (left < 1) left = 1;
+		if (right < 1) right = 1;
+		if (top < 1) top = 1;
+		if (bottom < 1) bottom = 1;
+
+		if (right - left > 3 && bottom - top > 3) {
+
+			for (int i = left; i <= right; i++) {
+				for (int j = top; j <= bottom; j++) {
+					map[i][j] = 32;
+				}
+			}
+		}
+	}
+
+	for (std::list<Rectangle>::iterator hh = halls.begin(); hh != halls.end(); ++hh) {
+
+		int left = hh->left();
+		int right = hh->right();
+		int top = hh->top();
+		int bottom = hh->bottom();
+
+		if (left < 1) left = 1;
+		if (right < 1) right = 1;
+		if (top < 1) top = 1;
+		if (bottom < 1) bottom = 1;
+
+		if (left > 99) left = 98;
+		if (right > 99) right = 98;
+		if (top > 99) top = 98;
+		if (bottom > 99) bottom = 98;
+
+		for (int i = left; i <= right; i++) {
+			for (int j = top; j <= bottom; j++) {
+				map[i][j] = 32;
+			}
+		}
+	}
+
+	
+	std::cout << "\n=== DUNGEON GENERATOR v0.1 ===\n\n";
+	
+	for (int j = 0; j < 100; j++) {
+		std::cout << "  ";
+		for (int i = 0; i < 100; i++) {
+			std::cout << map[i][j];
+		}
+		std::cout<< "\n" << std::endl;
+	}
+
+	int d;
+	std::cin >> d;
+
+
 
 	gameloop();
 

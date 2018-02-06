@@ -11,6 +11,7 @@
 #include <DevyEngine\InputManager.h>
 #include <DevyEngine\Timing.h>
 #include "Bullet.h"
+#include "Level.h"
 enum class GameState{PLAY, EXIT};
 
 class MainGame
@@ -44,6 +45,7 @@ private:
 	DevyEngine::SpriteBatch _spriteBatch;
 	DevyEngine::FpsLimiter _fpslimiter;
 	std::vector<Bullet> _bullets;
+	std::vector<Level> _levels;
 
 	float _fps;
 	float _maxFPS;

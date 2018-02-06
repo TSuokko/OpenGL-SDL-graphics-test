@@ -1,4 +1,27 @@
-﻿  Camera2D.cpp
+﻿  picoPNG.cpp
+  Window.cpp
+  Timing.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(27): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(30): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(42): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(44): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+  TextureCache.cpp
+  SpriteBatch.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\spritebatch.cpp(25): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\spritebatch.cpp(68): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\spritebatch.cpp(105): warning C4018: '<': signed/unsigned mismatch
+  Sprite.cpp
+  ResourceManager.cpp
+  InputManager.cpp
+  ImageLoader.cpp
+  IOManager.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\iomanager.cpp(16): warning C4244: 'initializing': conversion from 'std::streamoff' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\iomanager.cpp(19): warning C4244: '-=': conversion from 'std::streamoff' to 'int', possible loss of data
+  GLSLprogram.cpp
+  Errors.cpp
+  DevyEngine.cpp
+  Camera2D.cpp
+  Generating Code...
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
