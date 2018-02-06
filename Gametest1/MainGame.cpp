@@ -17,6 +17,8 @@
 #include "Rectangle.h"
 #include "Leaf.h"
 
+#include<fstream>
+
 MainGame::MainGame(): 
 	_screenWidth(1024), 
 	_screenHeight(768),
@@ -197,7 +199,23 @@ void MainGame::gameloop()
 void MainGame::run()
 {
 	initSystems();
+	drawDungeon();
+	gameloop();
 
+}
+
+
+void MainGame::initShaders()
+{
+	_colorProgram.compileShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
+	_colorProgram.addAttribute("vertexPosition");
+	_colorProgram.addAttribute("vertexColor");
+	_colorProgram.addAttribute("vertexUV");
+	_colorProgram.linkShaders();
+}
+
+void MainGame::drawDungeon()
+{
 	srand(time(NULL));
 
 	int MAX_LEAF_SIZE = 30;
@@ -264,33 +282,29 @@ void MainGame::run()
 		}
 	}
 
-	
 	std::cout << "\n=== DUNGEON GENERATOR v0.1 ===\n\n";
-	
+	std::ofstream myfile("Level1.txt");
+
 	for (int j = 0; j < 100; j++) {
 		std::cout << "  ";
 		for (int i = 0; i < 100; i++) {
 			std::cout << map[i][j];
+			
+			if (myfile.is_open())
+			{
+				myfile << map[i][j];
+				if (i == 99)
+				{
+					myfile << "\n";
+				}
+				
+			}
+			else std::cout << "Unable to open file";
 		}
-		std::cout<< "\n" << std::endl;
+		std::cout << "\n" << std::endl;
 	}
 
 	int d;
 	std::cin >> d;
-
-
-
-	gameloop();
-
-}
-
-
-void MainGame::initShaders()
-{
-	_colorProgram.compileShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
-	_colorProgram.addAttribute("vertexPosition");
-	_colorProgram.addAttribute("vertexColor");
-	_colorProgram.addAttribute("vertexUV");
-	_colorProgram.linkShaders();
 }
 

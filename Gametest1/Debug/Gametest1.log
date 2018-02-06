@@ -1,8 +1,8 @@
 ﻿  MainGame.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(57): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(144): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(171): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(201): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(216): warning C4309: '=': truncation of constant value
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(59): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(146): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(173): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(219): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(234): warning C4309: '=': truncation of constant value
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

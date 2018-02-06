@@ -28,6 +28,7 @@ private:
 	void processInput();
 	void gameloop();
 	void drawGame();
+	void drawDungeon();
 
 
 
