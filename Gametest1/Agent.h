@@ -4,6 +4,7 @@
 
 
 const float AGENT_WIDTH = 60.0f;
+const float AGENT_RADIUS = AGENT_WIDTH / 2.0f;
 class Zombie;
 
 
@@ -14,9 +15,9 @@ public:
 	virtual ~Agent();
 	virtual void update(const std::vector<std::string>& levelData,
 						std::vector<Zombie*>& zombies) = 0;
-	void collideWithLevel(const std::vector<std::string>& levelData);
+	bool collideWithLevel(const std::vector<std::string>& levelData);
 
-
+	bool collideWithAgent(Agent* agent);
 
 	void draw(DevyEngine::SpriteBatch& _spriteBatch);
 

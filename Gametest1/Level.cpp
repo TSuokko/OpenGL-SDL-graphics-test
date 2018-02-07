@@ -15,6 +15,7 @@ Level::Level(const std::string& FileName)
 	}
 	std::string tmp;
 	file >> tmp >> _numNPC;
+	std::getline(file, tmp);
 
 	while (std::getline(file, tmp))
 	{

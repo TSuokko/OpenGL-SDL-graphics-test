@@ -16,9 +16,9 @@ void Player::init(float speed, glm::vec2 pos, DevyEngine::InputManager* input)
 	_speed = speed;
 	_position = pos;
 	_input = input;
-	_color.r = 0;
-	_color.g = 125;
-	_color.b = 0;
+	_color.r = 255;
+	_color.g = 255;
+	_color.b = 255;
 	_color.a = 255;
 }
 void Player::update(const std::vector<std::string>& levelData,

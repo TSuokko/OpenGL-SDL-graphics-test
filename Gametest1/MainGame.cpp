@@ -18,7 +18,7 @@
 #include "Leaf.h"
 
 #include<fstream>
-
+//Constructor
 MainGame::MainGame() :
 	_screenWidth(1024),
 	_screenHeight(768),
@@ -29,7 +29,7 @@ MainGame::MainGame() :
 {
 	_camera.init(_screenWidth, _screenHeight);
 }
-	
+//run the game and start initializing
 void MainGame::run()
 {
 	drawDungeon();
@@ -39,7 +39,7 @@ void MainGame::run()
 
 }
 
-
+//Shader initialization
 void MainGame::initShaders()
 {
 	_colorProgram.compileShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
@@ -54,7 +54,7 @@ void MainGame::initSystems()
 	DevyEngine::init();
 
 	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
-	glClearColor(0.6, 0.7f, 0.7f, 1.0f);
+	glClearColor(0.6, 0.7f, 0.7f, 1.0f); //grey background
 	initShaders();
 	
 	_agentSpriteBatch.init();
@@ -66,11 +66,11 @@ void MainGame::initSystems()
 
 void MainGame::initLevels()
 {
-	_levels.push_back(new Level("Level1.txt"));
+	_levels.push_back(new Level("Level1.txt")); //pushes back the level data that was created during the level creation method
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(4.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
+	_player->init(8.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
 	_agents.push_back(_player);
 }
 
@@ -78,15 +78,14 @@ void MainGame::initLevels()
 
 void MainGame::processInput()
 {
-	const float cameraSpeed = 7.0f;
-	const float scaleSpeed = 0.01f;
+	const float scaleSpeed = 0.01f; //map scaling speed
 	
 	while (SDL_PollEvent(&_event))
 	{
 		switch (_event.type)
 		{
 		case SDL_QUIT:
-			_game = GameState::EXIT;
+			_game = GameState::EXIT; //allows you to quit the game
 			break;
 		case SDL_MOUSEMOTION:
 			_input.setMouseCoords(_event.motion.x, _event.motion.y);
@@ -103,45 +102,14 @@ void MainGame::processInput()
 		case SDL_MOUSEBUTTONUP:
 			_input.keyRelease(_event.button.button);
 			break;
-	
 		}
 	}
-	/*
-	if (_input.isKeyPressed(SDLK_w))
-	{
-		_camera.setPosition(_camera.getPosition() - glm::vec2(0.0, -cameraSpeed));
-	}
-	if (_input.isKeyPressed(SDLK_s))
-	{
-		_camera.setPosition(_camera.getPosition() - glm::vec2(0.0, cameraSpeed));
-	}
-	if (_input.isKeyPressed(SDLK_a))
-	{
-		_camera.setPosition(_camera.getPosition() - glm::vec2(cameraSpeed, 0.0f));
-	}
-	if (_input.isKeyPressed(SDLK_d))
-	{
-		_camera.setPosition(_camera.getPosition() - glm::vec2(-cameraSpeed, 0.0f));
-	}
+	//scale the map with 'q(smaller)' or 'e(larger)'
 	if (_input.isKeyPressed(SDLK_q))
-	{
-		_camera.setScale(_camera.getScale() - scaleSpeed);
-	}
+	{_camera.setScale(_camera.getScale() - scaleSpeed);}
 	if (_input.isKeyPressed(SDLK_e))
-	{
-		_camera.setScale(_camera.getScale() + scaleSpeed);
-	}
-	if (_input.isKeyPressed(SDL_BUTTON_LEFT))
-	{
-		glm::vec2 mouseCoords = _input.getMouseCoords();
-		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
-		
-		glm::vec2 playerPosition(0.0f);
-		glm::vec2 direction = mouseCoords - playerPosition;
-		direction = glm::normalize(direction);
-		_bullets.emplace_back(playerPosition, direction, 5.00f, 1000);
-	}
-	*/
+	{_camera.setScale(_camera.getScale() + scaleSpeed);}
+	
 }
 	
 
@@ -164,52 +132,28 @@ void MainGame::drawGame()
 
 	_levels[_currentLevel]->draw();
 
-
 	_agentSpriteBatch.begin();
+	
 	for (int i = 0; i < _agents.size(); i++)
 	{
 		_agents[i]->draw(_agentSpriteBatch);
 	}
+	
 	_agentSpriteBatch.end();
+	
 	_agentSpriteBatch.renderBatch();
-
-
-	/*
-	_spriteBatch.begin();
-
-	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
-	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	static DevyEngine::GLTexture texture = DevyEngine::ResourceManager::getTexture("Textures/jumpgame/PNG/Tails.png");
-	DevyEngine::Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
-	color.a = 255;
-	_spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-	/*
-	for ( int i = 0; i < _bullets.size(); i++)
-	{
-		_bullets[i].draw(_spriteBatch);
-	}
-	
-	
-	_spriteBatch.end();
-	_spriteBatch.renderBatch();
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	*/
-
 
 	_colorProgram.unuse();
 	
 	_window.swapBuffer();
+
 }
 
 void MainGame::gameloop()
 {
 	while (_game != GameState::EXIT)
 	{
-		_fpslimiter.begin();
+		_fpslimiter.begin(); 
 
 		processInput();
 		_time += 0.1f;
@@ -220,20 +164,7 @@ void MainGame::gameloop()
 
 		_camera.update();
 
-		//update bullets
-		for ( int i = 0; i < _bullets.size();)
-		{
-			if (_bullets[i].update() == true)
-			{
-				_bullets[i] = _bullets.back();
-				_bullets.pop_back();
-			} else {
-				i++;
-			}
-		}
-
 		drawGame();
-
 
 		_fps = _fpslimiter.end();
 
@@ -256,15 +187,21 @@ void MainGame::updateAgents()
 	{
 		_agents[i]->update(_levels[_currentLevel]->getLevelData(), _zombies );
 	}
-	//
+	//update collisions
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		for (int j = i + 1; j < _zombies.size(); j++)
+		{
+			_zombies[i]->collideWithAgent(_zombies[j]);
+		}
+	}
 }
 
 
 
 void MainGame::drawDungeon()
 {
-	
-
+	//DUNGEON BSP GENERATOR ALGORITHM
 	srand(time(NULL));
 
 	int MAX_LEAF_SIZE = 30;
@@ -274,7 +211,6 @@ void MainGame::drawDungeon()
 	root->generate(MAX_LEAF_SIZE);
 
 	root->createRooms(&leaf_edge_nodes, &halls);
-
 
 	// need a char map (space is char 40, wall is char 179);
 	char map[100][100]; // same width / height as the root leaf
@@ -334,35 +270,34 @@ void MainGame::drawDungeon()
 		}
 	}
 
-	std::cout << "\n=== DUNGEON GENERATOR v0.1 ===\n\n";
+	std::cout << "\n=== DUNGEON GENERATOR v0.2 ===\n\n";
 	std::ofstream myfile("Level1.txt");
 
 	myfile << "_numNPC: 100\n";
 
 	for (int j = 0; j < 100; j++)
 	{
-		//std::cout << "  ";
 		for (int i = 0; i < 100; i++)
 		{
-			//std::cout << map[i][j];
+			//print the level daa to a .txt file
 			if (myfile.is_open())
 			{
 				myfile << map[i][j];
 				if (i == 99)
 				{
+					//divide the map into 99 character lengths
 					myfile << "\n";
 				}
 				if (i == 2 && j == 98)
 				{
+					//print the player 
 					myfile << "@";
 					
 				}
 			}
 			else std::cout << "Unable to open file";
 		}
-		//std::cout << "\n" << std::endl;
 	}
-
 	myfile.close();
 }
 

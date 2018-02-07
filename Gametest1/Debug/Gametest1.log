@@ -1,5 +1,2 @@
-﻿  Agent.cpp
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(35): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(46): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-  Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
-  Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)
+﻿  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)
