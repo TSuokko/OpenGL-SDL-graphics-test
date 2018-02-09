@@ -288,12 +288,12 @@ void MainGame::drawDungeon()
 					//divide the map into 99 character lengths
 					myfile << "\n";
 				}
-				if (i == 2 && j == 98)
+				/*if (i == 2 && j == 98)
 				{
 					//print the player 
 					myfile << "@";
 					
-				}
+				}*/
 			}
 			else std::cout << "Unable to open file";
 		}

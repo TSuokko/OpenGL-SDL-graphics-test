@@ -21,10 +21,10 @@ Level::Level(const std::string& FileName)
 	{
 		_levelData.push_back(tmp);
 	}
-	for (int i = 0; i < _levelData.size(); i++)
+	/*for (int i = 0; i < _levelData.size(); i++)
 	{
 		std::cout << _levelData[i] << std::endl;
-	}
+	}*/
 
 	_spriteBatch.init();
 	_spriteBatch.begin();
@@ -37,6 +37,9 @@ Level::Level(const std::string& FileName)
 	whiteColor.b = 255;
 	whiteColor.a = 255;
 
+	_startPlayerPos.y = 50 * TILE_WIDTH;
+	_startPlayerPos.x = 50 * TILE_WIDTH;
+	
 
 	//render tiles
 	for (int y = 0; y < _levelData.size(); y++)
@@ -45,23 +48,27 @@ Level::Level(const std::string& FileName)
 		{
 			//grab tile
 			char tile = _levelData[y][x];
-
+			glm::vec2 currentCoordinate;
+			currentCoordinate.y = _levelData.size();
+			currentCoordinate.x = _levelData[x].size();
 			//destination rectangle
 			glm::vec4 destRect(x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+			
 
 			//process tile
 			switch(tile)
 			{
 			case '#':
+
 				_spriteBatch.draw(destRect, uvRect, DevyEngine::ResourceManager::getTexture("Textures/brick.png").id, 0.0f, whiteColor);
 				break;
 			case '.':
 				_spriteBatch.draw(destRect, uvRect, DevyEngine::ResourceManager::getTexture("Textures/grass.png").id, 0.0f, whiteColor);
 				break;
-			case '@':
+			case '@': //in case you would like to add the character in the text file
 				_levelData[y][x] = '.';
-				_startPlayerPos.x = x * TILE_WIDTH;
-				_startPlayerPos.y = y * TILE_WIDTH;
+				//_startPlayerPos.x = x * TILE_WIDTH;
+				//_startPlayerPos.y = y * TILE_WIDTH;
 				break;
 			default:
 				std::printf("Unexpected symbol %c at (%d, %d)", tile, x, y);
