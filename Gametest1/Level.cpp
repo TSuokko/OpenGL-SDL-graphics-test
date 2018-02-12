@@ -37,8 +37,8 @@ Level::Level(const std::string& FileName)
 	whiteColor.b = 255;
 	whiteColor.a = 255;
 
-	_startPlayerPos.y = 50 * TILE_WIDTH;
-	_startPlayerPos.x = 50 * TILE_WIDTH;
+	_startPlayerPos.y = 100 * TILE_WIDTH;
+	_startPlayerPos.x = 100 * TILE_WIDTH;
 	
 
 	//render tiles

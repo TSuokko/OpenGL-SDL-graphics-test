@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Human.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Human.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainGame.h" />

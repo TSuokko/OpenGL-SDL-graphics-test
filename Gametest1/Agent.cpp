@@ -47,6 +47,7 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData)
 
 bool Agent::collideWithAgent(Agent* agent)
 {
+	//COLLISION BETWEEN TWO CHARACTERS
 	const float MIN_DISTANCE = AGENT_RADIUS * 2.0;
 
 	glm::vec2 centerPosA = _position + glm::vec2(AGENT_WIDTH / 2);

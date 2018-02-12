@@ -16,6 +16,8 @@
 #include "Point.h"
 #include "Rectangle.h"
 #include "Leaf.h"
+#include <random>
+#include <ctime>
 
 #include<fstream>
 //Constructor
@@ -71,7 +73,22 @@ void MainGame::initLevels()
 
 	_player = new Player();
 	_player->init(8.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
-	_agents.push_back(_player);
+	_humans.push_back(_player);
+
+	std::mt19937 randomEngine;
+	randomEngine.seed(time(nullptr));
+	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
+	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
+
+	const float HUMAN_SPEED = 1.0f;
+	//add NPC:s
+	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
+	{
+		//std::cout << "dude created"<<std::endl; //debug
+		_humans.push_back(new Human);
+		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
+		_humans.back()->init(HUMAN_SPEED, pos);
+	}
 }
 
 
@@ -134,9 +151,11 @@ void MainGame::drawGame()
 
 	_agentSpriteBatch.begin();
 	
-	for (int i = 0; i < _agents.size(); i++)
+	const glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
+
+	for (int i = 0; i < _humans.size(); i++) 
 	{
-		_agents[i]->draw(_agentSpriteBatch);
+		_humans[i]->draw(_agentSpriteBatch);	
 	}
 	
 	_agentSpriteBatch.end();
@@ -182,19 +201,18 @@ void MainGame::gameloop()
 
 void MainGame::updateAgents()
 {
-	//update player
-	for (int i = 0; i < _agents.size(); i++)
-	{
-		_agents[i]->update(_levels[_currentLevel]->getLevelData(), _zombies );
+	for (int i = 0; i < _humans.size(); i++) {
+		_humans[i]->update(_levels[_currentLevel]->getLevelData(),
+			_humans,
+			_zombies);
 	}
-	//update collisions
-	for (int i = 0; i < _zombies.size(); i++)
-	{
-		for (int j = i + 1; j < _zombies.size(); j++)
-		{
-			_zombies[i]->collideWithAgent(_zombies[j]);
+	for (int i = 0; i < _humans.size(); i++) {
+		// Collide with other humans
+		for (int j = i + 1; j < _humans.size(); j++) {
+			_humans[i]->collideWithAgent(_humans[j]);
 		}
 	}
+	
 }
 
 
@@ -205,7 +223,7 @@ void MainGame::drawDungeon()
 	srand(time(NULL));
 
 	int MAX_LEAF_SIZE = 30;
-	Leaf* root = new Leaf(0, 0, 100, 100);
+	Leaf* root = new Leaf(0, 0, 200, 200);
 	std::list<Leaf> leaf_edge_nodes;
 	std::list<Rectangle> halls;
 	root->generate(MAX_LEAF_SIZE);
@@ -213,10 +231,10 @@ void MainGame::drawDungeon()
 	root->createRooms(&leaf_edge_nodes, &halls);
 
 	// need a char map (space is char 40, wall is char 179);
-	char map[100][100]; // same width / height as the root leaf
-	for (int i = 0; i < 100; i++) 
+	char map[200][200]; // same width / height as the root leaf
+	for (int i = 0; i < 200; i++) 
 	{
-		for (int j = 0; j < 100; j++) 
+		for (int j = 0; j < 200; j++) 
 		{
 			map[i][j] = 35; //creates ASCII wall symbol
 		}
@@ -258,10 +276,10 @@ void MainGame::drawDungeon()
 		if (top < 1) top = 1;
 		if (bottom < 1) bottom = 1;
 
-		if (left > 99) left = 98;
-		if (right > 99) right = 98;
-		if (top > 99) top = 98;
-		if (bottom > 99) bottom = 98;
+		if (left > 199) left = 198;
+		if (right > 199) right = 198;
+		if (top > 199) top = 198;
+		if (bottom > 199) bottom = 198;
 
 		for (int i = left; i <= right; i++) {
 			for (int j = top; j <= bottom; j++) {
@@ -273,17 +291,17 @@ void MainGame::drawDungeon()
 	std::cout << "\n=== DUNGEON GENERATOR v0.2 ===\n\n";
 	std::ofstream myfile("Level1.txt");
 
-	myfile << "_numNPC: 100\n";
+	myfile << "_numNPC: 150\n";
 
-	for (int j = 0; j < 100; j++)
+	for (int j = 0; j < 200; j++)
 	{
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 200; i++)
 		{
 			//print the level daa to a .txt file
 			if (myfile.is_open())
 			{
 				myfile << map[i][j];
-				if (i == 99)
+				if (i == 199)
 				{
 					//divide the map into 99 character lengths
 					myfile << "\n";

@@ -2,8 +2,9 @@
 #include <glm\glm.hpp>
 #include "Agent.h"
 #include <DevyEngine\InputManager.h>
+#include "Human.h"
 
-class Player : public Agent
+class Player : public Human
 {
 public:
 	Player();
@@ -11,6 +12,7 @@ public:
 
 	void init(float speed, glm::vec2 position, DevyEngine::InputManager* input);
 	void update(const std::vector<std::string>& levelData,
+		std::vector<Human*>& humans,
 		std::vector<Zombie*>& zombies);
 
 private:

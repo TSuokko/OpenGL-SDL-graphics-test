@@ -61,6 +61,7 @@ private:
 	Player* _player;
 	std::vector<Agent*> _agents;
 	std::vector<Zombie*> _zombies;
+	std::vector<Human*> _humans;
 	int _currentLevel;
 
 	float _fps;
