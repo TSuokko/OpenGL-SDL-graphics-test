@@ -11,5 +11,10 @@ public:
 	virtual void update(const std::vector<std::string>& levelData,
 		std::vector<Human*>& humans,
 		std::vector<Zombie*>& zombies);
+private:
+	glm::vec2 _direction;
+	int frames;
+	Human* chasePlayer(std::vector<Human*>& humans);
+
 };
 

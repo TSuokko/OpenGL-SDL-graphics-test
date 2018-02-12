@@ -1,6 +1,8 @@
 #pragma once
 #include "Agent.h"
 
+class Player;
+
 class Human :public Agent
 {
 public:
@@ -14,6 +16,9 @@ public:
 		std::vector<Zombie*>& zombies);
 
 private:
+	
+	
+
 	glm::vec2 _direction;
 	int frames;
 };

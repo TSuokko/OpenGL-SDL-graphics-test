@@ -1,25 +1,29 @@
 #include "MainGame.h"
-#include <iostream>
-#include <string>
+
 #include <DevyEngine/Errors.h>
 #include <DevyEngine/Window.h>
 #include <DevyEngine/DevyEngine.h>
 #include <DevyEngine\ResourceManager.h>
+#include <DevyEngine\Errors.h>
 
-#include <string>
-#include <functional>
-#include <stdlib.h>
-#include <vector>
-#include <list>
-#include <cmath>
-#include <time.h>       /* time */
 #include "Point.h"
 #include "Rectangle.h"
 #include "Leaf.h"
+
+#include <iostream>
+#include <string>
+#include <functional>
 #include <random>
 #include <ctime>
+#include <fstream>
+#include <vector>
+#include <list>
+#include <cmath>
 
-#include<fstream>
+#include <stdlib.h>
+#include <time.h>       
+
+
 //Constructor
 MainGame::MainGame() :
 	_screenWidth(1024),
@@ -38,7 +42,6 @@ void MainGame::run()
 	initSystems();
 	initLevels();
 	gameloop();
-
 }
 
 //Shader initialization
@@ -62,7 +65,6 @@ void MainGame::initSystems()
 	_agentSpriteBatch.init();
 	_spriteBatch.init();
 
-
 	_fpslimiter.init(_maxFPS);
 }
 
@@ -80,18 +82,15 @@ void MainGame::initLevels()
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
 
-	const float HUMAN_SPEED = 1.0f;
+	const float ZOMBIE_SPEED = 2.0f;
 	//add NPC:s
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
-		//std::cout << "dude created"<<std::endl; //debug
-		_humans.push_back(new Human);
+		_zombies.push_back(new Zombie);
 		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
-		_humans.back()->init(HUMAN_SPEED, pos);
+		_zombies.back()->init(ZOMBIE_SPEED, pos);
 	}
 }
-
-
 
 void MainGame::processInput()
 {
@@ -125,12 +124,9 @@ void MainGame::processInput()
 	if (_input.isKeyPressed(SDLK_q))
 	{_camera.setScale(_camera.getScale() - scaleSpeed);}
 	if (_input.isKeyPressed(SDLK_e))
-	{_camera.setScale(_camera.getScale() + scaleSpeed);}
-	
+	{_camera.setScale(_camera.getScale() + scaleSpeed);}	
 }
 	
-
-
 void MainGame::drawGame()
 {
 	glClearDepth(1.0);
@@ -153,9 +149,14 @@ void MainGame::drawGame()
 	
 	const glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
 
-	for (int i = 0; i < _humans.size(); i++) 
+	for (int i = 0; i < _humans.size(); i++)
 	{
-		_humans[i]->draw(_agentSpriteBatch);	
+		_humans[i]->draw(_agentSpriteBatch);
+	}
+
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		_zombies[i]->draw(_agentSpriteBatch);
 	}
 	
 	_agentSpriteBatch.end();
@@ -200,22 +201,40 @@ void MainGame::gameloop()
 
 
 void MainGame::updateAgents()
-{
-	for (int i = 0; i < _humans.size(); i++) {
+{	
+	for (int i = 0; i < _humans.size(); i++) 
+	{
 		_humans[i]->update(_levels[_currentLevel]->getLevelData(),
+			_humans,
+			_zombies);	
+	}
+	for (int i = 0; i < _humans.size(); i++) 
+	{
+		// Collide with other humans
+		for (int j = i + 1; j < _zombies.size(); j++) 
+		{
+			(_humans[i]->collideWithAgent(_zombies[j]));		
+		}		
+	}
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		_zombies[i]->update(_levels[_currentLevel]->getLevelData(),
 			_humans,
 			_zombies);
 	}
-	for (int i = 0; i < _humans.size(); i++) {
-		// Collide with other humans
-		for (int j = i + 1; j < _humans.size(); j++) {
-			_humans[i]->collideWithAgent(_humans[j]);
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		// Collide with other zombies
+		for (int j = i + 1; j < _zombies.size(); j++)
+		{
+			(_zombies[i]->collideWithAgent(_zombies[j]));
+		}
+		if (_zombies[i]->collideWithAgent(_player))
+		{
+			DevyEngine::fatalError("Game over");
 		}
 	}
-	
 }
-
-
 
 void MainGame::drawDungeon()
 {
@@ -264,8 +283,8 @@ void MainGame::drawDungeon()
 		}
 	}
 
-	for (std::list<Rectangle>::iterator hh = halls.begin(); hh != halls.end(); ++hh) {
-
+	for (std::list<Rectangle>::iterator hh = halls.begin(); hh != halls.end(); ++hh) 
+	{
 		int left = hh->left();
 		int right = hh->right();
 		int top = hh->top();
@@ -306,12 +325,6 @@ void MainGame::drawDungeon()
 					//divide the map into 99 character lengths
 					myfile << "\n";
 				}
-				/*if (i == 2 && j == 98)
-				{
-					//print the player 
-					myfile << "@";
-					
-				}*/
 			}
 			else std::cout << "Unable to open file";
 		}
