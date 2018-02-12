@@ -124,6 +124,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Zombie.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Rectangle.h" />

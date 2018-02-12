@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <time.h>       
 
+int PLAYER_HP = 20;
+int PlayerScore = 0;
 
 //Constructor
 MainGame::MainGame() :
@@ -74,7 +76,7 @@ void MainGame::initLevels()
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(8.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
+	_player->init(7.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
 	_humans.push_back(_player);
 
 	std::mt19937 randomEngine;
@@ -82,7 +84,7 @@ void MainGame::initLevels()
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
 
-	const float ZOMBIE_SPEED = 2.0f;
+	const float ZOMBIE_SPEED = 4.0f;
 	//add NPC:s
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
@@ -191,9 +193,11 @@ void MainGame::gameloop()
 		//print only once every 10 frames
 		static int frameCounter = 0;
 		frameCounter++;
-		if (frameCounter == 1000)
+
+		if (frameCounter == 100)
 		{
-			std::cout << _fps << std::endl;
+			PlayerScore += 10;
+			
 			frameCounter = 0;
 		}
 	}
@@ -231,7 +235,14 @@ void MainGame::updateAgents()
 		}
 		if (_zombies[i]->collideWithAgent(_player))
 		{
-			DevyEngine::fatalError("Game over");
+			PLAYER_HP--;
+			std::cout << "HP: " << PLAYER_HP << std::endl;
+			if (PLAYER_HP == 0)
+			{
+				std::cout << "\nYour Score: " << PlayerScore << std::endl;
+				DevyEngine::fatalError("Game Over");
+
+			}
 		}
 	}
 }

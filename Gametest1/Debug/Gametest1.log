@@ -1,16 +1,16 @@
 ﻿  MainGame.cpp
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(62): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(81): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(107): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(152): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(157): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(205): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(211): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(214): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(219): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(225): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(228): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(242): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(337): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(64): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(83): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(109): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(154): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(159): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(209): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(215): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(218): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(223): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(229): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(232): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(253): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\opengl-sdl-graphics-test\gametest1\maingame.cpp(348): warning C4018: '<': signed/unsigned mismatch
   Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\OpenGL-SDL-graphics-test\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\OpenGL-SDL-graphics-test\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

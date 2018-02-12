@@ -48,25 +48,6 @@ void Zombie::update(const std::vector<std::string>& levelData,
 	}
 	collideWithLevel(levelData);
 
-
-	/*
-	static std::mt19937 randomEngine(time(nullptr));
-	static std::uniform_real_distribution<float> randRotate(-10.0f, 10.0f);
-	_position += _direction * _speed;
-	if (frames == 60)
-	{
-		_direction = glm::rotate(_direction, randRotate(randomEngine));
-		frames = 0;
-	}
-	else
-	{
-		frames++;
-	}
-	if (collideWithLevel(levelData))
-	{
-		_direction = glm::rotate(_direction, randRotate(randomEngine));
-	}
-	*/
 }
 
 Human* Zombie::chasePlayer(std::vector<Human*>& humans)
