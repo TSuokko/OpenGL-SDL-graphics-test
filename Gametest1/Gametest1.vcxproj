@@ -124,7 +124,6 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Zombie.cpp" />
