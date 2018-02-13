@@ -37,9 +37,7 @@ private:
 
 	void updateAgents();
 
-	std::string pathFind(const int & xStart, const int & yStart,
-		const int & xFinish, const int & yFinish);
-	int PathfindStart();
+	
 
 	DevyEngine::Window _window;
 

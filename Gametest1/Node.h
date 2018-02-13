@@ -1,71 +1,57 @@
-#pragma once
-#include "Agent.h"
-#include <glm\glm.hpp>
+/*
+*
+*
+*https://github.com/dimosr/Pathfinding/tree/master/C%2B%2B
+*
+*
+*/
 
-const int n = 60; // horizontal size of the map
-const int m = 60; // vertical size size of the map
-static int map[n][m];
-static int closed_nodes_map[n][m]; // map of closed (tried-out) nodes
-static int open_nodes_map[n][m]; // map of open (not-yet-tried) nodes
-static int dir_map[n][m]; // map of directions
-const int dir = 8; // number of possible directions to go at any position
-				   // if dir==4
-				   //static int dx[dir]={1, 0, -1, 0};
-				   //static int dy[dir]={0, 1, 0, -1};
-				   // if dir==8
-static int dx[dir] = { 1, 1, 0, -1, -1, -1, 0, 1 };
-static int dy[dir] = { 0, 1, 1, 1, 0, -1, -1, -1 };
+#ifndef NODE_H_
+#define NODE_H_
 
-class Node
-{
-	int xPos;
-	int yPos;
-	// total distance already travelled to reach the node
-	int level;
-	// priority=level+remaining distance estimate
-	int priority;  // smaller: higher priority
+#include <map>
+using namespace std;
 
+class Node {
 public:
-	Node(int xp, int yp, int d, int p)
-	{
-		xPos = xp; yPos = yp; level = d; priority = p;
-	}
+	enum Type { NORMAL, OBSTACLE };
+	enum State { UNVISITED, OPEN, CLOSED };
+	static map<char, Type> typeMappings;
 
-	int getxPos() const { return xPos; }
-	int getyPos() const { return yPos; }
-	int getLevel() const { return level; }
-	int getPriority() const { return priority; }
+	Node();
+	Node(char type);
+	void calculateTotalCost();
+	float getCostFromStart();
+	float getCostToTarget();
+	float getTotalCost();
+	void setCostFromStart(float cost);
+	void setCostToTarget(float cost);
+	void setTotalCost(float cost);
+	Node * getParent();
+	void setParent(Node* n);
+	State getState();
+	Type getType();
+	void setType(char type);
+	void setState(State state);
+	bool isObstacle();
+	void setOpen();
+	void setClosed();
+	bool isUnvisited();
+	bool isOpen();
+	bool isClosed();
+	bool operator<(const Node& n) const;
 
-	void updatePriority(const int & xDest, const int & yDest)
-	{
-		priority = level + estimate(xDest, yDest) * 10; //A*
-	}
+	int x, y;
+private:
+	float costFromStart;
+	float costToTarget;
+	float totalCost;
+	Node * parent;
+	State state;
+	Type type;
 
-	// give better priority to going strait instead of diagonally
-	void nextLevel(const int & i) // i: direction
-	{
-		level += (dir == 8 ? (i % 2 == 0 ? 10 : 14) : 10);
-	}
-
-	// Estimation function for the remaining distance to the goal.
-	const int & estimate(const int & xDest, const int & yDest) const
-	{
-		static int xd, yd, d;
-		xd = xDest - xPos;
-		yd = yDest - yPos;
-
-		// Euclidian Distance
-		d = static_cast<int>(sqrt(xd*xd + yd*yd));
-
-		// Manhattan distance
-		//d=abs(xd)+abs(yd);
-
-		// Chebyshev distance
-		//d=max(abs(xd), abs(yd));
-
-		return(d);
-	}
 };
 
+#endif /* NODE_H_ */
 
 
