@@ -14,6 +14,8 @@
 #include "Level.h"
 #include "Player.h"
 #include "Zombie.h"
+#include "SquareGraph.h"
+
 enum class GameState{PLAY, EXIT};
 
 class Zombie;
@@ -63,6 +65,9 @@ private:
 	std::vector<Zombie*> _zombies;
 	std::vector<Human*> _humans;
 	int _currentLevel;
+
+	SquareGraph readMap(const std::string& FileName);
+	std::vector<Node> path;
 
 	float _fps;
 	float _maxFPS;

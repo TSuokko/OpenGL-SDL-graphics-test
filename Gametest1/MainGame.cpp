@@ -26,6 +26,8 @@
 #include <vector>
 #include <list>
 #include <cmath>
+#include <stdexcept>
+#include <fstream>
 
 #include <stdlib.h>
 #include <time.h>       
@@ -51,6 +53,7 @@ void MainGame::run()
 	initSystems();
 	initLevels();
 	gameloop();
+	//readMap("Level1.txt");
 }
 
 //Shader initialization
@@ -196,6 +199,8 @@ void MainGame::gameloop()
 
 		drawGame();
 
+		readMap("Level1.txt");
+
 		_fps = _fpslimiter.end();
 
 		//print only once every 10 frames
@@ -225,6 +230,9 @@ void MainGame::updateAgents()
 		_zombies[i]->update(_levels[_currentLevel]->getLevelData(),
 			_humans,
 			_zombies);
+
+		_zombies[i]->aStar(path);
+		
 	}
 
 
@@ -242,7 +250,7 @@ void MainGame::updateAgents()
 		// Collide with other zombies
 		for (int j = i + 1; j < _zombies.size(); j++)
 		{
-			(_zombies[i]->collideWithAgent(_zombies[j]));
+			_zombies[i]->collideWithAgent(_zombies[j]);
 		}
 		if (_zombies[i]->collideWithAgent(_player))
 		{
@@ -333,7 +341,7 @@ void MainGame::drawDungeon()
 	std::cout << "\n=== DUNGEON GENERATOR v0.2 ===\n\n";
 	std::ofstream myfile("Level1.txt");
 
-	myfile << "_numNPC: 50\n";
+	myfile << "_numNPC: 1\n";
 
 	for (int j = 0; j < 200; j++)
 	{
@@ -357,6 +365,47 @@ void MainGame::drawDungeon()
 
 /////////////A* ALGORITHM////////////////////////////
 
+SquareGraph MainGame::readMap(const std::string& FileName)
+{
+
+	const int mapDimension = _levels[_currentLevel]->getWidth();	//dimension of the map ([200][200])
+	string line;										//current line 
+	char type;											//current character type on the map
+	ifstream inputFile(FileName.c_str());				//read the given .txt file
+	SquareGraph graph(mapDimension);			//gives the constructor the map dimension
+	if (inputFile)										//if reading the inputted file
+	{
+		std::getline(inputFile, line);
+		for (int i = 0; i < mapDimension; i++)		//for loop the size of the dimension
+		{											//looping the Y-coordinate
+			getline(inputFile, line);				//disregard the first line with the number
+			for (int j = 0; j < mapDimension; j++)	//and the X-coordinate
+			{
+				type = line.at(j);				//read the character on file
+				graph.setCellValue(make_pair(i, j), type);	//sets the value as either blank or wall
+			}
+			line.clear();							//erases the contents of the line
+		}
+		int px = _humans[0]->getPosition().x / 64;
+		int py = _humans[0]->getPosition().y / 64;
+		graph.setFirstRobotPos(make_pair(px, py));
+
+		for (int i = 0; i < _zombies.size(); i++)
+		{
+
+			int x = _zombies[i]->getPosition().x / 64;
+			int y = _zombies[i]->getPosition().y / 64;
+			graph.setSecondRobotPos(make_pair(x, y));
+
+		}
+		path = graph.executeAStar();
+
+		graph.printPath(path);
+
+		inputFile.close();
+		return graph;
+	}
+}
 
 ////////////////////////////////////////////////////
 MainGame::~MainGame()

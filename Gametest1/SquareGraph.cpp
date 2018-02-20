@@ -1,10 +1,15 @@
 #include "SquareGraph.h"
 
-SquareGraph::SquareGraph(int dimension) : map(dimension, vector<Node>(dimension)), openNodes(), closedNodes() {
-}
+SquareGraph::SquareGraph(int dimension) : 
+map(dimension, vector<Node>(dimension)),
+openNodes(), closedNodes() {}
 
 Node* SquareGraph::getCellValue(pair<int, int> coord)
 {
+	if (coord.first < 0 || coord.first >= 200 || coord.second < 0 || coord.second >= 200)
+	{
+		printf("ERROR ERROR: Invalid coord %d %d\n", coord.first, coord.second);
+	}
 	return &(this->map[coord.first][coord.second]);
 }
 
@@ -112,22 +117,27 @@ void SquareGraph::printPath(vector<Node> path) {
 	}
 }
 																//NOTE: ptr == "Pointer"
-vector<Node> SquareGraph::executeAStar() {
+vector<Node> SquareGraph::executeAStar() 
+{
+	std::cout << "test" << std::endl;
 	pair<int, int> start = this->getFirstRobotPos();			//gets the starting position
+	std::cout << start.first << start.second << std::endl;
 	pair<int, int> target = this->getSecondRobotPos();			//gets the finishing position
+	
 	Node* startNodePtr = getCellValue(start);					//sets the starting Node's position to the pointer
 	Node* targetNodePtr = getCellValue(target);					//sets the finishing Node's position
+	
 	vector<Node> path;											//establish a vector of Nodes		
 	Node currentNode;											//the current node
 																//"sets" are containers that store unique elements following a specific order.
 	set<Node> neighbours;										//in a set, the value of an element also identifies it
-
+	
 	openNodes.push(*startNodePtr);								//push the startNode to the priority_queue
 	startNodePtr->setOpen();									//makes the state of the node "Open"
 	while (!openNodes.empty())									//while the OpenNodes are NOT empty
 	{								
 		currentNode = openNodes.top();							//.top returns the OpenNode reference to the top element in the priority queue
-		Node* currentPtr = getCellValue(make_pair(currentNode.x, currentNode.y));//the current Pointer checks the current Node's position
+		Node* currentPtr = getCellValue(make_pair(currentNode.x, currentNode.y));	//the current Pointer checks the current Node's position
 		
 		//if the current Pointers position is exactly the same as the target final Nodes position
 		if ((currentPtr->x == targetNodePtr->x) && (currentPtr->y == targetNodePtr->y)) 
@@ -141,28 +151,32 @@ vector<Node> SquareGraph::executeAStar() {
 		neighbours = getNeighbours(*currentPtr);				//retrieves the information of the current pointers neighbours
 		for (auto i = neighbours.begin(); i != neighbours.end(); ++i) //loop though the neighbours of the pointer
 		{
-			Node* neighbourPtr = getCellValue(make_pair(i->x, i->y)); //makes the position of the neighbourpointer
+			Node* neighbourPtr = getCellValue(make_pair(i->x, i->y));	//makes the position of the neighbourpointer
 			if (!(neighbourPtr->isClosed()))					//if the neighbour pointer is NOT a closed state
 			{
 				//"tentative" == "alustava" in Finnish
-
+				//the score of the current neighbor is equal to the starting cost and distance cost from the pointer to the neighbour
 				int tentativeScore = currentNode.getCostFromStart() + this->calculateDistance(make_pair(currentPtr->x, currentPtr->y), make_pair(neighbourPtr->x, neighbourPtr->y));
+				
 				if ((!neighbourPtr->isOpen()) || (tentativeScore < currentNode.getCostFromStart())) 
 				{
-					neighbourPtr->setParent(currentPtr);
-					neighbourPtr->setCostFromStart(tentativeScore);
-					neighbourPtr->setCostToTarget(this->calculateDistance(make_pair(neighbourPtr->x, neighbourPtr->y), target));
-					neighbourPtr->calculateTotalCost();
-					if (!neighbourPtr->isOpen()) 
+					neighbourPtr->setParent(currentPtr);		//sets the parent to the current pointer 
+					neighbourPtr->setCostFromStart(tentativeScore);		//sets the cost from the start as the score
+					neighbourPtr->setCostToTarget(this->calculateDistance(make_pair(neighbourPtr->x, neighbourPtr->y), target)); //calculates the cost from the neighbour to the final target
+					neighbourPtr->calculateTotalCost();			//calculates the total cost of the neighbour
+					if (!neighbourPtr->isOpen())				//if the neightbouring pointer is not open, 
 					{
-						openNodes.push(*neighbourPtr);
-						neighbourPtr->setOpen();
+						openNodes.push(*neighbourPtr);			//push the neighbouring pointer to the open nodes list
+						neighbourPtr->setOpen();				//and set it as open.
 					}
 				}
 			}
 		}
 
 	}
+
+	delete startNodePtr;
+	delete targetNodePtr;
 
 	return path;
 }

@@ -20,23 +20,23 @@ SquareGraph InputHandler::readMap(string filename) {
 				{
 					if (line.at(j) == 'T')				//If it finds a 'T' character in the file
 					{									//TODO: change it so it reads the zombie position on the map
-						graph.setFirstRobotPos(make_pair(i, j)); //sets the starting position
+						graph.setFirstRobotPos(make_pair(i, j));	//sets the starting position
 						type = ' ';						//changes it to a blank space for pathfinding
 					}
 					else if (line.at(j) == 'G')			//Same applies here, but instead the 'G' character
 					{									//TODO: change it so it read the player position
-						graph.setSecondRobotPos(make_pair(i, j));//sets the finishing position
+						graph.setSecondRobotPos(make_pair(i, j));	//sets the finishing position
 						type = ' ';						//changes it to a blank space for pathfinding
 					}
 					else
 						type = line.at(j);				//read the character on file
-					graph.setCellValue(make_pair(i, j), type);//sets the value as either blank or wall
+					graph.setCellValue(make_pair(i, j), type);	//sets the value as either blank or wall
 				}
 				line.clear();							//erases the contents of the line
 			}
 			vector<Node> path = graph.executeAStar();	//starts the algorithm, go to SquareGraph.cpp 
 			cout << "The total number of moves from distance to the target are : " 
-				 << path.size() << endl;;
+				 << path.size() << endl;;				//checks how many times path nodes were pushed into the vector
 			cout << "You want to see the whole path to the target ? (y/n) " << endl;
 			string response;
 			cin >> response;

@@ -1,7 +1,7 @@
 #include "Node.h"
 
-map<char, Node::Type> Node::typeMappings = { { ' ', NORMAL },{ 'X', OBSTACLE } };
-
+//map<char, Node::Type> Node::typeMappings = { { ' ', NORMAL },{ 'X', OBSTACLE } };
+map<char, Node::Type> Node::typeMappings = { { '.', NORMAL },{ '#', OBSTACLE } };
 Node::Node() : costFromStart(0), costToTarget(0), totalCost(0) 
 {
 	this->parent = nullptr;

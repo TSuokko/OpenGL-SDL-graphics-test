@@ -15,8 +15,8 @@ public:
 	Agent();
 	virtual ~Agent();
 	virtual void update(const std::vector<std::string>& levelData,
-						std::vector<Human*>& humans,
-						std::vector<Zombie*>& zombies) = 0;
+						std::vector<Human*>& humans, 
+						std::vector<Zombie*>& zombies ) = 0;
 
 	bool collideWithLevel(const std::vector<std::string>& levelData);
 
