@@ -1,4 +1,4 @@
-#include "InputHandler.h"
+/*#include "InputHandler.h"
 
 SquareGraph InputHandler::readMap(string filename) {
 
@@ -57,4 +57,4 @@ SquareGraph InputHandler::readMap(string filename) {
 	{
 		throw runtime_error("Could not open file");
 	}
-}
+}*/

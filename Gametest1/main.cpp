@@ -10,10 +10,6 @@
 
 int main(int argc, char** argv)
 {
-	//InputHandler handler;
-	//SquareGraph graph = handler.readMap("small_1.txt");
-
-
 	MainGame game;
 	game.run();
 	

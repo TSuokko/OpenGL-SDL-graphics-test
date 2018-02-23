@@ -95,14 +95,17 @@ void MainGame::initLevels()
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
 
-	const float ZOMBIE_SPEED = 4.0f;
+	const float ZOMBIE_SPEED = 1.0f;
 	//add NPC:s
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
 		_zombies.push_back(new Zombie);
-		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
+		//glm::vec2 pos(randX(randomEngine), randY(randomEngine));
+		glm::vec2 pos(105*TILE_WIDTH, 105*TILE_WIDTH);
 		_zombies.back()->init(ZOMBIE_SPEED, pos);
 	}
+
+	readMap("Level1.txt");
 }
 
 void MainGame::processInput()
@@ -199,7 +202,7 @@ void MainGame::gameloop()
 
 		drawGame();
 
-		readMap("Level1.txt");
+		//readMap("Level1.txt");
 
 		_fps = _fpslimiter.end();
 
@@ -230,7 +233,7 @@ void MainGame::updateAgents()
 		_zombies[i]->update(_levels[_currentLevel]->getLevelData(),
 			_humans,
 			_zombies);
-
+		
 		_zombies[i]->aStar(path);
 		
 	}
@@ -372,30 +375,30 @@ SquareGraph MainGame::readMap(const std::string& FileName)
 	string line;										//current line 
 	char type;											//current character type on the map
 	ifstream inputFile(FileName.c_str());				//read the given .txt file
-	SquareGraph graph(mapDimension);			//gives the constructor the map dimension
+	SquareGraph graph(mapDimension);					//gives the constructor the map dimension
 	if (inputFile)										//if reading the inputted file
 	{
 		std::getline(inputFile, line);
-		for (int i = 0; i < mapDimension; i++)		//for loop the size of the dimension
-		{											//looping the Y-coordinate
-			getline(inputFile, line);				//disregard the first line with the number
-			for (int j = 0; j < mapDimension; j++)	//and the X-coordinate
+		for (int i = 0; i < mapDimension; i++)			//for loop the size of the dimension
+		{												//looping the Y-coordinate
+			getline(inputFile, line);					//disregard the first line with the number
+			for (int j = 0; j < mapDimension; j++)		//and the X-coordinate
 			{
-				type = line.at(j);				//read the character on file
+				type = line.at(j);						//read the character on file
 				graph.setCellValue(make_pair(i, j), type);	//sets the value as either blank or wall
 			}
-			line.clear();							//erases the contents of the line
+			line.clear();								//erases the contents of the line
 		}
 		int px = _humans[0]->getPosition().x / 64;
 		int py = _humans[0]->getPosition().y / 64;
-		graph.setFirstRobotPos(make_pair(px, py));
+		graph.setSecondRobotPos(make_pair(px, py));		//set the player coordinates
 
 		for (int i = 0; i < _zombies.size(); i++)
 		{
 
 			int x = _zombies[i]->getPosition().x / 64;
 			int y = _zombies[i]->getPosition().y / 64;
-			graph.setSecondRobotPos(make_pair(x, y));
+			graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
 
 		}
 		path = graph.executeAStar();

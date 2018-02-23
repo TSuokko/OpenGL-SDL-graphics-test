@@ -1,4 +1,4 @@
-#ifndef INCLUDE_INPUTHANDLER_H_
+/*#ifndef INCLUDE_INPUTHANDLER_H_
 #define INCLUDE_INPUTHANDLER_H_
 
 #include <vector>
@@ -15,4 +15,4 @@ public:
 };
 
 
-#endif 
+#endif */

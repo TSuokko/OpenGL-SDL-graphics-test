@@ -48,13 +48,16 @@ void Zombie::update(const std::vector<std::string>& levelData,
 {
 	/*Human* playerClose = chasePlayer(humans);
 
-	if (playerClose != nullptr)
+	for (int i = 0; i < path.size(); i++)
 	{
-		_direction = glm::normalize(playerClose->getPosition() - _position);
-		_position += _direction * _speed;
-	}*/
-	collideWithLevel(levelData);
-
+		if (playerClose != nullptr)
+		{
+			_direction.x = glm::normalize(path[i].x - _position.x);
+			_direction.y = glm::normalize(path[i].y - _position.y);
+			_position += _direction * _speed;
+		}*/
+		collideWithLevel(levelData);
+	//}
 }
 
 Human* Zombie::chasePlayer(std::vector<Human*>& humans)
@@ -83,9 +86,13 @@ void Zombie::aStar(std::vector<Node> path)
 {
 	for (int i = 0; i < path.size(); i++)
 	{
-		_direction.x = path[i].x;
-		_direction.y = path[i].y;
-		//Luo metodi jolla se liikkuu nodesta nodeen.
+		//std::cout << path[i].x << " "<< path[i].y << std::endl;
+		_direction.x = glm::normalize(path[i].x - _position.x);
+		_direction.y = glm::normalize(path[i].y - _position.y);
+		_position += _direction * _speed;
+		
 	}
+	std::cout << _position.x << " " << _position.y << std::endl;
+	
 	
 }

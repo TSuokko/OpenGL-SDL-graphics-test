@@ -119,9 +119,9 @@ void SquareGraph::printPath(vector<Node> path) {
 																//NOTE: ptr == "Pointer"
 vector<Node> SquareGraph::executeAStar() 
 {
-	std::cout << "test" << std::endl;
+	//std::cout << "test" << std::endl;
 	pair<int, int> start = this->getFirstRobotPos();			//gets the starting position
-	std::cout << start.first << start.second << std::endl;
+	//std::cout << start.first << start.second << std::endl;
 	pair<int, int> target = this->getSecondRobotPos();			//gets the finishing position
 	
 	Node* startNodePtr = getCellValue(start);					//sets the starting Node's position to the pointer
@@ -134,7 +134,7 @@ vector<Node> SquareGraph::executeAStar()
 	
 	openNodes.push(*startNodePtr);								//push the startNode to the priority_queue
 	startNodePtr->setOpen();									//makes the state of the node "Open"
-	while (!openNodes.empty())									//while the OpenNodes are NOT empty
+	while (openNodes.size() > 0)									//while the OpenNodes are NOT empty
 	{								
 		currentNode = openNodes.top();							//.top returns the OpenNode reference to the top element in the priority queue
 		Node* currentPtr = getCellValue(make_pair(currentNode.x, currentNode.y));	//the current Pointer checks the current Node's position
