@@ -95,17 +95,17 @@ void MainGame::initLevels()
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
 
-	const float ZOMBIE_SPEED = 1.0f;
+	const float ZOMBIE_SPEED = 5.0f;
 	//add NPC:s
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
 		_zombies.push_back(new Zombie);
 		//glm::vec2 pos(randX(randomEngine), randY(randomEngine));
-		glm::vec2 pos(105*TILE_WIDTH, 105*TILE_WIDTH);
+		glm::vec2 pos(100*TILE_WIDTH, 110*TILE_WIDTH);
 		_zombies.back()->init(ZOMBIE_SPEED, pos);
 	}
 
-	readMap("Level1.txt");
+	//readMap("Level1.txt");
 }
 
 void MainGame::processInput()
@@ -234,7 +234,7 @@ void MainGame::updateAgents()
 			_humans,
 			_zombies);
 		
-		_zombies[i]->aStar(path);
+		//_zombies[i]->aStar(path);
 		
 	}
 
@@ -262,7 +262,7 @@ void MainGame::updateAgents()
 			if (PLAYER_HP == 0)
 			{
 				std::cout << "\nYour Score: " << PlayerScore << std::endl;
-				DevyEngine::fatalError("Game Over");
+				//DevyEngine::fatalError("Game Over");
 
 			}
 		}
@@ -368,7 +368,7 @@ void MainGame::drawDungeon()
 
 /////////////A* ALGORITHM////////////////////////////
 
-SquareGraph MainGame::readMap(const std::string& FileName)
+/*SquareGraph MainGame::readMap(const std::string& FileName)
 {
 
 	const int mapDimension = _levels[_currentLevel]->getWidth();	//dimension of the map ([200][200])
@@ -408,7 +408,7 @@ SquareGraph MainGame::readMap(const std::string& FileName)
 		inputFile.close();
 		return graph;
 	}
-}
+}*/
 
 ////////////////////////////////////////////////////
 MainGame::~MainGame()

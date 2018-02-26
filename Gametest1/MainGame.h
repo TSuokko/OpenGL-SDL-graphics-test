@@ -66,7 +66,7 @@ private:
 	std::vector<Human*> _humans;
 	int _currentLevel;
 
-	SquareGraph readMap(const std::string& FileName);
+	//SquareGraph readMap(const std::string& FileName);
 	std::vector<Node> path;
 
 	float _fps;

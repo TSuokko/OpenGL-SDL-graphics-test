@@ -11,6 +11,7 @@
 #include <list>
 #include <queue>
 #include <math.h>
+#include <fstream>
 
 
 Zombie::Zombie()
@@ -26,6 +27,8 @@ void Zombie::init(float speed, glm::vec2 pos)
 {
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
+
+	
 
 	_color.r = 255;
 	_color.g = 55;
@@ -46,24 +49,26 @@ void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
 	std::vector<Zombie*>& zombies)
 {
-	/*Human* playerClose = chasePlayer(humans);
-
-	for (int i = 0; i < path.size(); i++)
+	Human* playerClose = chasePlayer(humans);
+	
+	
+	if (playerClose != nullptr)
 	{
-		if (playerClose != nullptr)
+		if (mapread == false)
 		{
-			_direction.x = glm::normalize(path[i].x - _position.x);
-			_direction.y = glm::normalize(path[i].y - _position.y);
-			_position += _direction * _speed;
-		}*/
-		collideWithLevel(levelData);
-	//}
+			readMap("level1.txt", levelData, humans);
+		}
+		aStar();
+		
+	}
+	collideWithLevel(levelData);
+	//path.clear();
 }
 
 Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 {
 	Human* playerNear = nullptr;
-	float smallestDistance = 999999.0f;
+	float smallestDistance = 1000.0f;
 
 	for (int i = 0; i < humans.size(); i++)
 	{
@@ -82,17 +87,79 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 	return playerNear;
 }
 
-void Zombie::aStar(std::vector<Node> path)
+void Zombie::aStar()
 {
+	//TODO:
+	//FIND OUT WHY IT'S LOCKED IN DIRECTION (-1, -1)
+	//IMPLEMENT NODE TO NODE MOVEMENT
 	for (int i = 0; i < path.size(); i++)
 	{
-		//std::cout << path[i].x << " "<< path[i].y << std::endl;
-		_direction.x = glm::normalize(path[i].x - _position.x);
-		_direction.y = glm::normalize(path[i].y - _position.y);
-		_position += _direction * _speed;
 		
+		//std::cout << "Path: " << path[i].x << " " << path[i].y << std::endl;
+		if (_position.x / 64 != path[i].x && _position.y / 64 != path[i].y)
+		{		
+			_direction.x = glm::normalize(path[i].x - _position.x);
+			_direction.y = glm::normalize(path[i].y - _position.y);
+			_position += _direction * _speed;
+
+			std::cout << "\npath test1: " << i << " " << path[i].x << " " << path[i].y << std::endl;
+			std::cout << "position test1: " << " " << _position.x / 64 << " " << _position.y / 64 << std::endl;
+			std::cout << "direction test2: " <<" "<< _direction.x << " " <<_direction.y << "\n"<< std::endl;
+		}
+		
+		//std::cout << "Pos: " << _position.x / 64 << " " << _position.y / 64 << std::endl;
+
+		if (_position.x / 64 == path[i].x && _position.y / 64 == path[i].y)
+		{
+			std::cout << "Pos: "<< i << " "<<_position.x / 64 << " " << _position.y / 64 << std::endl;
+		}
 	}
-	std::cout << _position.x << " " << _position.y << std::endl;
-	
-	
+
+}
+
+SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
+{
+
+	const int mapDimension = levelData.size();	//dimension of the map ([200][200])
+	string line;										//current line 
+	char type;											//current character type on the map
+	ifstream inputFile(FileName.c_str());				//read the given .txt file
+	SquareGraph graph(mapDimension);					//gives the constructor the map dimension
+	if (inputFile)										//if reading the inputted file
+	{
+		std::getline(inputFile, line);
+		for (int i = 0; i < mapDimension; i++)			//for loop the size of the dimension
+		{												//looping the Y-coordinate
+			getline(inputFile, line);					//disregard the first line with the number
+			for (int j = 0; j < mapDimension; j++)		//and the X-coordinate
+			{
+				type = line.at(j);						//read the character on file
+				graph.setCellValue(make_pair(i, j), type);	//sets the value as either blank or wall
+			}
+			line.clear();								//erases the contents of the line
+		}
+		int px = humans[0]->getPosition().x / 64;
+		int py = humans[0]->getPosition().y / 64;
+		graph.setSecondRobotPos(make_pair(px, py));		//set the player coordinates
+
+		//for (int i = 0; i < _zombies.size(); i++)
+		//{
+
+			int x = _position.x  / 64;
+			int y = _position.y / 64;
+			graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
+
+		//}
+		path = graph.executeAStar();
+
+		graph.printPath(path);
+
+		inputFile.close();
+
+		mapread = true;
+
+		
+
+		return graph;
+	}
 }

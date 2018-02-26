@@ -13,14 +13,16 @@ public:
 		std::vector<Zombie*>& zombies);
 
 ////////////////////////////////////////////////////////
-	void aStar(std::vector<Node> path);
+	void aStar();
 ////////////////////////////////////////////////////////
 private:
 	glm::vec2 _direction;
 	int frames;
 	Human* chasePlayer(std::vector<Human*>& humans);
 ////////////////////////////////////////////////////////
-	
+	SquareGraph	readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans);
+	std::vector<Node> path;
+	bool mapread = false;
 ////////////////////////////////////////////////////////
 };
 
