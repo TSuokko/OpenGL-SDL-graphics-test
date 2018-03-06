@@ -174,7 +174,7 @@ vector<Node> SquareGraph::executeAStar()
 		}
 
 	}
-
+	//TODO: FIND OUT THE "_CRT IS VALID HEAP POINTER" PROBLEM
 	delete startNodePtr;
 	delete targetNodePtr;
 

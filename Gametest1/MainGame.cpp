@@ -37,8 +37,8 @@ int PlayerScore = 0;
 
 //Constructor
 MainGame::MainGame() :
-	_screenWidth(1024),
-	_screenHeight(768),
+	_screenWidth(800),
+	_screenHeight(600),
 	_game(GameState::PLAY),
 	_maxFPS(60.0f),
 	_time(0),
@@ -100,8 +100,9 @@ void MainGame::initLevels()
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
 		_zombies.push_back(new Zombie);
-		//glm::vec2 pos(randX(randomEngine), randY(randomEngine));
-		glm::vec2 pos(100*TILE_WIDTH, 110*TILE_WIDTH);
+		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
+		std::cout << "\nX: " << pos.x / TILE_WIDTH << " Y:" << pos.y / TILE_WIDTH<< std::endl;
+		//glm::vec2 pos(100*TILE_WIDTH, 110*TILE_WIDTH);
 		_zombies.back()->init(ZOMBIE_SPEED, pos);
 	}
 

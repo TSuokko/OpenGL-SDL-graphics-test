@@ -58,7 +58,7 @@ void Zombie::update(const std::vector<std::string>& levelData,
 		{
 			readMap("level1.txt", levelData, humans);
 		}
-		aStar();
+		aStar(humans);
 		
 	}
 	collideWithLevel(levelData);
@@ -70,7 +70,7 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 	Human* playerNear = nullptr;
 	float smallestDistance = 1000.0f;
 
-	for (int i = 0; i < humans.size(); i++)
+	for (unsigned int i = 0; i < humans.size(); i++)
 	{
 		glm::vec2 distVec = humans[i]->getPosition() - _position;
 		// Get distance
@@ -87,24 +87,28 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 	return playerNear;
 }
 
-void Zombie::aStar()
+void Zombie::aStar(std::vector<Human*>& humans)
 {
 	//TODO:
 	//FIND OUT WHY IT'S LOCKED IN DIRECTION (-1, -1)
 	//IMPLEMENT NODE TO NODE MOVEMENT
-	for (int i = 0; i < path.size(); i++)
+	for (unsigned int i = 0; i < path.size(); /*i++*/)
 	{
 		
 		//std::cout << "Path: " << path[i].x << " " << path[i].y << std::endl;
 		if (_position.x / 64 != path[i].x && _position.y / 64 != path[i].y)
 		{		
-			_direction.x = glm::normalize(path[i].x - _position.x);
-			_direction.y = glm::normalize(path[i].y - _position.y);
+			//_direction.x = glm::normalize(path[i].x - _position.x);
+			//_direction.y = glm::normalize(path[i].y - _position.y);
+
+			_direction.x = glm::normalize(humans[0]->getPosition().x - _position.x);
+			_direction.y = glm::normalize(humans[0]->getPosition().y - _position.y);
+
 			_position += _direction * _speed;
 
 			std::cout << "\npath test1: " << i << " " << path[i].x << " " << path[i].y << std::endl;
 			std::cout << "position test1: " << " " << _position.x / 64 << " " << _position.y / 64 << std::endl;
-			std::cout << "direction test2: " <<" "<< _direction.x << " " <<_direction.y << "\n"<< std::endl;
+			std::cout << "MAIN TEST direction test2: " <<" "<< _direction.x << " " <<_direction.y << "\n"<< std::endl;
 		}
 		
 		//std::cout << "Pos: " << _position.x / 64 << " " << _position.y / 64 << std::endl;
@@ -112,7 +116,9 @@ void Zombie::aStar()
 		if (_position.x / 64 == path[i].x && _position.y / 64 == path[i].y)
 		{
 			std::cout << "Pos: "<< i << " "<<_position.x / 64 << " " << _position.y / 64 << std::endl;
+			//i++;
 		}
+		i++;
 	}
 
 }
@@ -127,6 +133,7 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 	SquareGraph graph(mapDimension);					//gives the constructor the map dimension
 	if (inputFile)										//if reading the inputted file
 	{
+		std::cout << "Input file success" << std::endl;
 		std::getline(inputFile, line);
 		for (int i = 0; i < mapDimension; i++)			//for loop the size of the dimension
 		{												//looping the Y-coordinate
@@ -145,11 +152,15 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 		//for (int i = 0; i < _zombies.size(); i++)
 		//{
 
-			int x = _position.x  / 64;
-			int y = _position.y / 64;
-			graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
+		int x = _position.x  / 64;
+		int y = _position.y / 64;
+		graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
 
 		//}
+
+		std::cout <<"Player: "<< px << " " << py << "Zombie: "<< x << " " << y << std::endl;
+
+
 		path = graph.executeAStar();
 
 		graph.printPath(path);

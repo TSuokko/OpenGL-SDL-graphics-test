@@ -120,6 +120,15 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 		}
 		else 
 		{
+			if (distanceVec.x == distanceVec.y)
+			{
+				_position.y -= yDepth;
+			}
+			if (-distanceVec.x == distanceVec.y)
+			{
+				_position.y -= yDepth;
+			}
+
 			if (distanceVec.y < 0)
 			{
 				_position.y -= yDepth;
