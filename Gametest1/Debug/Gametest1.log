@@ -1,2 +1,10 @@
-﻿  Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\ZombieGame\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
-  Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\ZombieGame\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)
+﻿  Zombie.cpp
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(29): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(147): warning C4018: '>=': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(177): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(178): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(183): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(184): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\zombies\opengl-sdl-graphics-test\gametest1\zombie.cpp(204): warning C4715: 'Zombie::readMap': not all control paths return a value
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\zombies\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
+  Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\zombies\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

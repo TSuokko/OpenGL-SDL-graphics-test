@@ -86,14 +86,18 @@ void MainGame::initLevels()
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(7.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
+	_player->init(10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
 	_humans.push_back(_player);
 
 	std::mt19937 randomEngine;
 	randomEngine.seed(time(nullptr));
 
+	
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
+
+	
+	
 
 	const float ZOMBIE_SPEED = 5.0f;
 	//add NPC:s
@@ -285,12 +289,12 @@ void MainGame::drawDungeon()
 	root->createRooms(&leaf_edge_nodes, &halls);
 
 	// need a char map (space is char 40, wall is char 179);
-	char map[200][200]; // same width / height as the root leaf
+	
 	for (int i = 0; i < 200; i++) 
 	{
 		for (int j = 0; j < 200; j++) 
 		{
-			map[i][j] = 35; //creates ASCII wall symbol
+			levelMap[i][j] = 35; //creates ASCII wall symbol
 		}
 	}
 
@@ -312,7 +316,7 @@ void MainGame::drawDungeon()
 			for (int i = left; i <= right; i++) {
 				for (int j = top; j <= bottom; j++) 
 				{
-					map[i][j] = 46;
+					levelMap[i][j] = 46;
 				}
 			}
 		}
@@ -337,7 +341,7 @@ void MainGame::drawDungeon()
 
 		for (int i = left; i <= right; i++) {
 			for (int j = top; j <= bottom; j++) {
-				map[i][j] = 46;
+				levelMap[i][j] = 46;
 			}
 		}
 	}
@@ -354,7 +358,7 @@ void MainGame::drawDungeon()
 			//print the level daa to a .txt file
 			if (myfile.is_open())
 			{
-				myfile << map[i][j];
+				myfile << levelMap[i][j];
 				if (i == 199)
 				{
 					//divide the map into 99 character lengths

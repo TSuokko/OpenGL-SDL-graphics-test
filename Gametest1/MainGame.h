@@ -73,6 +73,7 @@ private:
 	float _maxFPS;
 	float _time;
 
+	char levelMap[200][200]; // same width / height as the root leaf
 
 };
 
