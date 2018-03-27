@@ -35,7 +35,7 @@ private:
 	void processInput();
 	void gameloop();
 	void drawGame();
-	void drawDungeon();
+	void drawDungeon(unsigned int seed);
 
 	void updateAgents();
 

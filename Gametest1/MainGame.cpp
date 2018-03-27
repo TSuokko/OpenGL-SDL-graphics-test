@@ -35,6 +35,8 @@
 int PLAYER_HP = 20;
 int PlayerScore = 0;
 
+#define TEST_SEED 1
+
 //Constructor
 MainGame::MainGame() :
 	_screenWidth(800),
@@ -49,7 +51,7 @@ MainGame::MainGame() :
 //run the game and start initializing
 void MainGame::run()
 {
-	drawDungeon();
+	drawDungeon(TEST_SEED);
 	initSystems();
 	initLevels();
 	gameloop();
@@ -99,7 +101,7 @@ void MainGame::initLevels()
 	
 	
 
-	const float ZOMBIE_SPEED = 5.0f;
+	const float ZOMBIE_SPEED = 8.0f;
 	//add NPC:s
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
@@ -277,9 +279,9 @@ void MainGame::updateAgents()
 
 
 ///////////////////////////////DUNGEON BSP GENERATOR ALGORITHM
-void MainGame::drawDungeon()
+void MainGame::drawDungeon(unsigned int seed)
 {
-	srand(time(NULL));
+	srand(seed);
 
 	int MAX_LEAF_SIZE = 30;
 	Leaf* root = new Leaf(0, 0, 200, 200);

@@ -119,9 +119,9 @@ void SquareGraph::printPath(vector<Node> path) {
 																//NOTE: ptr == "Pointer"
 vector<Node> SquareGraph::executeAStar() 
 {
-	std::cout << "test1" << std::endl;
+	
 	pair<int, int> start = this->getFirstRobotPos();			//gets the starting position
-	//std::cout << start.first << start.second << std::endl;
+	std::cout << start.first << start.second << std::endl;
 	pair<int, int> target = this->getSecondRobotPos();			//gets the finishing position
 	
 	Node* startNodePtr = getCellValue(start);					//sets the starting Node's position to the pointer
@@ -131,16 +131,13 @@ vector<Node> SquareGraph::executeAStar()
 	Node currentNode;											//the current node
 																//"sets" are containers that store unique elements following a specific order.
 	set<Node> neighbours;										//in a set, the value of an element also identifies it
-	std::cout << "test2" << std::endl;
 	openNodes.push(*startNodePtr);								//push the startNode to the priority_queue
 	startNodePtr->setOpen();									//makes the state of the node "Open"
-	std::cout << "test3" << std::endl;
 	if (openNodes.size() == 0)
 	{
 		std::cout << "empty" << std::endl;
 	}
-	std::cout << "test4" << std::endl;
-	while (openNodes.size() > 0)									//while the OpenNodes are NOT empty
+	while (openNodes.size() > 0)								//while the OpenNodes are NOT empty
 	{		
 		//std::cout << "open nodes: "<<openNodes.size() << std::endl;
 		currentNode = openNodes.top();							//.top returns the OpenNode reference to the top element in the priority queue

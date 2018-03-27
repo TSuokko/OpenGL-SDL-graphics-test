@@ -1,11 +1,10 @@
 ﻿  Zombie.cpp
 c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(29): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(150): warning C4018: '>=': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(180): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(181): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(186): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(187): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(207): warning C4715: 'Zombie::readMap': not all control paths return a value
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(120): warning C4018: '>=': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(159): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(160): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(165): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(166): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(186): warning C4715: 'Zombie::readMap': not all control paths return a value
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

@@ -89,71 +89,50 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 	return playerNear;
 }
 
-int i = 0;
 
+
+
+int i = 1;
 
 void Zombie::aStar(std::vector<Human*>& humans)
 {
-	//TODO:
-	//FIND OUT WHY IT'S LOCKED IN DIRECTION (-1, -1)
-	//IMPLEMENT NODE TO NODE MOVEMENT
-	//pathfound = true;
+	
+		glm::vec2 delta(path[i].x - _position.x / 64.f, path[i].y - _position.y / 64.f);
 
-
-	//std::cout << "Path: " << path[i].x << " " << path[i].y << std::endl;
-	//if (_position.x / 64 != path[i].x && _position.y / 64 != path[i].y)
-	//{
-		//std::cout << "position test "<< i << " x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
-		//_direction.x = glm::normalize(path[i].x - _position.x);
-		//_direction.y = glm::normalize(path[i].y - _position.y);
-
-		glm::vec2 delta(path[i].x - _position.x, path[i].y - _position.y);
-		if (glm::length(delta) < 64.0f) 
+		if (delta.x == 0.f && delta.y == 0.f)
 		{
-			std::cout << i << std::endl;
+			_direction.x = 0.f;
+			_direction.y = 0.f;
+		}
+		else
+		{
+			_direction.x = glm::normalize(delta.x);
+			_direction.y = glm::normalize(delta.y);
+		}
+
+		_position += _direction * _speed;
+		
+		if (glm::length(delta) <= 0.00f)
+		{	
 			++i;
 		}
 
-		_direction.x = glm::normalize(path[i].x - _position.x / 64);
-		_direction.y = glm::normalize(path[i].y - _position.y / 64);
-
-		/*std::cout << "\npath test1: i = " << i << " X: " << path[i].x << " " << path[i].y << std::endl;
-		std::cout << "position test1: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
-		std::cout << "MAIN TEST direction test1: " << " " << _direction.x << " " << _direction.y << "\n" << std::endl;*/
-
-		_position += _direction * _speed;
-
-		/*std::cout << "\npath test2: i = " << i << " X: " << path[i].x << " " << path[i].y << std::endl;
-		std::cout << "position test2: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
-		std::cout << "MAIN TEST direction test2: " << " " << _direction.x << " " << _direction.y << "\n" << std::endl;
-		*/
-		
-
-	//}
-	/*if (_position.x / 64 == path[i].x || _position.y / 64 == path[i].y)
-	{
-	std::cout << "broke" << std::endl;
-	//mapread = false;
-	}*
-	else
-	{
-	std::cout << "broke" << std::endl;
-	//mapread = false;
-	}*/
-
-
-	//std::cout << "Pos: " << _position.x / 64 << " " << _position.y / 64 << std::endl;
-
-
-	//i++;
-
-	if (i >= path.size())
-	{
-		i = 0;
-	}
-
+		if (i >= path.size())
+		{
+			//std::cout << "kierros" << std::endl;
+			_direction.x = 0.f;
+			_direction.y = 0.f;
+			mapread = false;
+			i = 1;
+		}
 
 }
+		
+
+	
+
+
+
 
 SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
 {
