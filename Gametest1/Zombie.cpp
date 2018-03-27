@@ -29,7 +29,7 @@ void Zombie::init(float speed, glm::vec2 pos)
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
 
-	
+
 
 	_color.r = 255;
 	_color.g = 55;
@@ -51,17 +51,17 @@ void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Zombie*>& zombies)
 {
 	Human* playerClose = chasePlayer(humans);
-	
-	
+
+
 	if (playerClose != nullptr)
 	{
 		if (mapread == false)
 		{
 			readMap("level1.txt", levelData, humans);
 		}
-		
+
 		aStar(humans);
-		
+
 	}
 	collideWithLevel(levelData);
 	//path.clear();
@@ -79,7 +79,7 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 		float distance = glm::length(distVec);
 
 		// If this person is closer than the closest person, this is the new closest
-		if (distance < smallestDistance) 
+		if (distance < smallestDistance)
 		{
 			smallestDistance = distance;
 			playerNear = humans[i];
@@ -97,58 +97,61 @@ void Zombie::aStar(std::vector<Human*>& humans)
 	//TODO:
 	//FIND OUT WHY IT'S LOCKED IN DIRECTION (-1, -1)
 	//IMPLEMENT NODE TO NODE MOVEMENT
-		//pathfound = true;
-	
-		
-		//std::cout << "Path: " << path[i].x << " " << path[i].y << std::endl;
-		if (_position.x / 64 != path[i].x && _position.y / 64 != path[i].y)
-		{	
-			std::cout << "position test0: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
-			//_direction.x = glm::normalize(path[i].x - _position.x);
-			//_direction.y = glm::normalize(path[i].y - _position.y);
+	//pathfound = true;
 
-			_direction.x = glm::normalize( path[i].x - _position.x / 64);
-			_direction.y = glm::normalize(path[i].y - _position.y / 64);
 
-			std::cout << "\npath test1: i = " << i << " X: " << path[i].x << " " << path[i].y << std::endl;
-			std::cout << "position test1: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
-			std::cout << "MAIN TEST direction test1: " << " " << _direction.x << " " << _direction.y << "\n" << std::endl;
+	//std::cout << "Path: " << path[i].x << " " << path[i].y << std::endl;
+	//if (_position.x / 64 != path[i].x && _position.y / 64 != path[i].y)
+	//{
+		//std::cout << "position test "<< i << " x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
+		//_direction.x = glm::normalize(path[i].x - _position.x);
+		//_direction.y = glm::normalize(path[i].y - _position.y);
 
-			_position += _direction * _speed;
-
-			std::cout << "\npath test2: i = " << i << " X: " << path[i].x << " " << path[i].y << std::endl;
-			std::cout << "position test2: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
-			std::cout << "MAIN TEST direction test2: " << " " << _direction.x << " " << _direction.y << "\n" << std::endl;
-			
-			if (_position.x / 64 == path[i].x && _position.y / 64 == path[i].y)
-			{
-				std::cout << "i++: " << i << std::endl;
-				i++;
-			}
-
+		glm::vec2 delta(path[i].x - _position.x, path[i].y - _position.y);
+		if (glm::length(delta) < 64.0f) 
+		{
+			std::cout << i << std::endl;
+			++i;
 		}
-		/*if (_position.x / 64 == path[i].x || _position.y / 64 == path[i].y)
-		{
-			std::cout << "broke" << std::endl;
-			//mapread = false;
-		}*
-		else
-		{
-			std::cout << "broke" << std::endl;
-			//mapread = false;
-		}*/
 
-		
-		//std::cout << "Pos: " << _position.x / 64 << " " << _position.y / 64 << std::endl;
+		_direction.x = glm::normalize(path[i].x - _position.x / 64);
+		_direction.y = glm::normalize(path[i].y - _position.y / 64);
 
-		
-		//i++;
+		/*std::cout << "\npath test1: i = " << i << " X: " << path[i].x << " " << path[i].y << std::endl;
+		std::cout << "position test1: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
+		std::cout << "MAIN TEST direction test1: " << " " << _direction.x << " " << _direction.y << "\n" << std::endl;*/
 
-		if (i >= path.size())
-		{
-			i = 0;
-		}
+		_position += _direction * _speed;
+
+		/*std::cout << "\npath test2: i = " << i << " X: " << path[i].x << " " << path[i].y << std::endl;
+		std::cout << "position test2: " << "x: " << _position.x / 64 << "y: " << _position.y / 64 << std::endl;
+		std::cout << "MAIN TEST direction test2: " << " " << _direction.x << " " << _direction.y << "\n" << std::endl;
+		*/
 		
+
+	//}
+	/*if (_position.x / 64 == path[i].x || _position.y / 64 == path[i].y)
+	{
+	std::cout << "broke" << std::endl;
+	//mapread = false;
+	}*
+	else
+	{
+	std::cout << "broke" << std::endl;
+	//mapread = false;
+	}*/
+
+
+	//std::cout << "Pos: " << _position.x / 64 << " " << _position.y / 64 << std::endl;
+
+
+	//i++;
+
+	if (i >= path.size())
+	{
+		i = 0;
+	}
+
 
 }
 
@@ -178,15 +181,15 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 		int py = humans[0]->getPosition().y / 64;
 		graph.setSecondRobotPos(make_pair(px, py));		//set the player coordinates
 
-		
 
-		int x = _position.x  / 64;
+
+		int x = _position.x / 64;
 		int y = _position.y / 64;
 		graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
 
-	
 
-		std::cout <<"Player: "<< px << " " << py << " Zombie: "<< x << " " << y << std::endl;
+
+		std::cout << "Player: " << px << " " << py << " Zombie: " << x << " " << y << std::endl;
 
 
 		path = graph.executeAStar();
@@ -197,7 +200,7 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 
 		mapread = true;
 
-		
+
 
 		return graph;
 	}

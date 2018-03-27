@@ -1,52 +1,11 @@
-﻿  main.cpp
-  Zombie.cpp
+﻿  Zombie.cpp
 c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(29): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(147): warning C4018: '>=': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(177): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(178): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(183): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(184): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  SquareGraph.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(41): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(46): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(48): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(64): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(169): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(175): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Rectangle.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\rectangle.cpp(29): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
-  Player.cpp
-  Node.cpp
-  MainGame.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(74): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(93): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(128): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(173): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(178): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(230): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(236): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(247): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(250): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(256): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(259): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(281): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(421): warning C4018: '<': signed/unsigned mismatch
-  Level.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\level.cpp(45): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\level.cpp(47): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\level.cpp(52): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\level.cpp(53): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
-  Leaf.cpp
-  InputHandler.cpp
-  Human.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\human.cpp(17): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\human.cpp(44): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Bullet.cpp
-  Agent.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(39): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(86): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-  Generating Code...
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(204): warning C4715: 'Zombie::readMap': not all control paths return a value
-     Creating library C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.lib and object C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(150): warning C4018: '>=': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(180): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(181): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(186): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(187): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(207): warning C4715: 'Zombie::readMap': not all control paths return a value
+cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

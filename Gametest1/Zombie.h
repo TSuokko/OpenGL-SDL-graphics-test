@@ -22,6 +22,7 @@ private:
 ////////////////////////////////////////////////////////
 	SquareGraph	readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans);
 	std::vector<Node> path;
+	
 	bool mapread = false;
 	bool pathfound = false;
 ////////////////////////////////////////////////////////

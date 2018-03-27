@@ -1,0 +1,7 @@
+﻿  main.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector2.h(15): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector2.h(46): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector3.h(16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector3.h(60): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.exe
+  3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.pdb (Partial PDB)

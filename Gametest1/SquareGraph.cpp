@@ -142,7 +142,7 @@ vector<Node> SquareGraph::executeAStar()
 	std::cout << "test4" << std::endl;
 	while (openNodes.size() > 0)									//while the OpenNodes are NOT empty
 	{		
-		std::cout << "open nodes: "<<openNodes.size() << std::endl;
+		//std::cout << "open nodes: "<<openNodes.size() << std::endl;
 		currentNode = openNodes.top();							//.top returns the OpenNode reference to the top element in the priority queue
 		Node* currentPtr = getCellValue(make_pair(currentNode.x, currentNode.y));	//the current Pointer checks the current Node's position
 		
@@ -186,7 +186,7 @@ vector<Node> SquareGraph::executeAStar()
 		}
 
 	}
-
+	//openNodes.push(*startNodePtr);
 	std::cout << "break test: " << openNodes.size() <<std::endl;
 	//TODO: FIND OUT THE "_CRT IS VALID HEAP POINTER" PROBLEM
 	delete startNodePtr;

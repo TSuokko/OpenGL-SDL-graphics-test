@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Gametest1", "Gametest1\Gametest1.vcxproj", "{3DBC9009-06D4-4056-B8E4-A4263E066ED9}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -11,6 +11,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DevyEngine", "DevyEngine\DevyEngine.vcxproj", "{E8CAD46A-B207-4691-99FE-07808C1FA884}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsGame", "PhysicsGame\PhysicsGame.vcxproj", "{5A35B0AD-51E5-439E-859F-BA231B7414E2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "3D-OpenGL", "3D-OpenGL\3D-OpenGL.vcxproj", "{0564E7F1-87E9-4572-B747-6898A9308DE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,14 @@ Global
 		{5A35B0AD-51E5-439E-859F-BA231B7414E2}.Release|x64.Build.0 = Release|x64
 		{5A35B0AD-51E5-439E-859F-BA231B7414E2}.Release|x86.ActiveCfg = Release|Win32
 		{5A35B0AD-51E5-439E-859F-BA231B7414E2}.Release|x86.Build.0 = Release|Win32
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Debug|x64.ActiveCfg = Debug|x64
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Debug|x64.Build.0 = Debug|x64
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Debug|x86.ActiveCfg = Debug|Win32
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Debug|x86.Build.0 = Debug|Win32
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Release|x64.ActiveCfg = Release|x64
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Release|x64.Build.0 = Release|x64
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Release|x86.ActiveCfg = Release|Win32
+		{0564E7F1-87E9-4572-B747-6898A9308DE4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
