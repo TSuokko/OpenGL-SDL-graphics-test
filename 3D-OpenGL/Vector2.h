@@ -9,6 +9,7 @@ public:
 		x = _x;
 		y = _y;
 	};
+	Vector2() {};
 	~Vector2() {};
 	float getLength()
 	{
@@ -31,20 +32,13 @@ public:
 		Vector2 v2Scalar(x * ob, y * ob);
 		return v2Scalar;
 	}
+
 	float length;
 	float x;
 	float y;
 };
 
-float Vec2_Dot(Vector2 v1, Vector2 v2)
-{
-	float vDot = v1.x*v2.x + v1.y*v2.y;
-	return vDot;
-}
-float Vec2_Angle(Vector2 v1, Vector2 v2)
-{
-	float vAngle = acos(Vec2_Dot(v1, v2) / (v1.getLength()*v2.getLength())) * 180 / PI;
-	return vAngle;
-}
+extern float Vec2_Dot(Vector2 v1, Vector2 v2);
+extern float Vec2_Angle(Vector2 v1, Vector2 v2);
 
 

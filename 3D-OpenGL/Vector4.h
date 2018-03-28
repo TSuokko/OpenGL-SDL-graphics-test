@@ -1,5 +1,10 @@
 #pragma once
+
+#ifndef _VEC_4_
+#define _VEC_4_
+
 #include <math.h>
+
 #define PI 3.14159265
 class Vector4
 {
@@ -11,12 +16,12 @@ public:
 		z = _z;
 		w = _w;
 	};
+
+	Vector4(){};
+
 	~Vector4() {};
-	float getLength()
-	{
-		length = sqrt(x*x + y*y + z*z + w*w);
-		return length;
-	}
+	float getLength();
+
 	Vector4 operator+(Vector4 &ob)
 	{
 		Vector4 v3Add(x + ob.x, y + ob.y, z + ob.z, w + ob.w);
@@ -40,15 +45,9 @@ public:
 	float w;
 };
 
-float Vec4_Dot(Vector4 v1, Vector4 v2)
-{
-	float vDot = v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
-	return vDot;
-}
+extern float Vec4_Dot(Vector4 v1, Vector4 v2);
 
-float Vec4_Angle(Vector4 v1, Vector4 v2)
-{
-	float vAngle = acos(Vec4_Dot(v1, v2) / (v1.getLength()*v2.getLength())) * 180 / PI;
-	return vAngle;
-}
+extern float Vec4_Angle(Vector4 v1, Vector4 v2);
 
+
+#endif
