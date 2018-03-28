@@ -15,17 +15,21 @@ public:
 	};
 	~Matrix4();
 
-
+	void printMat4();
 	float det4x4();
-	//Matrix4 transpose();
+	float dotMat4(Vector4 row, Vector4 column);
+	Matrix4 transpose();
 	Matrix4 cofactor();
 
-
-	/*Matrix4 inverse();
-	
-	Matrix4 Matrix4::operator*(const Matrix4& o)const;
-	Vector4 Matrix4::operator*(const Vector4& o)const;
 	Matrix4 scaling(float s);
+
+	Matrix4 inverse();
+	
+	Matrix4 operator*(const Matrix4 &o);
+	
+	
+	//Vector4 operator*(const Vector4& o)const;
+	/*
 	Matrix4 translation(const Vector3& t);
 
 	Matrix4 rotationX(float a);
