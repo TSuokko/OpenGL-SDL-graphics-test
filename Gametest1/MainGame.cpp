@@ -1,3 +1,6 @@
+
+//	LUO DEBUG TILANNE JOSSA ON 10X10 MAP JA TOISTUVA SAMA PATHFIND BUGI, JOTTA DEBUGGAUS OLIS HELPOMPAA. MAHDOLLISESTI MYÖS PIIRTO OMINAISUUS
+
 #include "MainGame.h"
 
 #include <DevyEngine/Errors.h>
@@ -358,7 +361,7 @@ void MainGame::drawDungeon(unsigned int seed)
 	{
 		for (int i = 0; i < 200; i++)
 		{
-			//print the level daa to a .txt file
+			//print the level data to a .txt file
 			if (myfile.is_open())
 			{
 				myfile << levelMap[i][j];

@@ -67,7 +67,6 @@ bool Agent::collideWithAgent(Agent* agent)
 		agent->_position -= collisionDepthVec / 2.0f;
 		return true;
 	}
-
 	return false;
 }
 
@@ -76,7 +75,7 @@ void Agent::checkTilePosition(const std::vector<std::string>& levelData, std::ve
 {
 	glm::vec2 cornerPos = glm::vec2(floor(x / (float)TILE_WIDTH),
 									  floor(y / (float)TILE_WIDTH));
-	//if agents are outside the world, reutrn with no error
+	//if agents are outside the world, return with no error
 	if (cornerPos.x < 0 || cornerPos.x >= levelData[0].size() ||
 		cornerPos.y < 0 || cornerPos.y >= levelData.size())
 	{
@@ -108,15 +107,14 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 		if (std::max(xDepth, 0.0f) < std::max(yDepth, 0.0f))
 		{
 						
-				if (distanceVec.x < 0)
-				{
-					_position.x -= xDepth;
-				}
-				else {
-					_position.x += xDepth;
-				}
-			
-			
+			if (distanceVec.x < 0)
+			{
+				_position.x -= xDepth;
+			}
+			else 
+			{
+				_position.x += xDepth;
+			}	
 		}
 		else 
 		{
@@ -128,17 +126,14 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 			{
 				_position.y -= yDepth;
 			}
-
 			if (distanceVec.y < 0)
 			{
 				_position.y -= yDepth;
 			}
-			else {
+			else 
+			{
 				_position.y += yDepth;
 			}
 		}
 	}
-
-
-
 }

@@ -92,38 +92,59 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 
 
 
-int i = 1;
+unsigned int i = 0;
 
 void Zombie::aStar(std::vector<Human*>& humans)
 {
-	
-		glm::vec2 delta(path[i].x - _position.x / 64.f, path[i].y - _position.y / 64.f);
+		//THIS MOVES THE ZOMBIE
+		glm::vec2 delta(path[i].x - (int)_position.x / 64.f, path[i].y - (int)_position.y / 64.f);
+
+		/*std::cout << "\ndeltax: "<<delta.x<<" deltay: " << delta.y << std::endl;
+		std::cout << "posx: " << _position.x/64.f << " posy: " << _position.y/64.f << std::endl;
+		std::cout << "path: "<< "x: "<<path[i].x << " y: " << path[i].y << std::endl;*/
 
 		if (delta.x == 0.f && delta.y == 0.f)
 		{
 			_direction.x = 0.f;
 			_direction.y = 0.f;
 		}
+
+		if (delta.x == 0)
+		{
+			_direction.x = 0;
+		}
 		else
 		{
 			_direction.x = glm::normalize(delta.x);
-			_direction.y = glm::normalize(delta.y);
 		}
 
+		if (delta.y == 0)
+		{
+			_direction.y = 0;
+		}
+		else
+		{
+			_direction.y = glm::normalize(delta.y);
+		}
+		
 		_position += _direction * _speed;
 		
-		if (glm::length(delta) <= 0.00f)
+		std::cout <<"i: "<< i <<" dirx: " << _direction.x << "diry:: " << _direction.y << std::endl;
+
+
+		std::cout << "length: " << glm::length(delta) << std::endl;
+		if (glm::length(delta) <= 0.10f)
 		{	
 			++i;
 		}
 
 		if (i >= path.size())
 		{
-			//std::cout << "kierros" << std::endl;
+			std::cout << "kierros" << std::endl;
 			_direction.x = 0.f;
 			_direction.y = 0.f;
 			mapread = false;
-			i = 1;
+			i = 0;
 		}
 
 }
@@ -137,7 +158,10 @@ void Zombie::aStar(std::vector<Human*>& humans)
 SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
 {
 
-	const int mapDimension = levelData.size();	//dimension of the map ([200][200])
+	const int mapDimension = levelData.size();			//dimension of the map ([200][200])
+
+	std::cout <<"\nmapdim: " <<mapDimension << std::endl;
+
 	string line;										//current line 
 	char type;											//current character type on the map
 	ifstream inputFile(FileName.c_str());				//read the given .txt file
@@ -152,8 +176,14 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 			for (int j = 0; j < mapDimension; j++)		//and the X-coordinate
 			{
 				type = line.at(j);						//read the character on file
-				graph.setCellValue(make_pair(i, j), type);	//sets the value as either blank or wall
+				/*std::cout << type;
+				if (j == 199)
+				{
+					std::cout << std::endl;
+				}*/
+				graph.setCellValue(make_pair(i, j), type);//sets the value as either blank or wall
 			}
+
 			line.clear();								//erases the contents of the line
 		}
 		int px = humans[0]->getPosition().x / 64;
@@ -166,10 +196,7 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 		int y = _position.y / 64;
 		graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
 
-
-
 		std::cout << "Player: " << px << " " << py << " Zombie: " << x << " " << y << std::endl;
-
 
 		path = graph.executeAStar();
 
@@ -179,8 +206,8 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 
 		mapread = true;
 
-
-
 		return graph;
 	}
+	else
+		return graph;
 }
