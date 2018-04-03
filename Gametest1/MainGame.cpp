@@ -3,14 +3,18 @@
 
 #include "MainGame.h"
 
+#include <Windows.h>
+#include <cstdio>
+#undef Rectangle
+
+
 #include <DevyEngine/Errors.h>
 #include <DevyEngine/Window.h>
 #include <DevyEngine/DevyEngine.h>
 #include <DevyEngine\ResourceManager.h>
 
-
 #include "Point.h"
-#include "Rectangle.h"
+#include "RectangleMap.h"
 #include "Leaf.h"
 #include "Node.h"
 
@@ -18,7 +22,7 @@
 #include <queue>
 #include <math.h>
 
-
+#include <src/game.h>
 
 #include <iostream>
 #include <string>
@@ -39,6 +43,12 @@ int PLAYER_HP = 20;
 int PlayerScore = 0;
 
 #define TEST_SEED 1
+
+typedef void(*LoopType)();
+LoopType LoopPtr;
+HMODULE GameDLL;
+FILETIME GameDLLWriteTime;
+
 
 //Constructor
 MainGame::MainGame() :
@@ -76,7 +86,7 @@ void MainGame::initSystems()
 	DevyEngine::init();
 
 	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
-	glClearColor(0.6, 0.7f, 0.7f, 1.0f); //grey background
+	glClearColor(0.6, 0.6f, 0.7f, 1.0f); //grey background
 	initShaders();
 	
 	_agentSpriteBatch.init();
@@ -96,13 +106,9 @@ void MainGame::initLevels()
 
 	std::mt19937 randomEngine;
 	randomEngine.seed(time(nullptr));
-
 	
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
-
-	
-	
 
 	const float ZOMBIE_SPEED = 8.0f;
 	//add NPC:s
@@ -176,12 +182,12 @@ void MainGame::drawGame()
 	
 	const glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
 
-	for (int i = 0; i < _humans.size(); i++)
+	for (unsigned int i = 0; i < _humans.size(); i++)
 	{
 		_humans[i]->draw(_agentSpriteBatch);
 	}
 
-	for (int i = 0; i < _zombies.size(); i++)
+	for (unsigned int i = 0; i < _zombies.size(); i++)
 	{
 		_zombies[i]->draw(_agentSpriteBatch);
 	}
@@ -196,10 +202,66 @@ void MainGame::drawGame()
 
 }
 
+FILETIME Win32GetLastWriteTime(char* path)
+{
+	FILETIME time = {};
+	WIN32_FILE_ATTRIBUTE_DATA data;
+
+	if (GetFileAttributesEx(path, GetFileExInfoStandard, &data))
+		time = data.ftLastWriteTime;
+
+	return time;
+}
+
+void UnloadGameDLL()
+{
+	FreeLibrary(GameDLL);
+	GameDLL = 0;
+	LoopPtr = 0;
+}
+
+void LoadGameDLL()
+{
+	WIN32_FILE_ATTRIBUTE_DATA unused;
+	if (!GetFileAttributesEx("lock.tmp", GetFileExInfoStandard, &unused))
+	{
+		UnloadGameDLL();
+		CopyFile("game.dll", "game_temp.dll", 0);
+		GameDLL = LoadLibrary("game_temp.dll");
+
+		if (!GameDLL)
+		{
+			DWORD err = GetLastError();
+			printf("Can't load lib: %d\n", err);
+			return;
+		}
+
+		LoopPtr = (LoopType)GetProcAddress(GameDLL, "Loop");
+		if (!LoopPtr)
+		{
+			DWORD err = GetLastError();
+			printf("Cant load func: %d\n", err);
+			return;
+		}
+
+		GameDLLWriteTime = Win32GetLastWriteTime("game.dll");
+	}
+}
+
+
+
 void MainGame::gameloop()
 {
+	LoadGameDLL();
 	while (_game != GameState::EXIT)
 	{
+		FILETIME newTime = Win32GetLastWriteTime("game.dll");
+
+		if (CompareFileTime(&newTime, &GameDLLWriteTime))
+			LoadGameDLL();
+
+		LoopPtr();
+
 		_fpslimiter.begin(); 
 
 		processInput();
@@ -224,6 +286,7 @@ void MainGame::gameloop()
 		if (frameCounter == 100)
 		{
 			PlayerScore += 10;
+			//std::cout << PlayerScore << std::endl;
 			
 			frameCounter = 0;
 		}
@@ -233,13 +296,13 @@ void MainGame::gameloop()
 
 void MainGame::updateAgents()
 {	
-	for (int i = 0; i < _humans.size(); i++) 
+	for (unsigned int i = 0; i < _humans.size(); i++)
 	{
 		_humans[i]->update(_levels[_currentLevel]->getLevelData(),
 			_humans,
 			_zombies);	
 	}
-	for (int i = 0; i < _zombies.size(); i++)
+	for (unsigned int i = 0; i < _zombies.size(); i++)
 	{
 		_zombies[i]->update(_levels[_currentLevel]->getLevelData(),
 			_humans,
@@ -250,19 +313,19 @@ void MainGame::updateAgents()
 	}
 
 
-	for (int i = 0; i < _humans.size(); i++) 
+	for (unsigned int i = 0; i < _humans.size(); i++)
 	{
 		// Collide with other humans
-		for (int j = i + 1; j < _zombies.size(); j++) 
+		for (unsigned int j = i + 1; j < _zombies.size(); j++)
 		{
 			(_humans[i]->collideWithAgent(_zombies[j]));		
 		}		
 	}
 	
-	for (int i = 0; i < _zombies.size(); i++)
+	for (unsigned int i = 0; i < _zombies.size(); i++)
 	{
 		// Collide with other zombies
-		for (int j = i + 1; j < _zombies.size(); j++)
+		for (unsigned int j = i + 1; j < _zombies.size(); j++)
 		{
 			_zombies[i]->collideWithAgent(_zombies[j]);
 		}
@@ -286,10 +349,12 @@ void MainGame::drawDungeon(unsigned int seed)
 {
 	srand(seed);
 
+	
+
 	int MAX_LEAF_SIZE = 30;
 	Leaf* root = new Leaf(0, 0, 200, 200);
 	std::list<Leaf> leaf_edge_nodes;
-	std::list<Rectangle> halls;
+	std::list<RectangleMap> halls;
 	root->generate(MAX_LEAF_SIZE);
 
 	root->createRooms(&leaf_edge_nodes, &halls);
@@ -306,7 +371,7 @@ void MainGame::drawDungeon(unsigned int seed)
 
 	for (std::list<Leaf>::iterator l = leaf_edge_nodes.begin(); l != leaf_edge_nodes.end(); ++l) {
 
-		Rectangle* room = l->getRoom();
+		RectangleMap* room = l->getRoom();
 		int left = room->left();
 		int right = room->right();
 		int top = room->top();
@@ -328,7 +393,7 @@ void MainGame::drawDungeon(unsigned int seed)
 		}
 	}
 
-	for (std::list<Rectangle>::iterator hh = halls.begin(); hh != halls.end(); ++hh) 
+	for (std::list<RectangleMap>::iterator hh = halls.begin(); hh != halls.end(); ++hh)
 	{
 		int left = hh->left();
 		int right = hh->right();
@@ -379,7 +444,7 @@ void MainGame::drawDungeon(unsigned int seed)
 
 MainGame::~MainGame()
 {
-	for (int i = 0; i < _levels.size(); i++)
+	for (unsigned int i = 0; i < _levels.size(); i++)
 	{
 		delete _levels[i];
 	}

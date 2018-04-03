@@ -1,0 +1,27 @@
+﻿DevyEngine.lib(SpriteBatch.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(SpriteBatch.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(SpriteBatch.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+DevyEngine.lib(ResourceManager.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(ResourceManager.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(Errors.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(Errors.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(InputManager.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(InputManager.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(GLSLprogram.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(GLSLprogram.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(Window.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(Window.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(Camera2D.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(Camera2D.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(Sprite.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(Sprite.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(TextureCache.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(TextureCache.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(ImageLoader.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(ImageLoader.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(picoPNG.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(picoPNG.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+DevyEngine.lib(IOManager.obj) : error LNK2038: mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '2' doesn't match value '0' in Agent.obj
+DevyEngine.lib(IOManager.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MD_DynamicRelease' in Agent.obj
+     Creating library C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Release\Gametest1.lib and object C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Release\Gametest1.exp
+LINK : fatal error LNK1561: entry point must be defined

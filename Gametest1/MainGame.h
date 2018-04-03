@@ -17,7 +17,7 @@
 #include "SquareGraph.h"
 
 enum class GameState{PLAY, EXIT};
-
+#define EXPORT extern "C" __declspec( dllexport )
 class Zombie;
 
 class MainGame

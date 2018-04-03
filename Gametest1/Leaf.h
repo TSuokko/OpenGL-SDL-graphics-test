@@ -1,7 +1,8 @@
 #pragma once
-#include "Rectangle.h"
+#include "RectangleMap.h"
 #include <vector>
 #include <list>
+
 class Leaf
 {
 public:
@@ -10,20 +11,21 @@ public:
 	void init(int x, int y, int width, int height);
 	bool Split();
 
-	void createRooms(std::list<Leaf>* leaf_edge_nodes, std::list<Rectangle>* halls);
-	Rectangle* getRoom();
+	void createRooms(std::list<Leaf>* leaf_edge_nodes, std::list<RectangleMap>* halls);
+	RectangleMap* getRoom();
+	
 
 	int randIBetween(int a, int b);
 	bool randTrue(int percentage);
-	void createHall(std::list<Rectangle>* halls, Rectangle* l, Rectangle* r);
+	void createHall(std::list<RectangleMap>* halls, RectangleMap* l, RectangleMap* r);
 
 	void generate(int maxLeafSize);
 
 	int _x, _y, _width, _height;
 	Leaf* rightChild;
 	Leaf* leftChild;
-	Rectangle* room;
-	std::list<Rectangle*> halls;
+	RectangleMap* room;
+	std::list<RectangleMap*> halls;
 
 private:
 	const int MIN_LEAF_SIZE = 6;

@@ -70,7 +70,7 @@ bool Leaf::Split() {
 	return true;
 }
 
-void Leaf::createRooms(std::list<Leaf>* leaf_edge_nodes, std::list<Rectangle>* halls) {
+void Leaf::createRooms(std::list<Leaf>* leaf_edge_nodes, std::list<RectangleMap>* halls) {
 	if ((NULL != leftChild) || (NULL != rightChild)) {
 		if (NULL != leftChild) {
 			leftChild->createRooms(leaf_edge_nodes, halls);
@@ -93,7 +93,7 @@ void Leaf::createRooms(std::list<Leaf>* leaf_edge_nodes, std::list<Rectangle>* h
 		roomSize = new Point(randomInclusiveBetween(_width - 2, 3), randomInclusiveBetween(3, _height - 2));
 		// place the room within the Leaf, but don't put it right agains the side of the leaf as it would merge then
 		roomPosition = new Point(randomInclusiveBetween(1, _width - roomSize->first - 1), randomInclusiveBetween(1, _height - roomSize->second - 1));
-		this->room = new Rectangle(_x + roomPosition->first, _y + roomPosition->second, roomSize->first, roomSize->second);
+		this->room = new RectangleMap(_x + roomPosition->first, _y + roomPosition->second, roomSize->first, roomSize->second);
 		leaf_edge_nodes->push_back(*this);
 	}
 }
@@ -103,13 +103,13 @@ int Leaf::randomInclusiveBetween(int a, int b) {
 	return ((rand() % (b == 0 ? 1 : b)) + a);
 }
 
-Rectangle* Leaf::getRoom() {
+RectangleMap* Leaf::getRoom() {
 	if (NULL != room) {
 		return room;
 	}
 	else {
-		Rectangle* lRoom = NULL;
-		Rectangle* rRoom = NULL;
+		RectangleMap* lRoom = NULL;
+		RectangleMap* rRoom = NULL;
 		if (NULL != leftChild) {
 			lRoom = leftChild->getRoom();
 		}
@@ -134,7 +134,7 @@ Rectangle* Leaf::getRoom() {
 	}
 }
 
-void Leaf::createHall(std::list<Rectangle>* halls, Rectangle* l, Rectangle* r) {
+void Leaf::createHall(std::list<RectangleMap>* halls, RectangleMap* l, RectangleMap* r) {
 	// now we connect these two rooms together with hallways.
 	// this looks pretty complicated, but it's just trying to figure out which point is where and then either draw a straight line, or a pair of lines to make a right-angle to connect them.
 	// you could do some extra logic to make your halls more bendy, or do some more advanced things if you wanted.
@@ -149,59 +149,59 @@ void Leaf::createHall(std::list<Rectangle>* halls, Rectangle* l, Rectangle* r) {
 	if (w < 0) {
 		if (h < 0) {
 			if (randTrue(50)) {
-				halls->push_back(*new Rectangle(p2->first, p1->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p2->first, p2->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p2->first, p1->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p2->first, p2->second, 1, abs(h)));
 			}
 			else {
-				halls->push_back(*new Rectangle(p2->first, p2->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p1->first, p2->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p2->first, p2->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p1->first, p2->second, 1, abs(h)));
 			}
 		}
 		else if (h > 0) {
 			if (randTrue(50)) {
-				halls->push_back(*new Rectangle(p2->first, p1->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p2->first, p1->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p2->first, p1->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p2->first, p1->second, 1, abs(h)));
 			}
 			else {
-				halls->push_back(*new Rectangle(p2->first, p2->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p1->first, p1->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p2->first, p2->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p1->first, p1->second, 1, abs(h)));
 			}
 		}
 		else {
-			halls->push_back(*new Rectangle(p2->first, p2->second, abs(w), 1));
+			halls->push_back(*new RectangleMap(p2->first, p2->second, abs(w), 1));
 		}
 	}
 	else if (w > 0) {
 		if (h < 0) {
 			if (randTrue(50)) {
-				halls->push_back(*new Rectangle(p1->first, p2->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p1->first, p2->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p1->first, p2->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p1->first, p2->second, 1, abs(h)));
 			}
 			else {
-				halls->push_back(*new Rectangle(p1->first, p1->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p2->first, p2->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p1->first, p1->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p2->first, p2->second, 1, abs(h)));
 			}
 		}
 		else if (h > 0) {
 			if (randTrue(50)) {
-				halls->push_back(*new Rectangle(p1->first, p1->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p2->first, p1->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p1->first, p1->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p2->first, p1->second, 1, abs(h)));
 			}
 			else {
-				halls->push_back(*new Rectangle(p1->first, p2->second, abs(w), 1));
-				halls->push_back(*new Rectangle(p1->first, p1->second, 1, abs(h)));
+				halls->push_back(*new RectangleMap(p1->first, p2->second, abs(w), 1));
+				halls->push_back(*new RectangleMap(p1->first, p1->second, 1, abs(h)));
 			}
 		}
 		else {
-			halls->push_back(*new Rectangle(p1->first, p1->second, abs(w), 1));
+			halls->push_back(*new RectangleMap(p1->first, p1->second, abs(w), 1));
 		}
 	}
 	else {
 		if (h < 0) {
-			halls->push_back(*new Rectangle(p2->first, p2->second, 1, abs(h)));
+			halls->push_back(*new RectangleMap(p2->first, p2->second, 1, abs(h)));
 		}
 		else if (h > 0) {
-			halls->push_back(*new Rectangle(p1->first, p1->second, 1, abs(h)));
+			halls->push_back(*new RectangleMap(p1->first, p1->second, 1, abs(h)));
 		}
 	}
 

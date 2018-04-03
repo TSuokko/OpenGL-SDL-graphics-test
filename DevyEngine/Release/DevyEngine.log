@@ -1,0 +1,24 @@
+﻿  Camera2D.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\Camera2D.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  DevyEngine.cpp
+DevyEngine.cpp(1): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  Errors.cpp
+Errors.cpp(4): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  GLSLprogram.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\GLSLprogram.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  ImageLoader.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\GLTexture.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  InputManager.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\InputManager.h(3): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  ResourceManager.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\GLTexture.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  Sprite.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\Sprite.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  SpriteBatch.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\SpriteBatch.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  TextureCache.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\GLTexture.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  Timing.cpp
+Timing.cpp(2): fatal error C1083: Cannot open include file: 'SDL\SDL.h': No such file or directory
+  Window.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\Window.h(2): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory

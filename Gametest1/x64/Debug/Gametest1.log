@@ -1,0 +1,26 @@
+﻿  Zombie.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  SquareGraph.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(41): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(166): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\squaregraph.cpp(172): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  RectangleMap.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\rectanglemap.cpp(29): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  Player.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\player.h(2): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  Node.cpp
+  MainGame.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.h(2): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  main.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\main.cpp(3): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  Level.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\level.h(4): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
+  Leaf.cpp
+  InputHandler.cpp
+  Human.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Bullet.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\bullet.h(2): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  Agent.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Generating Code...

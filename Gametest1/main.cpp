@@ -5,8 +5,7 @@
 #include "MainGame.h"
 #include <DevyEngine/Sprite.h>
 //test
-#include "InputHandler.h"
-#include "SquareGraph.h"
+
 
 int main(int argc, char** argv)
 {

@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <SDL/SDL.h>
+
+
 namespace DevyEngine
 {
 	void fatalError(std::string errorString)
