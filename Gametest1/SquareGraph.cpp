@@ -110,6 +110,7 @@ vector<Node> SquareGraph::reconstructPath(Node* to, Node* from)
 
 void SquareGraph::printPath(vector<Node> path) {
 	cout << "--- Path to target ---" << endl;
+	std::cout << "Nodes: "<<path.size() << std::endl;
 	for (auto i = path.begin(); i != path.end(); i++)
 	{
 		Node node = *i;
@@ -135,46 +136,51 @@ vector<Node> SquareGraph::executeAStar()
 	startNodePtr->setOpen();									//makes the state of the node "Open"
 	
 	while (openNodes.size() > 0)								//while the OpenNodes are NOT empty
-	{		
-		
+	{
 		currentNode = openNodes.top();							//.top returns the OpenNode reference to the top element in the priority queue
 		openNodes.pop();										//removes the top element from the priority queue.
 		Node* currentPtr = getCellValue(make_pair(currentNode.x, currentNode.y));	//the current Pointer checks the current Node's position
-		
-		std::cout << "current nodes: X: " << currentNode.x << " Y: "<<currentNode.y << std::endl;
 
-		//if the current Pointers position is exactly the same as the target final Nodes position
-		if ((currentPtr->x == targetNodePtr->x) && (currentPtr->y == targetNodePtr->y)) 
-		{   //reconstruct the created path from the current to the beginning 
-			return reconstructPath(startNodePtr, currentPtr);	
+		if (currentPtr == targetNodePtr)
+		{   //reconstruct the created path from the current to the beginning 	
+			std::cout << openNodes.size();
+			std::cout << "	StartNodePTR: " << startNodePtr->x << " " << startNodePtr->y << "	CurrentPTR " << currentPtr->x << " " << currentPtr->y << "	TargetNodePtr: " << targetNodePtr->x << " " << targetNodePtr->y << std::endl;
+			return reconstructPath(startNodePtr, currentPtr);
 		}
-		
-		
+		if (openNodes.size() > 60)
+		{
+			//This is if it loops for infinity and cannot find the player
+			//for some reason it will never get currentPtr == targetNodePtr
+			std::cout << "player not found" << std::endl;
+			std::cout << "	StartNodePTR: " << startNodePtr->x << " " << startNodePtr->y << "	CurrentPTR " << currentPtr->x << " " << currentPtr->y << "	TargetNodePtr: " << targetNodePtr->x << " " << targetNodePtr->y << std::endl;
+			return reconstructPath(startNodePtr, currentPtr);
+		}
+
+
 		closedNodes.push(*currentPtr);							//push the currentPointer to the closedNodes
 		currentPtr->setClosed();								//set the nodes state to "closed"
 		neighbours = getNeighbours(*currentPtr);				//retrieves the information of the current pointers neighbours
-		
+
 		for (auto i = neighbours.begin(); i != neighbours.end(); ++i) //loop though the neighbours of the pointer
 		{
+
 			Node* neighbourPtr = getCellValue(make_pair(i->x, i->y));	//makes the position of the neighbourpointer
-			
+
 			if (!(neighbourPtr->isClosed()))					//if the neighbour pointer is NOT a closed state
 			{
-				
+
 				//"tentative" == "alustava" in Finnish
 				//the score of the current neighbor is equal to the starting cost and distance cost from the pointer to the neighbour
 				int tentativeScore = currentNode.getCostFromStart() + this->calculateDistance(make_pair(currentPtr->x, currentPtr->y), make_pair(neighbourPtr->x, neighbourPtr->y));
-				
-				if ((!neighbourPtr->isOpen()) || (tentativeScore < currentNode.getCostFromStart())) 
+
+				if ((!neighbourPtr->isOpen()) || (tentativeScore < currentNode.getCostFromStart()))
 				{
-					
 					neighbourPtr->setParent(currentPtr);		//sets the parent to the current pointer 
 					neighbourPtr->setCostFromStart(tentativeScore);		//sets the cost from the start as the score
 					neighbourPtr->setCostToTarget(this->calculateDistance(make_pair(neighbourPtr->x, neighbourPtr->y), target)); //calculates the cost from the neighbour to the final target
 					neighbourPtr->calculateTotalCost();			//calculates the total cost of the neighbour
 					if (!neighbourPtr->isOpen())				//if the neightbouring pointer is not open, 
 					{
-						
 						openNodes.push(*neighbourPtr);			//push the neighbouring pointer to the open nodes list
 						neighbourPtr->setOpen();				//and set it as open.
 					}
@@ -183,9 +189,8 @@ vector<Node> SquareGraph::executeAStar()
 		}
 
 	}
-	//openNodes.push(*startNodePtr);
 	std::cout << "break test: " << openNodes.size() <<std::endl;
-	//TODO: FIND OUT THE "_CRT IS VALID HEAP POINTER" PROBLEM
+
 	delete startNodePtr;
 	delete targetNodePtr;
 

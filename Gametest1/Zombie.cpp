@@ -29,8 +29,6 @@ void Zombie::init(float speed, glm::vec2 pos)
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
 
-
-
 	_color.r = 255;
 	_color.g = 55;
 	_color.b = 55;
@@ -62,6 +60,10 @@ void Zombie::update(const std::vector<std::string>& levelData,
 
 		aStar(humans);
 
+	}
+	else
+	{
+		mapread = false;
 	}
 	collideWithLevel(levelData);
 	//path.clear();
@@ -129,18 +131,19 @@ void Zombie::aStar(std::vector<Human*>& humans)
 		
 		_position += _direction * _speed;
 		
-		std::cout <<"i: "<< i <<" dirx: " << _direction.x << "diry:: " << _direction.y << std::endl;
+		//std::cout <<"i: "<< i <<" dirx: " << _direction.x << "diry:: " << _direction.y << std::endl;
 
 
-		std::cout << "length: " << glm::length(delta) << std::endl;
-		if (glm::length(delta) <= 0.10f)
+		//std::cout << "length: " << glm::length(delta) << std::endl;
+		if (glm::length(delta) <= 0.1f)
 		{	
 			++i;
+			//std::cout <<"i: "<< i << std::endl;
 		}
 
 		if (i >= path.size())
 		{
-			std::cout << "kierros" << std::endl;
+			//std::cout << "kierros" << std::endl;
 			_direction.x = 0.f;
 			_direction.y = 0.f;
 			mapread = false;
@@ -160,7 +163,7 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 
 	const int mapDimension = levelData.size();			//dimension of the map ([200][200])
 
-	std::cout <<"\nmapdim: " <<mapDimension << std::endl;
+	//std::cout <<"\nmapdim: " <<mapDimension << std::endl;
 
 	string line;										//current line 
 	char type;											//current character type on the map
@@ -176,11 +179,6 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 			for (int j = 0; j < mapDimension; j++)		//and the X-coordinate
 			{
 				type = line.at(j);						//read the character on file
-				/*std::cout << type;
-				if (j == 199)
-				{
-					std::cout << std::endl;
-				}*/
 				graph.setCellValue(make_pair(i, j), type);//sets the value as either blank or wall
 			}
 
@@ -196,7 +194,7 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 		int y = _position.y / 64;
 		graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
 
-		std::cout << "Player: " << px << " " << py << " Zombie: " << x << " " << y << std::endl;
+		//std::cout << "Player: " << px << " " << py << " Zombie: " << x << " " << y << std::endl;
 
 		path = graph.executeAStar();
 

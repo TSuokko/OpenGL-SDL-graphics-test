@@ -4,6 +4,7 @@
 #include <vector>
 namespace DevyEngine
 {
+	//The : _numAttributes(0) ect. is an initialization list. It is a better way to initialize variables, since it avoids an extra copy. 
 	GLSLprogram::GLSLprogram() : _programID(0), _vertexShaderID(0), _fragmentShaderID(0), _numAttributes(0)
 	{
 	}
@@ -12,31 +13,38 @@ namespace DevyEngine
 	{
 	}
 
+	//Compiles the shaders into a form that your GPU can understand
 	void GLSLprogram::compileShaders(const std::string& vertShaderPath, const std::string& fragShaderPath)
 	{
+		//Vertex and fragment shaders are successfully compiled.
+		//Now time to link them together into a program.
+		//Get a program object.
 		_programID = glCreateProgram();
+		//Create the vertex shader object, and store its ID
 		_vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 		if (_vertexShaderID == 0)
 		{
 			fatalError("Vertex shader failed to be created");
 		}
+		//Create the fragment shader object, and store its ID
 		_fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 		if (_fragmentShaderID == 0)
 		{
 			fatalError("Fragment shader failed to be created");
 		}
-
+		//Compile each shader
 		compileShader(vertShaderPath, _vertexShaderID);
 		compileShader(fragShaderPath, _fragmentShaderID);
 	}
 	void GLSLprogram::linkShaders()
 	{
-
+		//Attach our shaders to our program
 
 		glAttachShader(_programID, _vertexShaderID);
 		glAttachShader(_programID, _fragmentShaderID);
-
+		//Link our program
 		glLinkProgram(_programID);
+		//Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint isLinked = 0;
 
 		glGetProgramiv(_programID, GL_LINK_STATUS, (int *)&isLinked);

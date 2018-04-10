@@ -22,5 +22,5 @@
 
 EXPORT void Loop( )
 {
-	printf( "memes\n" );
+	//printf( "memes\n" );
 }
