@@ -4,7 +4,7 @@
 #include <DevyEngine\InputManager.h>
 #include "Human.h"
 #include "Node.h"
-
+class Gun;
 class Player : public Human
 {
 public:
@@ -16,8 +16,11 @@ public:
 		std::vector<Human*>& humans,
 		std::vector<Zombie*>& zombies);
 
+	void addGun(Gun* gun);
+
 private:
 	DevyEngine::InputManager* _input;
-
+	std::vector <Gun*>_guns;
+	int _currentGunIndex;
 };
 

@@ -2,13 +2,8 @@
 #include <DevyEngine\ResourceManager.h>
 
 
-Bullet::Bullet(glm::vec2 pos, glm::vec2 dir, float speed, int lifeTime)
-{
-	_lifeTime = lifeTime;
-	_position = pos;
-	_direction = dir;
-	_speed = speed;
-}
+Bullet::Bullet(glm::vec2 pos, glm::vec2 dir, float speed, float damage):_position(pos), _direction(dir), _speed(speed), _damage(damage)
+{}
 
 
 Bullet::~Bullet()
@@ -16,21 +11,16 @@ Bullet::~Bullet()
 }
 
 
-bool Bullet::update()
+void Bullet::update(std::vector<Human*>& humans,
+	std::vector<Zombie*>& zombies)
 {
-	_position += _direction * _speed;
-	_lifeTime--;
-	if (_lifeTime == 0)
-	{
-		return true;
-	}
-	return false;
+	_position += _direction *_speed;
 }
 
 void Bullet::draw(DevyEngine::SpriteBatch& spriteBatch)
 {
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	static DevyEngine::GLTexture texture = DevyEngine::ResourceManager::getTexture("Textures/jumpgame/PNG/Tails.png");
+	static DevyEngine::GLTexture texture = DevyEngine::ResourceManager::getTexture("Textures/jumpgame/PNG/Bullet.png");
 
 	DevyEngine::Color color;
 	color.r = 255;
@@ -38,7 +28,7 @@ void Bullet::draw(DevyEngine::SpriteBatch& spriteBatch)
 	color.b = 255;
 	color.a = 255;
 
-	glm::vec4 posAndSize = glm::vec4(_position.x, _position.y, 30, 30);
+	glm::vec4 posAndSize = glm::vec4(_position.x + 5, _position.y + 5, 10, 10);
 
 	spriteBatch.draw(posAndSize, uv, texture.id, 0.0f, color);
 }

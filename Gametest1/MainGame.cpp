@@ -1,5 +1,6 @@
 
 //	LUO DEBUG TILANNE JOSSA ON 10X10 MAP JA TOISTUVA SAMA PATHFIND BUGI, JOTTA DEBUGGAUS OLIS HELPOMPAA. MAHDOLLISESTI MYÖS PIIRTO OMINAISUUS
+//making games with ben --> 21:00
 
 #include "MainGame.h"
 
@@ -147,6 +148,7 @@ void MainGame::processInput()
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			_input.keyPress(_event.button.button);
+			std::cout <<_player->getPosition().x/64 + _input.getMouseCoords().x - 426 << " " << (int)_player->getPosition().y/64 + _input.getMouseCoords().y - 270<< std::endl;
 			break;
 		case SDL_MOUSEBUTTONUP:
 			_input.keyRelease(_event.button.button);
@@ -286,6 +288,7 @@ void MainGame::gameloop()
 		if (frameCounter == 100)
 		{
 			PlayerScore += 10;
+			//std::cout << "Current pos: "<<_player->getPosition().x/64 << " " << _player->getPosition().y/64 << std::endl;
 			//std::cout << PlayerScore << std::endl;
 			
 			frameCounter = 0;

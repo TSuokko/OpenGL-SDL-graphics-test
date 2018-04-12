@@ -5,13 +5,13 @@ Matrix4::~Matrix4()
 {
 }
 
-void Matrix4::printMat4()
+void Matrix4::printMat4(const char* const name)
 {
-	printf("\nMatrix 4x4: \n");
-	printf("|%2.2f %2.2f %2.2f %2.2f|\n", vec1.x, vec1.y, vec1.z, vec1.w);
-	printf("|%2.2f %2.2f %2.2f %2.2f|\n", vec2.x, vec2.y, vec2.z, vec2.w);
-	printf("|%2.2f %2.2f %2.2f %2.2f|\n", vec3.x, vec3.y, vec3.z, vec3.w);
-	printf("|%2.2f %2.2f %2.2f %2.2f|\n", vec4.x, vec4.y, vec4.z, vec4.w);
+	printf("\n%-12s Matrix 4x4: \n", name);
+	printf(" <%2.2f,%2.2f,%2.2f,%2.2f>\n",  vec1.x, vec1.y, vec1.z, vec1.w);
+	printf(" <%2.2f,%2.2f,%2.2f,%2.2f>\n",  vec2.x, vec2.y, vec2.z, vec2.w);
+	printf(" <%2.2f,%2.2f,%2.2f,%2.2f>\n",  vec3.x, vec3.y, vec3.z, vec3.w);
+	printf(" <%2.2f,%2.2f,%2.2f,%2.2f>\n",  vec4.x, vec4.y, vec4.z, vec4.w);
 
 }
 
@@ -108,7 +108,8 @@ Matrix4 Matrix4::cofactor()
 				-det3x3(Vector3(vec1.y, vec1.z, vec1.w), Vector3(vec2.y, vec2.z, vec2.w), Vector3(vec3.y, vec3.z, vec3.w)), //c41
 				 det3x3(Vector3(vec1.x, vec1.z, vec1.w), Vector3(vec2.x, vec2.z, vec2.w), Vector3(vec3.x, vec3.z, vec3.w)), //c42
 				-det3x3(Vector3(vec1.x, vec1.y, vec1.w), Vector3(vec2.x, vec2.y, vec2.w), Vector3(vec3.x, vec3.y, vec3.w)), //c43
-				 det3x3(Vector3(vec1.x, vec1.y, vec1.z), Vector3(vec2.x, vec2.y, vec2.z), Vector3(vec3.x, vec3.y, vec3.z))));
+				 det3x3(Vector3(vec1.x, vec1.y, vec1.z), Vector3(vec2.x, vec2.y, vec2.z), Vector3(vec3.x, vec3.y, vec3.z))));//c44
+
 	return cofactor;
 }
 
@@ -130,7 +131,6 @@ float Matrix4::dotMat4(Vector4 row, Vector4 column)
 Matrix4 Matrix4::operator*(const Matrix4& o)
 {
 	Matrix4 copy = o;
-	copy.transpose().vec1;
 
 	Matrix4 multiplied = Matrix4(
 		Vector4(	dotMat4(Vector4(vec1), Vector4(copy.transpose().vec1)),	dotMat4(Vector4(vec1), Vector4(copy.transpose().vec2)),	dotMat4(Vector4(vec1), Vector4(copy.transpose().vec3)),		dotMat4(Vector4(vec1), Vector4(copy.transpose().vec4))),
@@ -142,11 +142,25 @@ Matrix4 Matrix4::operator*(const Matrix4& o)
 }
 
 
-/*
-Vector4 Matrix4::Matrix4::operator*(const Vector4& o)const
+Vector4 Matrix4::operator*(const Vector4& o)
 {
+	Vector4 multiplied = Vector4(
+		vec1.x * o.x + vec2.x * o.y + vec3.x * o.z + vec4.x * o.w,
+		vec1.y * o.x + vec2.y * o.y + vec3.y * o.z + vec4.y * o.w,
+		vec1.z * o.x + vec2.z * o.y + vec3.z * o.z + vec4.z * o.w,
+		vec1.w * o.x + vec2.w * o.y + vec3.w * o.z + vec4.w * o.w);
+	return multiplied;
+}
 
-}*/
+Matrix4 Matrix4::translation(const Vector3& t)
+{
+	Matrix4 trans = Matrix4(
+		Vector4(1,0,0,t.x), 
+		Vector4(0,1,0,t.y),
+		Vector4(0,0,1,t.z), 
+		Vector4(0,0,0,1));
+	return trans;
+}
 
 Matrix4 Matrix4::scaling(float s)
 {
@@ -157,24 +171,33 @@ Matrix4 Matrix4::scaling(float s)
 		Vector4(s*vec4.x, s*vec4.y, s*vec4.z, s*vec4.w));
 	return scaled;
 }
-/*
-Matrix4 Matrix4::translation(const Vector3& t)
-{
 
+
+Matrix4 rotationX(float a)
+{
+	Matrix4 Rx = Matrix4(
+		Vector4(1,0,0,0),
+		Vector4(0,cos(a), sin(a), 0),
+		Vector4(0,-sin(a), cos(a), 0),
+		Vector4(0,0,0,1));
+	return Rx;
 }
-
-
-
-Matrix4 Matrix4::rotationX(float a)
+Matrix4 rotationY(float a)
 {
-
+	Matrix4 Ry = Matrix4(
+		Vector4( cos(a),0, -sin(a),0),
+		Vector4( 0,1,0,0),
+		Vector4(sin(a),0,cos(a),0),
+		Vector4( 0,0,0,1));
+	return Ry;
 }
-Matrix4 Matrix4::rotationY(float a)
+Matrix4 rotationZ(float a)
 {
-
+	Matrix4 Rz = Matrix4(
+		Vector4(cos(a), sin(a), 0, 0),
+		Vector4(-sin(a), cos(a),0, 0),
+		Vector4(0, 0, 1, 0),
+		Vector4(0, 0, 0, 1));
+	return Rz;
 }
-Matrix4 Matrix4::rotationZ(float a)
-{
-
-}*/
 

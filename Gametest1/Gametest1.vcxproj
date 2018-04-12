@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Leaf.cpp" />
@@ -139,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="Human.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Leaf.h" />

@@ -2,7 +2,7 @@
 #include <SDL\SDL.h>
 #include <DevyEngine/ResourceManager.h>
 
-Player::Player()
+Player::Player():_currentGunIndex(-1)
 {
 }
 
@@ -21,6 +21,16 @@ void Player::init(float speed, glm::vec2 pos, DevyEngine::InputManager* input)
 	_color.b = 255;
 	_color.a = 255;
 }
+
+void Player::addGun(Gun* gun)
+{
+	_guns.push_back(gun);
+	if (_currentGunIndex == -1)
+	{
+		_currentGunIndex = 0;
+	}
+}
+
 void Player::update(const std::vector<std::string>& levelData, std::vector<Human*>& humans,
 	std::vector<Zombie*>& zombies)
 {
@@ -39,6 +49,17 @@ void Player::update(const std::vector<std::string>& levelData, std::vector<Human
 	{
 		_position.x += _speed;
 	}
+
+	if (_input->isKeyPressed(SDLK_1) && _guns.size() >= 0)
+	{
+		_currentGunIndex = 0;
+	}
+	if (_input->isKeyPressed(SDLK_2) && _guns.size() >= 1)
+	{
+		_currentGunIndex = 1;
+	}
+
+	
 
 	collideWithLevel(levelData);
 

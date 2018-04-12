@@ -1,4 +1,5 @@
 #include "SquareGraph.h"
+#include <DevyEngine\ResourceManager.h> //debug
 
 SquareGraph::SquareGraph(int dimension) : 
 map(dimension, vector<Node>(dimension)),
@@ -152,6 +153,7 @@ vector<Node> SquareGraph::executeAStar()
 			//This is if it loops for infinity and cannot find the player
 			//for some reason it will never get currentPtr == targetNodePtr
 			std::cout << "player not found" << std::endl;
+			std::cout << openNodes.size();
 			std::cout << "	StartNodePTR: " << startNodePtr->x << " " << startNodePtr->y << "	CurrentPTR " << currentPtr->x << " " << currentPtr->y << "	TargetNodePtr: " << targetNodePtr->x << " " << targetNodePtr->y << std::endl;
 			return reconstructPath(startNodePtr, currentPtr);
 		}
@@ -195,4 +197,21 @@ vector<Node> SquareGraph::executeAStar()
 	delete targetNodePtr;
 
 	return path;
+}
+
+
+void SquareGraph::debugDraw(DevyEngine::SpriteBatch& spritebatch, Node currentNode)
+{
+	int DebugRadius = 5;
+
+	glm::vec4 destRect(currentNode.x + DebugRadius, currentNode.y+ DebugRadius, DebugRadius *2, DebugRadius*2);
+	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+	DevyEngine::Color color;
+	color.r = 75;
+	color.g = 128;
+	color.b = 128;
+	color.a = 255;
+
+
+	spritebatch.draw(destRect, uvRect, DevyEngine::ResourceManager::getTexture("Textures/jumpgame/PNG/Bullet.png").id, 0.0f, color);
 }

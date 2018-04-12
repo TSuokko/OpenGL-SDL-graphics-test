@@ -44,6 +44,8 @@ void Zombie::init(float speed, glm::vec2 pos)
 	_direction = glm::normalize(_direction);
 }
 
+
+static int frameCounter = 0;
 void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
 	std::vector<Zombie*>& zombies)
@@ -55,9 +57,10 @@ void Zombie::update(const std::vector<std::string>& levelData,
 	{
 		if (mapread == false)
 		{
+			frameCounter = 0;
 			readMap("level1.txt", levelData, humans);
 		}
-
+		
 		aStar(humans);
 
 	}
@@ -98,6 +101,18 @@ unsigned int i = 0;
 
 void Zombie::aStar(std::vector<Human*>& humans)
 {
+	frameCounter++;
+	if (frameCounter == 500)
+	{
+		frameCounter = 0;
+		
+		//i++;
+		std::cout << "did not move lol, i = " << i << " path size"<<path.size()<<std::endl;
+		
+		mapread = false;
+		
+	}
+
 		//THIS MOVES THE ZOMBIE
 		glm::vec2 delta(path[i].x - (int)_position.x / 64.f, path[i].y - (int)_position.y / 64.f);
 

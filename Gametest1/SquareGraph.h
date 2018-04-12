@@ -9,7 +9,7 @@
 #include <math.h>
 #include <iostream>
 #include "Node.h"
-
+#include <DevyEngine\SpriteBatch.h>
 
 class SquareGraph 
 {
@@ -18,6 +18,11 @@ private:
 	pair<int, int> firstRobotPos;
 	pair<int, int> secondRobotPos;
 public:
+
+	//debug
+	void debugDraw(DevyEngine::SpriteBatch& spritebatch, Node currentNode);
+
+
 	SquareGraph(int dimension);
 	Node* getCellValue(pair<int, int> coord);
 	void setCellValue(pair<int, int> coord, char value);

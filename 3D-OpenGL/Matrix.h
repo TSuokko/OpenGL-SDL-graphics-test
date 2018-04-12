@@ -15,7 +15,7 @@ public:
 	};
 	~Matrix4();
 
-	void printMat4();
+	void printMat4(const char* const name);
 	float det4x4();
 	float dotMat4(Vector4 row, Vector4 column);
 	Matrix4 transpose();
@@ -28,13 +28,11 @@ public:
 	Matrix4 operator*(const Matrix4 &o);
 	
 	
-	//Vector4 operator*(const Vector4& o)const;
-	/*
-	Matrix4 translation(const Vector3& t);
+	Vector4 Matrix4::operator*(const Vector4& o);
 
-	Matrix4 rotationX(float a);
-	Matrix4 rotationY(float a);
-	Matrix4 rotationZ(float a);*/
+	
+	Matrix4 translation(const Vector3& t);
+	 
 
 	Vector4 vec1, vec2, vec3, vec4;
 	
@@ -52,14 +50,15 @@ public:
 
 	~Matrix3() {};
 
-	
-
 	Vector3 vec1, vec2, vec3;
 	
 };
 
-extern float det3x3(Vector3 vec1, Vector3 vec2, Vector3 vec3/*float a, float b, float c, float d, float e, float f, float g, float h, float i*/);
-extern float det2x2(Vector2 vec1, Vector2 vec2/*float a, float b, float c, float d*/);
+extern float det3x3(Vector3 vec1, Vector3 vec2, Vector3 vec3);
+extern float det2x2(Vector2 vec1, Vector2 vec2);
+extern Matrix4 rotationX(float a);
+extern Matrix4 rotationY(float a);
+extern Matrix4 rotationZ(float a);
 
 class Matrix2
 {

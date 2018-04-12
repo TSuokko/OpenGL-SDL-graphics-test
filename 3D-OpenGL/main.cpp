@@ -6,10 +6,15 @@
 #include <iostream>
 #include "Matrix.h"
 
+float toRadians(float a)
+{
+	float radians = (a * PI) / 180;
+	return radians;
+}
 
 void printVec4(const char* const name, const Vector4& v)
 {
-	printf("%-12s = <%2.2f,%2.2f,%2.2f,%2.2f>\n", name, v.x, v.y, v.z, v.w);
+	printf("\n%-5s = <%2.2f,%2.2f,%2.2f,%2.2f>\n", name, v.x, v.y, v.z, v.w);
 }
 void printVec3(const char* const name, const Vector3& v)
 {
@@ -22,7 +27,7 @@ void printVec2(const char* const name, const Vector2& v)
 
 int main(int argc, char** argv)
 {	
-	Vector3 v1(1, 2, 3);
+	/*Vector3 v1(1, 2, 3);
 	Vector3 v2(4, 4, 5);
 	printVec3("v1", v1);
 	printVec3("v2", v2);
@@ -38,30 +43,53 @@ int main(int argc, char** argv)
 	printVec2("v4", v4);
 	std::cout << "\nv3 and v4 angle: "<<Vec2_Angle(v3, v4) << std::endl;
 
-
-	Vector4 vector1(1,4,7,2);
+	
+	Vector4 vector1(1,5,2,2);
 	Vector4 vector2(5,3,2,5);
 	Vector4 vector3(1,2,3,4);
-	Vector4 vector4(4,3,2,1);
+	Vector4 vector4(4,1,2,1);
 
 	Matrix4 mat1 = Matrix4(vector1, vector2, vector3, vector4);
 
-	mat1.printMat4();
-	mat1.inverse().printMat4();
-	//std::cout << "Transposed original";
-	//mat1.transpose().printMat4();
-	//std::cout << "Transposed" << std::endl;
-	//printMat4(mat1.transpose());
+	mat1.printMat4("Matrix1");
+	mat1.inverse().printMat4("Inversed");
 
-	/*mat1.printMat4();
-	std::cout << "Determinant: "<<mat1.det4x4();
-	std::cout << "\nCofactor: " << std::endl;
-	mat1.cofactor().transpose().printMat4();
-	*/
+	(mat1*mat1.inverse()).printMat4("original times inverse ");*/
 
-	//mat1.inverse().printMat4();
+	Matrix4 mat1 = Matrix4(
+		Vector4(1,0,0,0),
+		Vector4(0,1,0,0),
+		Vector4(0,0,1,0),
+		Vector4(0,0,0,1));
 
-	(mat1*mat1.inverse()).printMat4();;
+	Matrix4 rotMatX = rotationX(toRadians(45));
+	Matrix4 rotMatY = rotationY(toRadians(180));
+	Matrix4 rotMatZ = rotationZ(toRadians(90));
+
+	Vector4 res1 = mat1 * Vector4(1, 2, 3, 4);
+	Vector4 res2 = rotMatX  * Vector4(1, 0, 0, 0);
+	Vector4 res3 = rotMatY * Vector4(1, 0, 0, 0);
+	Vector4 res4 = rotMatZ * Vector4(0, 1, 0, 0);
+	Vector4 res5 = rotMatX.inverse() * Vector4(0, 1, 0, 0);
+
+	/*rotMatX.printMat4("rotMatX ");
+	rotMatY.printMat4("rotMatY ");
+	rotMatZ.printMat4("rotMatZ ");
+	
+	rotMatX.inverse().printMat4("rotMatX Inverse ");*/
+
+	//Vector4 res6 = rotMatZ *  rotMatY * rotMatX.inverse() * Vector4(-1,-1,-1,0);
+
+	Matrix4 res6 = rotMatX * rotMatX.inverse();
+
+	printVec4("res1", res1);
+	printVec4("res2", res2);
+	printVec4("res3", res3);
+	printVec4("res4", res4);
+	printVec4("res5", res5);
+	//printVec4("res6", res6);
+	res6.printMat4("rotation x * x.i ");
+	
 
 	int a;
 	std::cin >> a;
