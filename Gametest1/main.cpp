@@ -1,10 +1,9 @@
-#include <Windows.h>
-#include <iostream>
+
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 #include "MainGame.h"
-#include <DevyEngine/Sprite.h>
-//test
+
+
 
 
 int main(int argc, char** argv)

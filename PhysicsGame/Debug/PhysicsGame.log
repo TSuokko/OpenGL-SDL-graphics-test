@@ -1,4 +1,9 @@
-﻿  LINK : program database C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\PhysicsGame.pdb missing; performing full link
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿  PhysicsGame.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\physicsgame\physicsgame.cpp(47): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\physicsgame\physicsgame.cpp(56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\physicsgame\physicsgame.cpp(73): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\physicsgame\physicsgame.cpp(130): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\physicsgame\physicsgame.cpp(150): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\physicsgame\physicsgame.cpp(158): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
   PhysicsGame.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\PhysicsGame.exe
   PhysicsGame.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\PhysicsGame.pdb (Partial PDB)

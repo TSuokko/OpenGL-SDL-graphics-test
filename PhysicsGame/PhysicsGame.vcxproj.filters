@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Other test code">
+      <UniqueIdentifier>{78a49dd2-557e-486c-89f3-545358dff59b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -22,10 +25,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Other test code</Filter>
     </ClCompile>
     <ClCompile Include="control.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Other test code</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -33,10 +36,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Other test code</Filter>
     </ClInclude>
     <ClInclude Include="control.h">
-      <Filter>Header Files</Filter>
+      <Filter>Other test code</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

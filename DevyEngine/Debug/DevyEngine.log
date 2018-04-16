@@ -1,12 +1,6 @@
-﻿  picoPNG.cpp
-  Window.cpp
-  Timing.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(27): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(30): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(42): warning C4244: 'initializing': conversion from 'Uint32' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\devyengine\timing.cpp(44): warning C4244: '=': conversion from 'Uint32' to 'float', possible loss of data
+﻿  ParticleEngine2D.cpp
+  ParticleBatch2D.cpp
   Generating Code...
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
 opengl32.lib(OPENGL32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 opengl32.lib(OPENGL32.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 glew32.lib(glew32.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

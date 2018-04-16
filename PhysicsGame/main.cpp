@@ -1,9 +1,9 @@
-
+//#include <SDL/SDL.h>
 /*
 / CURRENTLY CHECKING OUT THIS TUTORIAL 
  http://www.opengl-tutorial.org/beginners-tutorials/tutorial-6-keyboard-and-mouse/
 */
-
+/**
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,11 +21,18 @@ GLFWwindow* window;
 using namespace glm;
 
 //#include <common/shader.hpp>
-#include "shader.h"
-#include "control.h"
+//#include "shader.h"
+//#include "control.h"
+*/
 
-int main(void)
+#include "PhysicsGame.h"
+
+int main(int argc, char** argv)
 {
+	PhysicsGame game;
+	game.run();
+	return 0;
+	/*
 	// Initialise GLFW
 	if (!glfwInit())
 	{
@@ -105,7 +112,7 @@ int main(void)
 	glm::mat4 Model = glm::mat4(1.0f);
 	// Our ModelViewProjection : multiplication of our 3 matrices
 	glm::mat4 MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
-	*/
+	
 	static const GLfloat g_vertex_buffer_data[] = {
 		-1.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
@@ -171,4 +178,5 @@ int main(void)
 	glfwTerminate();
 
 	return 0;
+	*/
 }
