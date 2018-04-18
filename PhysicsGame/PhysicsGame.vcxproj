@@ -123,15 +123,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="control.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsGame.cpp" />
-    <ClCompile Include="shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="control.h" />
     <ClInclude Include="PhysicsGame.h" />
-    <ClInclude Include="shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

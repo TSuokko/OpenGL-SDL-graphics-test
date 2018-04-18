@@ -1,5 +1,3 @@
-﻿  Matrix.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector3.h(17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector2.h(16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  main.cpp
   3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.exe
   3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.pdb (Partial PDB)

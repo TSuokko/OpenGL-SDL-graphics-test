@@ -1,11 +1,20 @@
-#include <GL\glew.h>
-#include <SDL\SDL.h>
-#include "Vector2.h"
-#include "Vector3.h"
-#include <fstream>
-#include <iostream>
-#include "Matrix.h"
+#include <stdio.h>
+#include <stdlib.h>
+// Include GLEW
+#include <GL/glew.h>
+// Include GLFW
+#include <GLFW/glfw3.h>
+GLFWwindow* window;
+// Include GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+using namespace glm;
+//#include <common/shader.hpp>
+#include "shader.h"
+#include "control.h"
+using namespace glm;
 
+/*
 float toRadians(float a)
 {
 	float radians = (a * PI) / 180;
@@ -24,74 +33,243 @@ void printVec2(const char* const name, const Vector2& v)
 {
 	printf("%-12s = <%2.2f,%2.2f>\n", name, v.x, v.y);
 }
+*/
+int main(void)
+{
+	// Initialise GLFW
+	if (!glfwInit())
+	{
+		fprintf(stderr, "Failed to initialize GLFW\n");
+		getchar();
+		return -1;
+	}
 
-int main(int argc, char** argv)
-{	
-	/*Vector3 v1(1, 2, 3);
-	Vector3 v2(4, 4, 5);
-	printVec3("v1", v1);
-	printVec3("v2", v2);
-	printVec3("v1+v2", v1 + v2);
-	printVec3("v1-v2", v1 - v2);
-	printVec3("v1*3", v1*3);
-	printVec3("v1 cross v2", cross(v1, v2));
-	std::cout << "\nv1 and v2 angle: " << Vec3_Angle(v1, v2) << std::endl;
-	
-	Vector2 v3(3, 2);
-	Vector2 v4(1, 6);
-	printVec2("\nv3", v3);
-	printVec2("v4", v4);
-	std::cout << "\nv3 and v4 angle: "<<Vec2_Angle(v3, v4) << std::endl;
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // MacOs
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
-	
-	Vector4 vector1(1,5,2,2);
-	Vector4 vector2(5,3,2,5);
-	Vector4 vector3(1,2,3,4);
-	Vector4 vector4(4,1,2,1);
+	// Open a window and create its OpenGL context
+	window = glfwCreateWindow(800, 600, "Learning OpenGL", NULL, NULL);
+	if (window == NULL) {
+		fprintf(stderr, "Failed to open GLFW window.\n");
+		getchar();
+		glfwTerminate();
+		return -1;
+	}
+	glfwMakeContextCurrent(window);
 
-	Matrix4 mat1 = Matrix4(vector1, vector2, vector3, vector4);
+	// Initialize GLEW
+	glewExperimental = true; // Needed for core profile
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		getchar();
+		glfwTerminate();
+		return -1;
+	}
 
-	mat1.printMat4("Matrix1");
-	mat1.inverse().printMat4("Inversed");
+	// Ensure we can capture the escape key being pressed below
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	(mat1*mat1.inverse()).printMat4("original times inverse ");*/
+	// Dark blue background
+	glClearColor(0.0f, 0.5f, 0.4f, 0.0f);
 
-	Matrix4 mat1 = Matrix4(
-		Vector4(1,0,0,0),
-		Vector4(0,1,0,0),
-		Vector4(0,0,1,0),
-		Vector4(0,0,0,1));
+	// Enable depth test
+	glEnable(GL_DEPTH_TEST);
+	// Accept fragment if it closer to the camera than the former one
+	glDepthFunc(GL_LESS);
 
-	Matrix4 rotMatX = rotationX(toRadians(45));
-	Matrix4 rotMatY = rotationY(toRadians(180));
-	Matrix4 rotMatZ = rotationZ(toRadians(90));
+	GLuint VertexArrayID;
+	glGenVertexArrays(1, &VertexArrayID);
+	glBindVertexArray(VertexArrayID);
 
-	Vector4 res1 = mat1 * Vector4(1, 2, 3, 4);
-	Vector4 res2 = rotMatX  * Vector4(1, 0, 0, 0);
-	Vector4 res3 = rotMatY * Vector4(1, 0, 0, 0);
-	Vector4 res4 = rotMatZ * Vector4(0, 1, 0, 0);
-	Vector4 res5 = rotMatX.inverse() * Vector4(0, 1, 0, 0);
+	// Create and compile our GLSL program from the shaders
+	GLuint programID = LoadShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
 
-	/*rotMatX.printMat4("rotMatX ");
-	rotMatY.printMat4("rotMatY ");
-	rotMatZ.printMat4("rotMatZ ");
-	
-	rotMatX.inverse().printMat4("rotMatX Inverse ");*/
+	// Get a handle for our "MVP" uniform
+	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
-	//Vector4 res6 = rotMatZ *  rotMatY * rotMatX.inverse() * Vector4(-1,-1,-1,0);
+	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	// Or, for an ortho camera :
+	//glm::mat4 Projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.0f); // In world coordinates
 
-	Matrix4 res6 = rotMatX * rotMatX.inverse();
+	// Camera matrix
+	glm::mat4 View = glm::lookAt(
+		glm::vec3(4, 3, -3), // Camera is at (4,3,3), in World Space
+		glm::vec3(0, 0, 0), // and looks at the origin
+		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+	);
+	// Model matrix : an identity matrix (model will be at the origin)
+	glm::mat4 Model = glm::mat4(1.0f);
+	// Our ModelViewProjection : multiplication of our 3 matrices
+	glm::mat4 MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
-	printVec4("res1", res1);
-	printVec4("res2", res2);
-	printVec4("res3", res3);
-	printVec4("res4", res4);
-	printVec4("res5", res5);
-	//printVec4("res6", res6);
-	res6.printMat4("rotation x * x.i ");
-	
+	/*static const GLfloat g_vertex_buffer_data[] = {
+	   -1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f,  1.0f, 0.0f,
+	};*/
 
-	int a;
-	std::cin >> a;
+	static const GLfloat g_vertex_buffer_data[] = {
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,
+		1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		1.0f,-1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f,-1.0f,-1.0f,
+		1.0f, 1.0f,-1.0f,
+		1.0f,-1.0f,-1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f,-1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		1.0f,-1.0f, 1.0f
+	};
+
+	// One color for each vertex. They were generated randomly.
+	/*static const GLfloat g_color_buffer_data[] = {
+		0.5f,  0.7f,  0.2f,
+		0.6f,  0.1f,  0.4f,
+		0.3f,  0.5f,  0.8f,
+		0.8f,  0.5f,  0.2f,
+		0.4f,  0.6f,  0.2f,
+		0.3f,  0.7f,  0.2f,
+		0.5f,  0.7f,  0.7f,
+		0.5f,  0.4f,  0.7f,
+		0.3f,  0.5f,  0.1f,
+		0.4f,  0.5f,  0.8f,
+		0.5f,  0.8f,  0.6f,
+		0.1f,  0.5f,  0.8f,
+		0.1f,  0.1f,  0.5f,
+		0.7f,  0.3f,  0.9f,
+		0.4f,  0.6f,  0.1f,
+		0.5f,  0.7f,  0.2f,
+		0.6f,  0.1f,  0.4f,
+		0.3f,  0.5f,  0.8f,
+		0.8f,  0.5f,  0.2f,
+		0.4f,  0.6f,  0.2f,
+		0.3f,  0.7f,  0.2f,
+		0.5f,  0.7f,  0.7f,
+		0.5f,  0.4f,  0.7f,
+		0.3f,  0.5f,  0.1f,
+		0.4f,  0.5f,  0.8f,
+		0.5f,  0.8f,  0.6f,
+		0.1f,  0.5f,  0.8f,
+		0.1f,  0.1f,  0.5f,
+		0.7f,  0.3f,  0.9f,
+		0.4f,  0.6f,  0.1f,
+		0.5f,  0.7f,  0.3f,
+		0.1f,  0.9f,  0.1f,
+		0.3f,  0.6f,  0.3f,
+		0.6f,  0.2f,  0.4f,
+		0.8f,  0.8f,  0.3f,
+		0.9f,  0.1f,  0.8f
+	};*/
+
+
+
+	static GLfloat g_color_buffer_data[12 * 3 * 3];
+	for (int v = 0; v < 12 * 3; v++) {
+		g_color_buffer_data[3 * v + 0] = 0.3f;
+		g_color_buffer_data[3 * v + 1] = 0.2f;
+		g_color_buffer_data[3 * v + 2] = 0.7f;
+	}
+
+	GLuint vertexbuffer;
+	glGenBuffers(1, &vertexbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+	GLuint colorbuffer;
+	glGenBuffers(1, &colorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+
+	do {
+
+		// Clear the screen
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Use our shader
+		glUseProgram(programID);
+
+		/*glm::mat4 ProjectionMatrix = getProjectionMatrix();
+		glm::mat4 ViewMatrix = getViewMatrix();
+		glm::mat4 ModelMatrix = glm::mat4(1.0);
+		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;*/
+
+		// Send our transformation to the currently bound shader, 
+		// in the "MVP" uniform
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
+
+		// 1rst attribute buffer : vertices
+		glEnableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+		glVertexAttribPointer(
+			0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+			3,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			0,                  // stride
+			(void*)0            // array buffer offset
+		);
+
+		// 2nd attribute buffer : colors
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+		glVertexAttribPointer(
+			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+			3,                                // size
+			GL_FLOAT,                         // type
+			GL_FALSE,                         // normalized?
+			0,                                // stride
+			(void*)0                          // array buffer offset
+		);
+		// Draw the triangle !
+		glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangle
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		// Swap buffers
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+
+	} // Check if the ESC key was pressed or the window was closed
+	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+		glfwWindowShouldClose(window) == 0);
+
+	// Cleanup VBO and shader
+	glDeleteBuffers(1, &vertexbuffer);
+	glDeleteProgram(programID);
+	glDeleteVertexArrays(1, &VertexArrayID);
+
+	// Close OpenGL window and terminate GLFW
+	glfwTerminate();
+
 	return 0;
 }

@@ -18,28 +18,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="shader.cpp">
-      <Filter>Other test code</Filter>
-    </ClCompile>
-    <ClCompile Include="control.cpp">
-      <Filter>Other test code</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PhysicsGame.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shader.h">
-      <Filter>Other test code</Filter>
-    </ClInclude>
-    <ClInclude Include="control.h">
-      <Filter>Other test code</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
