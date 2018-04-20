@@ -4,7 +4,7 @@
 #include <random>
 #include <glm/gtx/rotate_vector.hpp>
 #include <DevyEngine/ResourceManager.h>
-
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <set>
@@ -13,6 +13,10 @@
 #include <math.h>
 #include <fstream>
 #include <Windows.h>
+#include <queue>
+#include <sstream>
+
+#include "node.h"
 
 
 Zombie::Zombie()
@@ -42,34 +46,30 @@ void Zombie::init(float speed, glm::vec2 pos)
 	if (_direction.length() == 0) _direction = glm::vec2(1.0f, 0.0f);
 
 	_direction = glm::normalize(_direction);
+
 }
 
 
-static int frameCounter = 0;
+//static int frameCounter = 0;
 void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
 	std::vector<Zombie*>& zombies)
 {
 	Human* playerClose = chasePlayer(humans);
 
-
 	if (playerClose != nullptr)
 	{
 		if (mapread == false)
 		{
-			frameCounter = 0;
-			readMap("level1.txt", levelData, humans);
+			readMap("Level1.txt", levelData, humans);
 		}
-		
-		aStar(humans);
-
 	}
 	else
 	{
 		mapread = false;
 	}
 	collideWithLevel(levelData);
-	//path.clear();
+
 }
 
 Human* Zombie::chasePlayer(std::vector<Human*>& humans)
@@ -94,10 +94,250 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 	return playerNear;
 }
 
+void Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
+{
+	mapread = true;
+
+	int endX = humans[0]->getPosition().x / 64;
+	int endY = humans[0]->getPosition().y / 64;
+	int startX = _position.x / 64;
+	int startY = _position.y / 64;
+	std::string route = pathFind(FileName, startX, startY, endX, endY);
+
+	if (route == "")
+	{
+		std::cout << "An empty route generated!" << std::endl;
+	}
+	std::cout << route << std::endl << std::endl;
+	if (route.length() > 0)
+	{
+		int j; char c;
+		int x = startX;
+		int y = startY;
+		map[x][y] = 2;
+
+		for (unsigned int i = 0; i < route.length(); i++)
+		{
+			c = route.at(i);
+			j = atoi(&c);
+			x = x + dx[j];
+			y = y + dy[j];
+			map[x][y] = 3;
+		}
+		//std::cout << x << y << std::endl;
+		map[x][y] = 4;
+
+		for (int y = 0; y<m; y++)
+		{
+			
+			for (int x = 0; x<n; x++)
+				if (map[x][y] == 0)
+				{
+					std::cout << " ";
+				}
+				else if (map[x][y] == 1)
+					std::cout << "#"; //obstacle
+				else if (map[x][y] == 2)
+					std::cout << "S"; //start
+				else if (map[x][y] == 3)
+				{				
+					std::cout << "O"; //route
+				}
+				else if (map[x][y] == 4)
+					std::cout << "F"; //finish
+			std::cout << std::endl;
+		}
+	}
+}
 
 
 
-unsigned int i = 0;
+std::string Zombie::pathFind(const std::string& FileName, const int & xStart, const int & yStart,
+	const int & xFinish, const int & yFinish)
+{
+	std::string line;										//current line 
+	char type;											//current character type on the map
+	std::ifstream inputFile(FileName.c_str());				//read the given .txt file
+
+															//write the values for the algorithm
+	if (inputFile)										//if reading the inputted file
+	{
+		std::cout << "Input file success" << std::endl;
+		std::getline(inputFile, line);
+		for (unsigned int y = 0; y < n; ++y)	// Loops through the y-coordinate
+		{
+			std::getline(inputFile, line);
+			for (unsigned int x = 0; x < m; ++x)	// Loops through the x-coordinate
+			{
+				type = line.at(x);
+				if (type == 35)
+				{
+					map[x][y] = 1; //   # symbol = value 1
+				}
+				if (type == 46)
+				{
+					map[x][y] = 0; //   . symbol = value 0
+				}
+
+			}
+			line.clear();								//erases the contents of the line
+		}
+		inputFile.close();
+	}
+
+	//check if either point is surrounded
+	if (map[xStart + 1][yStart] == 1 &&
+		map[xStart + 1][yStart + 1] == 1 &&
+		map[xStart][yStart + 1] == 1 &&
+		map[xStart - 1][yStart + 1] == 1 &&
+		map[xStart - 1][yStart] == 1 &&
+		map[xStart - 1][yStart - 1] == 1 &&
+		map[xStart][yStart - 1] == 1 &&
+		map[xStart + 1][yStart - 1] == 1)
+	{
+		std::cout << "Start Point surrounded by walls\n";
+		return "";
+	}
+	if (map[xFinish + 1][yFinish] == 1 &&
+		map[xFinish + 1][yFinish + 1] == 1 &&
+		map[xFinish][yFinish + 1] == 1 &&
+		map[xFinish - 1][yFinish + 1] == 1 &&
+		map[xFinish - 1][yFinish] == 1 &&
+		map[xFinish - 1][yFinish - 1] == 1 &&
+		map[xFinish][yFinish - 1] == 1 &&
+		map[xFinish + 1][yFinish - 1] == 1)
+	{
+		std::cout << "Finish Point surrounded by walls\n";
+		return "";
+	}
+
+	static std::priority_queue<node> pq[2]; // list of open (not-yet-tried) nodes
+	static int pqi; // pq index
+	static node* n0;
+	static node* m0;
+	static int i, j, x, y, xdx, ydy;
+	static char c;
+	pqi = 0;
+
+	// reset the node maps
+	for (y = 0; y<m; y++)
+	{
+		for (x = 0; x<n; x++)
+		{
+			closed_nodes_map[x][y] = 0;
+			open_nodes_map[x][y] = 0;
+		}
+	}
+
+	// create the start node and push into list of open nodes
+	n0 = new node(xStart, yStart, 0, 0);
+	n0->updatePriority(xFinish, yFinish);
+	pq[pqi].push(*n0);
+
+	//open_nodes_map[x][y] = n0->getPriority(); // mark it on the open nodes map
+	open_nodes_map[xStart][yStart] = n0->getPriority();
+
+	//a* search
+	delete n0;
+	while (!pq[pqi].empty())
+	{
+		// get the current node w/ the highest priority
+		// from the list of open nodes
+		n0 = new node(pq[pqi].top().getxPos(), pq[pqi].top().getyPos(),
+			pq[pqi].top().getLevel(), pq[pqi].top().getPriority());
+
+		x = n0->getxPos(); y = n0->getyPos();
+
+		pq[pqi].pop(); // remove the node from the open list
+		open_nodes_map[x][y] = 0;
+		// mark it on the closed nodes map
+		closed_nodes_map[x][y] = 1;
+
+		// quit searching when the goal state is reached
+		//if((*n0).estimate(xFinish, yFinish) == 0)
+		if (x == xFinish && y == yFinish)
+		{
+			//std::cout << x << y << std::endl;
+			// generate the path from finish to start
+			// by following the directions
+			std::string path = "";
+			while (!(x == xStart && y == yStart))
+			{
+				j = dir_map[x][y];
+				c = '0' + (j + dir / 2) % dir;
+				path = c + path;
+				x += dx[j];
+				y += dy[j];
+			}
+
+			// garbage collection
+			delete n0;
+			// empty the leftover nodes
+			while (!pq[pqi].empty()) pq[pqi].pop();
+			return path;
+		}
+
+		// generate moves (child nodes) in all possible directions
+		for (i = 0; i<dir; i++)
+		{
+			xdx = x + dx[i]; ydy = y + dy[i];
+
+			if (!(xdx<0 || xdx>n - 1 || ydy<0 || ydy>m - 1 || map[xdx][ydy] == 1
+				|| closed_nodes_map[xdx][ydy] == 1))
+			{
+				// generate a child node
+				m0 = new node(xdx, ydy, n0->getLevel(),
+					n0->getPriority());
+				m0->nextLevel(i);
+				m0->updatePriority(xFinish, yFinish);
+
+				// if it is not in the open list then add into that
+				if (open_nodes_map[xdx][ydy] == 0)
+				{
+					open_nodes_map[xdx][ydy] = m0->getPriority();
+					pq[pqi].push(*m0);
+					// mark its parent node direction
+					delete m0;
+					dir_map[xdx][ydy] = (i + dir / 2) % dir;
+
+				}
+				else if (open_nodes_map[xdx][ydy]>m0->getPriority())
+				{
+					// update the priority info
+					open_nodes_map[xdx][ydy] = m0->getPriority();
+					// update the parent direction info
+					dir_map[xdx][ydy] = (i + dir / 2) % dir;
+					// replace the node
+					// by emptying one pq to the other one
+					// except the node to be replaced will be ignored
+					// and the new node will be pushed in instead
+					while (!(pq[pqi].top().getxPos() == xdx &&
+						pq[pqi].top().getyPos() == ydy))
+					{
+						pq[1 - pqi].push(pq[pqi].top());
+						pq[pqi].pop();
+					}
+					pq[pqi].pop(); // remove the wanted node
+
+								   // empty the larger size pq to the smaller one
+					if (pq[pqi].size()>pq[1 - pqi].size()) pqi = 1 - pqi;
+					while (!pq[pqi].empty())
+					{
+						pq[1 - pqi].push(pq[pqi].top());
+						pq[pqi].pop();
+					}
+					pqi = 1 - pqi;
+					pq[pqi].push(*m0); // add the better node instead
+				}
+				else delete m0; // garbage collection
+			}
+		}
+		delete n0; // garbage collection
+	}
+	return ""; // no route found
+}
+
+/*unsigned int i = 0;
 
 void Zombie::aStar(std::vector<Human*>& humans)
 {
@@ -115,10 +355,6 @@ void Zombie::aStar(std::vector<Human*>& humans)
 
 		//THIS MOVES THE ZOMBIE
 		glm::vec2 delta(path[i].x - (int)_position.x / 64.f, path[i].y - (int)_position.y / 64.f);
-
-		/*std::cout << "\ndeltax: "<<delta.x<<" deltay: " << delta.y << std::endl;
-		std::cout << "posx: " << _position.x/64.f << " posy: " << _position.y/64.f << std::endl;
-		std::cout << "path: "<< "x: "<<path[i].x << " y: " << path[i].y << std::endl;*/
 
 		if (delta.x == 0.f && delta.y == 0.f)
 		{
@@ -167,12 +403,6 @@ void Zombie::aStar(std::vector<Human*>& humans)
 
 }
 		
-
-	
-
-
-
-
 SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
 {
 
@@ -223,4 +453,4 @@ SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::
 	}
 	else
 		return graph;
-}
+}*/

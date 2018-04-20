@@ -3,7 +3,7 @@
 #include "Agent.h"
 #include <DevyEngine\InputManager.h>
 #include "Human.h"
-#include "Node.h"
+//#include "Node.h"
 class Gun;
 class Player : public Human
 {

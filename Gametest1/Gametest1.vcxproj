@@ -126,15 +126,12 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="Human.cpp" />
-    <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RectangleMap.cpp" />
-    <ClCompile Include="SquareGraph.cpp" />
     <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,15 +139,13 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Gun.h" />
     <ClInclude Include="Human.h" />
-    <ClInclude Include="InputHandler.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="Node.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="RectangleMap.h" />
-    <ClInclude Include="SquareGraph.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>

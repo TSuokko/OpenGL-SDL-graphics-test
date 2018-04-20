@@ -14,7 +14,7 @@
 #include "Level.h"
 #include "Player.h"
 #include "Zombie.h"
-#include "SquareGraph.h"
+//#include "SquareGraph.h"
 
 enum class GameState{PLAY, EXIT};
 #define EXPORT extern "C" __declspec( dllexport )
@@ -67,7 +67,7 @@ private:
 	int _currentLevel;
 
 	//SquareGraph readMap(const std::string& FileName);
-	std::vector<Node> path;
+	//std::vector<Node> path;
 
 	float _fps;
 	float _maxFPS;

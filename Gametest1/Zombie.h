@@ -1,7 +1,7 @@
 #pragma once
 #include "Agent.h"
-#include "Node.h"
-#include "SquareGraph.h"
+//#include "Node.h"
+//#include "SquareGraph.h"
 class Zombie: public Agent
 {
 public:
@@ -13,20 +13,32 @@ public:
 		std::vector<Zombie*>& zombies);
 
 ////////////////////////////////////////////////////////
-	void aStar(std::vector<Human*>& humans);
+	//void aStar(std::vector<Human*>& humans);
 ////////////////////////////////////////////////////////
 private:
 	glm::vec2 _direction;
 	int frames;
 	Human* chasePlayer(std::vector<Human*>& humans);
 ////////////////////////////////////////////////////////
-	SquareGraph	readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans);
-	std::vector<Node> path;
+	void readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans);
+	//std::vector<Node> path;
 	
 	bool mapread = false;
 	bool pathfound = false;
 ////////////////////////////////////////////////////////
+
+
+	std::string pathFind(const std::string& FileName, const int & xStart, const int & yStart,
+		const int & xFinish, const int & yFinish);
+
+	
 };
+
+
+
+
+
+
 
 
 

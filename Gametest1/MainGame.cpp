@@ -17,7 +17,7 @@
 #include "Point.h"
 #include "RectangleMap.h"
 #include "Leaf.h"
-#include "Node.h"
+//#include "Node.h"
 
 #include <iomanip>
 #include <queue>
@@ -418,6 +418,19 @@ void MainGame::drawDungeon(unsigned int seed)
 				levelMap[i][j] = 46;
 			}
 		}
+	}
+
+	//surround map with walls
+	for (int i = 0; i < 200; i++) //y
+	{
+		if (levelMap[i][200 - 1] == 46)
+			levelMap[i][200 - 1] = 35; //creates ASCII wall symbol
+		if (levelMap[i][200 - 1] == 46)
+			levelMap[i][200 - 1] = 35; //creates ASCII wall symbol
+		if (levelMap[0][i] == 46)
+			levelMap[0][i] = 35; //creates ASCII wall symbol
+		if (levelMap[200 - 1][i] == 46)
+			levelMap[200 - 1][i] = 35; //creates ASCII wall symbol
 	}
 
 	std::cout << "\n=== DUNGEON GENERATOR v0.2 ===\n\n";
