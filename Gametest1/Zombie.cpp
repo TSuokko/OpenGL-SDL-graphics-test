@@ -15,14 +15,11 @@
 #include <Windows.h>
 #include <queue>
 #include <sstream>
-
 #include "node.h"
-
 
 Zombie::Zombie()
 {
 }
-
 
 Zombie::~Zombie()
 {
@@ -37,7 +34,8 @@ void Zombie::init(float speed, glm::vec2 pos)
 	_color.g = 55;
 	_color.b = 55;
 	_color.a = 255;
-
+	moves = -1;
+	surroundedByWalls = false;
 	_speed = speed;
 	_position = pos;
 	// Get random direction
@@ -49,7 +47,7 @@ void Zombie::init(float speed, glm::vec2 pos)
 
 }
 
-unsigned int moves = -1;
+
 //static int frameCounter = 0;
 void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
@@ -70,9 +68,12 @@ void Zombie::update(const std::vector<std::string>& levelData,
 		}
 		else
 		{
-			//mapread = false;
-			NodeCoords.clear();
-			NodeDirection.clear();
+			if (surroundedByWalls == false)
+			{
+				NodeCoords.clear();
+				NodeDirection.clear();
+				mapread = false;
+			}
 		}
 	}
 	else
@@ -87,8 +88,8 @@ void Zombie::update(const std::vector<std::string>& levelData,
 Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 {
 	Human* playerNear = nullptr;
-	float smallestDistance = 1200.0f;
-
+	
+	smallestDistance = 1200.0f;
 	for (unsigned int i = 0; i < humans.size(); i++)
 	{
 		glm::vec2 distVec = humans[i]->getPosition() - _position;
@@ -98,15 +99,12 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 		// If this person is closer than the closest person, this is the new closest
 		if (distance < smallestDistance)
 		{
-			//smallestDistance = 1500.0f;
 			smallestDistance = distance;
 			playerNear = humans[i];
 		}
 		else
 		{
 			mapread = false;
-			//NodeCoords.clear();
-			//NodeDirection.clear();
 			//moves = -1;
 		}
 
@@ -118,19 +116,18 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 {
 	mapread = true;
 
-	int endX = humans[0]->getPosition().x / 64;
-	int endY = humans[0]->getPosition().y / 64;
-	int startX = _position.x / 64;
-	int startY = _position.y / 64;
+	int endX = (int)humans[0]->getPosition().x / 64;
+	int endY = (int)humans[0]->getPosition().y / 64;
+	int startX = (int)_position.x / 64;
+	int startY = (int)_position.y / 64;
 	std::string route = pathFind(FileName, startX, startY, endX, endY);
 
 	if (route == "")
 	{
 		std::cout << "An empty route generated!" << std::endl;
+		surroundedByWalls = true;
 	}
 	std::cout << route << std::endl << std::endl;
-
-	
 
 	if (route.length() > 0)
 	{
@@ -147,27 +144,10 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 			y = y + dy[j];
 			map[x][y] = 3;
 		}
-		//std::cout << x << y << std::endl;
 		map[x][y] = 4;
-
-		
-		
-		
-		
-		//int framecounter = 0;
-
-		//_direction.x = dx[NodeDirection[i]];
-		//_direction.y = dy[NodeDirection[i]];
-
-		//std::cout << "dirX " << _direction.x << " dirY " << _direction.y << std::endl;
-
-		//_position += _direction * _speed;
-			
-		
-
+	
 		/*for (int y = 0; y<m; y++)
-		{
-			
+		{	
 			for (int x = 0; x<n; x++)
 				if (map[x][y] == 0)
 				{
@@ -192,49 +172,39 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 
 void Zombie::movement()
 {
-	//std::cout << moves << std::endl;
-
-	//moves = NodeDirection.size() - 1;
-	//std::cout << "Direction Nodes:" << std::endl;
-	//std::cout << "test";
-
-
-	//TODO: EACH ZOMBIE HAS THEIR OWN UNIQUE SET OF MOVES
-	std::cout <<"\nNodeCoords: " <<NodeCoords[moves].x << " " << NodeCoords[moves].y << std::endl;
-
 	glm::vec2 delta(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
-
-
+	
 	/*if (delta.x > 1)
 	{
-		delta.x = 1;
+		printf("fixed x > 1\n");
+		delta.x = glm::normalize(delta.x);
 	}
 	if (delta.x < -1)
 	{
-		delta.x = -1;
+		printf("fixed x < -1\n");
+		delta.x = glm::normalize(delta.x);
 	}
 	if (delta.y > 1)
 	{
-		delta.y = 1;
+		printf("fixed y > 1\n");
+		delta.y = glm::normalize(delta.y);
 	}
 	if (delta.y < -1)
 	{
-		delta.y = -1;
+		printf("fixed y < -1\n");
+		delta.y = glm::normalize(delta.y);
 	}*/
-	
-	//std::cout << delta.x << " " << delta.y << std::endl;
-	if (delta.x == 0.f && delta.y == 0.f)
+	/*if (delta.x == 0.f && delta.y == 0.f)
 	{
 		_direction.x = 0.f;
 		_direction.y = 0.f;
-	}
+	}*/
 	if (delta.x == 0)
 	{
 		_direction.x = 0;
 	}
 	else
 	{	
-		std::cout <<"dx: " <<dx[NodeDirection[moves]] << std::endl;
 		_direction.x = dx[NodeDirection[moves]];
 	}
 	if (delta.y == 0)
@@ -243,33 +213,26 @@ void Zombie::movement()
 	}
 	else
 	{
-		std::cout << "dy: " << dy[NodeDirection[moves]] << std::endl;
 		_direction.y = dy[NodeDirection[moves]];
-		/*if (_direction.y > 1 || _direction.y < -1)
-		{
-			glm::normalize(_direction.y);
-			std::cout << "New: " << _direction.y;
-		}*/
 	}
-	std::cout <<"\ndelta: x:"  <<delta.x<<" y: "<<delta.y;
-	std::cout << "\ndirX: " << _direction.x;
-	std::cout << "\ndirY: " << _direction.y;
+
 	_position += _direction * _speed;
 
-
 	//TODO: FIX when the zombie moves past the move check, and continues on.
+	//BUG FOUND: if the zombie's position has changed from it's normal route, it goes silly.
 	if (delta.x == 0 && delta.y == 0)
 	{
 		//because of how the nodes are generated in the pathfinding, 
 		//we must start from the back of the nodes and go backwards in order
 		moves--;
 	}
-	/*if (moves == -1)
+	if (delta.x < -1 || delta.x > 1 || delta.y < -1 || delta.y > 1)
 	{
-		mapread = false;
-	}*/
-	
-
+		std::cout << "memes";
+		//NodeCoords.clear();
+		//NodeDirection.clear();
+		moves = -1;
+	}
 }
 
 std::string Zombie::pathFind(const std::string& FileName, const int & xStart, const int & yStart,
@@ -317,6 +280,7 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		map[xStart + 1][yStart - 1] == 1)
 	{
 		std::cout << "Start Point surrounded by walls\n";
+		surroundedByWalls = true;
 		return "";
 	}
 	if (map[xFinish + 1][yFinish] == 1 &&
@@ -406,7 +370,6 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		for (i = 0; i<dir; i++)
 		{
 			xdx = x + dx[i]; ydy = y + dy[i];
-
 			if (!(xdx<0 || xdx>n - 1 || ydy<0 || ydy>m - 1 || map[xdx][ydy] == 1
 				|| closed_nodes_map[xdx][ydy] == 1))
 			{

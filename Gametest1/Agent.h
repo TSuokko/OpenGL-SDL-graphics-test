@@ -32,7 +32,9 @@ protected:
 
 	void collideWithTile(glm::vec2 tilePos);
 
-
+	bool surroundedByWalls;
+	int moves;
+	float smallestDistance;
 	glm::vec2 _position;
 	glm::vec2 _direction;
 	DevyEngine::Color _color;

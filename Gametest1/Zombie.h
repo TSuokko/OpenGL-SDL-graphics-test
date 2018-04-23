@@ -17,11 +17,15 @@ public:
 ////////////////////////////////////////////////////////
 private:
 	glm::vec2 _direction;
+	int moves;
+	float smallestDistance;
+	bool surroundedByWalls;
 	int frames;
 	Human* chasePlayer(std::vector<Human*>& humans);
 ////////////////////////////////////////////////////////
 	void readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans);
-	//std::vector<Node> path;
+
+
 	
 	bool mapread = false;
 	bool pathfound = false;
