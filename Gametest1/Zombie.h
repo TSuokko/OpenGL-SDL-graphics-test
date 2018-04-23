@@ -26,11 +26,13 @@ private:
 	bool mapread = false;
 	bool pathfound = false;
 ////////////////////////////////////////////////////////
-
-
+	std::vector<int> NodeDirection;
+	std::vector<glm::vec2> NodeCoords;
+	void movement();
 	std::string pathFind(const std::string& FileName, const int & xStart, const int & yStart,
 		const int & xFinish, const int & yFinish);
-
+	
+	
 	
 };
 

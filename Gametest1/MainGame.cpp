@@ -65,7 +65,7 @@ MainGame::MainGame() :
 //run the game and start initializing
 void MainGame::run()
 {
-	drawDungeon(TEST_SEED);
+	drawDungeon(time(NULL));
 	initSystems();
 	initLevels();
 	gameloop();
@@ -111,13 +111,13 @@ void MainGame::initLevels()
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
 
-	const float ZOMBIE_SPEED = 8.0f;
+	const float ZOMBIE_SPEED = 4.0f;
 	//add NPC:s
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
 		_zombies.push_back(new Zombie);
-		//glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
-		glm::vec2 pos(120 *TILE_WIDTH , 120 *TILE_WIDTH );
+		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
+		//glm::vec2 pos(120 *TILE_WIDTH , 120 *TILE_WIDTH );
 		std::cout << "\nX: " << pos.x / TILE_WIDTH << " Y:" << pos.y / TILE_WIDTH<< std::endl;
 		//glm::vec2 pos(100*TILE_WIDTH, 110*TILE_WIDTH);
 		_zombies.back()->init(ZOMBIE_SPEED, pos);
@@ -436,7 +436,7 @@ void MainGame::drawDungeon(unsigned int seed)
 	std::cout << "\n=== DUNGEON GENERATOR v0.2 ===\n\n";
 	std::ofstream myfile("Level1.txt");
 
-	myfile << "_numNPC: 1\n";
+	myfile << "_numNPC: 10\n";
 
 	for (int j = 0; j < 200; j++)
 	{

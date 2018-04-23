@@ -1,8 +1,10 @@
 ﻿  Zombie.cpp
 c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(33): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(104): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(105): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(106): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(107): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(121): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(122): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(123): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(124): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(235): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\tuomas\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(244): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\Tuomas\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

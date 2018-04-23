@@ -49,7 +49,7 @@ void Zombie::init(float speed, glm::vec2 pos)
 
 }
 
-
+unsigned int moves = -1;
 //static int frameCounter = 0;
 void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
@@ -61,21 +61,33 @@ void Zombie::update(const std::vector<std::string>& levelData,
 	{
 		if (mapread == false)
 		{
+			moves = -1;
 			readMap("Level1.txt", levelData, humans);
+		}
+		if (moves != -1)
+		{
+			movement();
+		}
+		else
+		{
+			//mapread = false;
+			NodeCoords.clear();
+			NodeDirection.clear();
 		}
 	}
 	else
 	{
-		mapread = false;
+		mapread = false;		
 	}
 	collideWithLevel(levelData);
 
 }
 
+
 Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 {
 	Human* playerNear = nullptr;
-	float smallestDistance = 1000.0f;
+	float smallestDistance = 1200.0f;
 
 	for (unsigned int i = 0; i < humans.size(); i++)
 	{
@@ -86,8 +98,16 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 		// If this person is closer than the closest person, this is the new closest
 		if (distance < smallestDistance)
 		{
+			//smallestDistance = 1500.0f;
 			smallestDistance = distance;
 			playerNear = humans[i];
+		}
+		else
+		{
+			mapread = false;
+			//NodeCoords.clear();
+			//NodeDirection.clear();
+			//moves = -1;
 		}
 
 	}
@@ -109,6 +129,9 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 		std::cout << "An empty route generated!" << std::endl;
 	}
 	std::cout << route << std::endl << std::endl;
+
+	
+
 	if (route.length() > 0)
 	{
 		int j; char c;
@@ -127,7 +150,22 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 		//std::cout << x << y << std::endl;
 		map[x][y] = 4;
 
-		for (int y = 0; y<m; y++)
+		
+		
+		
+		
+		//int framecounter = 0;
+
+		//_direction.x = dx[NodeDirection[i]];
+		//_direction.y = dy[NodeDirection[i]];
+
+		//std::cout << "dirX " << _direction.x << " dirY " << _direction.y << std::endl;
+
+		//_position += _direction * _speed;
+			
+		
+
+		/*for (int y = 0; y<m; y++)
 		{
 			
 			for (int x = 0; x<n; x++)
@@ -146,15 +184,98 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 				else if (map[x][y] == 4)
 					std::cout << "F"; //finish
 			std::cout << std::endl;
-		}
+		}*/
 	}
 }
 
 
 
+void Zombie::movement()
+{
+	//std::cout << moves << std::endl;
+
+	//moves = NodeDirection.size() - 1;
+	//std::cout << "Direction Nodes:" << std::endl;
+	//std::cout << "test";
+
+
+	//TODO: EACH ZOMBIE HAS THEIR OWN UNIQUE SET OF MOVES
+	std::cout <<"\nNodeCoords: " <<NodeCoords[moves].x << " " << NodeCoords[moves].y << std::endl;
+
+	glm::vec2 delta(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
+
+
+	/*if (delta.x > 1)
+	{
+		delta.x = 1;
+	}
+	if (delta.x < -1)
+	{
+		delta.x = -1;
+	}
+	if (delta.y > 1)
+	{
+		delta.y = 1;
+	}
+	if (delta.y < -1)
+	{
+		delta.y = -1;
+	}*/
+	
+	//std::cout << delta.x << " " << delta.y << std::endl;
+	if (delta.x == 0.f && delta.y == 0.f)
+	{
+		_direction.x = 0.f;
+		_direction.y = 0.f;
+	}
+	if (delta.x == 0)
+	{
+		_direction.x = 0;
+	}
+	else
+	{	
+		std::cout <<"dx: " <<dx[NodeDirection[moves]] << std::endl;
+		_direction.x = dx[NodeDirection[moves]];
+	}
+	if (delta.y == 0)
+	{
+		_direction.y = 0;
+	}
+	else
+	{
+		std::cout << "dy: " << dy[NodeDirection[moves]] << std::endl;
+		_direction.y = dy[NodeDirection[moves]];
+		/*if (_direction.y > 1 || _direction.y < -1)
+		{
+			glm::normalize(_direction.y);
+			std::cout << "New: " << _direction.y;
+		}*/
+	}
+	std::cout <<"\ndelta: x:"  <<delta.x<<" y: "<<delta.y;
+	std::cout << "\ndirX: " << _direction.x;
+	std::cout << "\ndirY: " << _direction.y;
+	_position += _direction * _speed;
+
+
+	//TODO: FIX when the zombie moves past the move check, and continues on.
+	if (delta.x == 0 && delta.y == 0)
+	{
+		//because of how the nodes are generated in the pathfinding, 
+		//we must start from the back of the nodes and go backwards in order
+		moves--;
+	}
+	/*if (moves == -1)
+	{
+		mapread = false;
+	}*/
+	
+
+}
+
 std::string Zombie::pathFind(const std::string& FileName, const int & xStart, const int & yStart,
 	const int & xFinish, const int & yFinish)
 {
+
 	std::string line;										//current line 
 	char type;											//current character type on the map
 	std::ifstream inputFile(FileName.c_str());				//read the given .txt file
@@ -257,7 +378,7 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		//if((*n0).estimate(xFinish, yFinish) == 0)
 		if (x == xFinish && y == yFinish)
 		{
-			//std::cout << x << y << std::endl;
+			//std::cout << x <<" "<< y << std::endl;
 			// generate the path from finish to start
 			// by following the directions
 			std::string path = "";
@@ -265,6 +386,10 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 			{
 				j = dir_map[x][y];
 				c = '0' + (j + dir / 2) % dir;
+				//std::cout << "x: "<< x << "y: " <<y << std::endl;
+				NodeCoords.push_back(glm::vec2(x,y));
+				NodeDirection.push_back((j + dir / 2) % dir);
+				moves++;
 				path = c + path;
 				x += dx[j];
 				y += dy[j];
