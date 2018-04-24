@@ -29,7 +29,6 @@ namespace DevyEngine
 		{
 			SDL_Delay(1000.0f / _maxFPS - frameTicks);
 		}
-
 		return _fps;
 	}
 

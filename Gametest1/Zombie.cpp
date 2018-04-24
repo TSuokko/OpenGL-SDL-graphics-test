@@ -60,11 +60,13 @@ void Zombie::update(const std::vector<std::string>& levelData,
 		if (mapread == false)
 		{
 			moves = -1;
-			readMap("Level1.txt", levelData, humans);
+			//NodeCoords.clear();
+			//NodeDirection.clear();
+			readMap("Level1.txt", humans);
 		}
 		if (moves != -1)
 		{
-			movement();
+			movement(humans);
 		}
 		else
 		{
@@ -102,8 +104,7 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 			smallestDistance = distance;
 			playerNear = humans[i];
 		}
-		else
-		{
+		else{
 			mapread = false;
 			//moves = -1;
 		}
@@ -112,7 +113,7 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 	return playerNear;
 }
 
-void Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
+void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 {
 	mapread = true;
 
@@ -128,8 +129,8 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 		surroundedByWalls = true;
 	}
 	std::cout << route << std::endl << std::endl;
-
-	if (route.length() > 0)
+	std::cout << "Moves: " << moves << std::endl;
+	/*if (route.length() > 0)
 	{
 		int j; char c;
 		int x = startX;
@@ -145,8 +146,9 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 			map[x][y] = 3;
 		}
 		map[x][y] = 4;
-	
-		/*for (int y = 0; y<m; y++)
+		//Debug map and route print
+		/*
+		for (int y = 0; y<m; y++)
 		{	
 			for (int x = 0; x<n; x++)
 				if (map[x][y] == 0)
@@ -164,85 +166,78 @@ void Zombie::readMap(const std::string& FileName, const std::vector<std::string>
 				else if (map[x][y] == 4)
 					std::cout << "F"; //finish
 			std::cout << std::endl;
-		}*/
-	}
+		}
+		
+	}*/
 }
 
 
 
-void Zombie::movement()
+void Zombie::movement(std::vector<Human*>& humans)
 {
 	glm::vec2 delta(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
 	
-	/*if (delta.x > 1)
-	{
-		printf("fixed x > 1\n");
-		delta.x = glm::normalize(delta.x);
-	}
-	if (delta.x < -1)
-	{
-		printf("fixed x < -1\n");
-		delta.x = glm::normalize(delta.x);
-	}
-	if (delta.y > 1)
-	{
-		printf("fixed y > 1\n");
-		delta.y = glm::normalize(delta.y);
-	}
-	if (delta.y < -1)
-	{
-		printf("fixed y < -1\n");
-		delta.y = glm::normalize(delta.y);
-	}*/
-	/*if (delta.x == 0.f && delta.y == 0.f)
-	{
-		_direction.x = 0.f;
-		_direction.y = 0.f;
-	}*/
-	if (delta.x == 0)
-	{
+	if (delta.x == 0){
 		_direction.x = 0;
 	}
-	else
-	{	
+	else{	
 		_direction.x = dx[NodeDirection[moves]];
 	}
-	if (delta.y == 0)
-	{
+	if (delta.y == 0){
 		_direction.y = 0;
 	}
-	else
-	{
+	else{
 		_direction.y = dy[NodeDirection[moves]];
 	}
-
+	//main movement function
+	
 	_position += _direction * _speed;
 
 	//TODO: FIX when the zombie moves past the move check, and continues on.
 	//BUG FOUND: if the zombie's position has changed from it's normal route, it goes silly.
-	if (delta.x == 0 && delta.y == 0)
-	{
+	//Most commonly occures when two zombies bumb into each other
+	if (delta.x == 0 && delta.y == 0){
 		//because of how the nodes are generated in the pathfinding, 
-		//we must start from the back of the nodes and go backwards in order
+		//it must start from the back of the nodes and go backwards in order
+		positionChanged = false;
 		moves--;
 	}
 	if (delta.x < -1 || delta.x > 1 || delta.y < -1 || delta.y > 1)
 	{
+		_direction.x = 0;
+		_direction.y = 0;
+
 		std::cout << "memes";
-		//NodeCoords.clear();
-		//NodeDirection.clear();
+		/*
+		//delta = glm::vec2(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
+		//moves++;
+		
+		//_position.x = (int)(_position.x / 64);
+		//_position.y = (int)(_position.y / 64);
+		
+
+		//mapread = false;
+		NodeCoords.clear();
+		NodeDirection.clear();
 		moves = -1;
+		std::string newRoute = pathFind("Level1.txt", _position.x/64, _position.y/64 ,humans[0]->getPosition().x/64, humans[0]->getPosition().y/64);
+		if (newRoute == "")
+		{
+			std::cout << "An empty route generated!" << std::endl;
+			surroundedByWalls = true;
+		}
+		//delta = delta - delta;
+		//surroundedByWalls = true;
+		//*/
 	}
 }
 
 std::string Zombie::pathFind(const std::string& FileName, const int & xStart, const int & yStart,
 	const int & xFinish, const int & yFinish)
 {
-
 	std::string line;										//current line 
 	char type;											//current character type on the map
 	std::ifstream inputFile(FileName.c_str());				//read the given .txt file
-
 															//write the values for the algorithm
 	if (inputFile)										//if reading the inputted file
 	{
@@ -270,26 +265,26 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 	}
 
 	//check if either point is surrounded
-	if (map[xStart + 1][yStart] == 1 &&
+	if (map[xStart + 1][yStart	  ] == 1 &&
 		map[xStart + 1][yStart + 1] == 1 &&
-		map[xStart][yStart + 1] == 1 &&
+		map[xStart	  ][yStart + 1] == 1 &&
 		map[xStart - 1][yStart + 1] == 1 &&
-		map[xStart - 1][yStart] == 1 &&
+		map[xStart - 1][yStart	  ] == 1 &&
 		map[xStart - 1][yStart - 1] == 1 &&
-		map[xStart][yStart - 1] == 1 &&
+		map[xStart	  ][yStart - 1] == 1 &&
 		map[xStart + 1][yStart - 1] == 1)
 	{
 		std::cout << "Start Point surrounded by walls\n";
 		surroundedByWalls = true;
 		return "";
 	}
-	if (map[xFinish + 1][yFinish] == 1 &&
+	if (map[xFinish + 1][yFinish	] == 1 &&
 		map[xFinish + 1][yFinish + 1] == 1 &&
-		map[xFinish][yFinish + 1] == 1 &&
+		map[xFinish	   ][yFinish + 1] == 1 &&
 		map[xFinish - 1][yFinish + 1] == 1 &&
-		map[xFinish - 1][yFinish] == 1 &&
+		map[xFinish - 1][yFinish	] == 1 &&
 		map[xFinish - 1][yFinish - 1] == 1 &&
-		map[xFinish][yFinish - 1] == 1 &&
+		map[xFinish	   ][yFinish - 1] == 1 &&
 		map[xFinish + 1][yFinish - 1] == 1)
 	{
 		std::cout << "Finish Point surrounded by walls\n";
@@ -425,120 +420,4 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 	return ""; // no route found
 }
 
-/*unsigned int i = 0;
 
-void Zombie::aStar(std::vector<Human*>& humans)
-{
-	frameCounter++;
-	if (frameCounter == 500)
-	{
-		frameCounter = 0;
-		
-		//i++;
-		std::cout << "did not move lol, i = " << i << " path size"<<path.size()<<std::endl;
-		
-		mapread = false;
-		
-	}
-
-		//THIS MOVES THE ZOMBIE
-		glm::vec2 delta(path[i].x - (int)_position.x / 64.f, path[i].y - (int)_position.y / 64.f);
-
-		if (delta.x == 0.f && delta.y == 0.f)
-		{
-			_direction.x = 0.f;
-			_direction.y = 0.f;
-		}
-
-		if (delta.x == 0)
-		{
-			_direction.x = 0;
-		}
-		else
-		{
-			_direction.x = glm::normalize(delta.x);
-		}
-
-		if (delta.y == 0)
-		{
-			_direction.y = 0;
-		}
-		else
-		{
-			_direction.y = glm::normalize(delta.y);
-		}
-		
-		_position += _direction * _speed;
-		
-		//std::cout <<"i: "<< i <<" dirx: " << _direction.x << "diry:: " << _direction.y << std::endl;
-
-
-		//std::cout << "length: " << glm::length(delta) << std::endl;
-		if (glm::length(delta) <= 0.1f)
-		{	
-			++i;
-			//std::cout <<"i: "<< i << std::endl;
-		}
-
-		if (i >= path.size())
-		{
-			//std::cout << "kierros" << std::endl;
-			_direction.x = 0.f;
-			_direction.y = 0.f;
-			mapread = false;
-			i = 0;
-		}
-
-}
-		
-SquareGraph Zombie::readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans)
-{
-
-	const int mapDimension = levelData.size();			//dimension of the map ([200][200])
-
-	//std::cout <<"\nmapdim: " <<mapDimension << std::endl;
-
-	string line;										//current line 
-	char type;											//current character type on the map
-	ifstream inputFile(FileName.c_str());				//read the given .txt file
-	SquareGraph graph(mapDimension);					//gives the constructor the map dimension
-	if (inputFile)										//if reading the inputted file
-	{
-		std::cout << "Input file success" << std::endl;
-		std::getline(inputFile, line);
-		for (int i = 0; i < mapDimension; i++)			//for loop the size of the dimension
-		{												//looping the Y-coordinate
-			getline(inputFile, line);					//disregard the first line with the number
-			for (int j = 0; j < mapDimension; j++)		//and the X-coordinate
-			{
-				type = line.at(j);						//read the character on file
-				graph.setCellValue(make_pair(i, j), type);//sets the value as either blank or wall
-			}
-
-			line.clear();								//erases the contents of the line
-		}
-		int px = humans[0]->getPosition().x / 64;
-		int py = humans[0]->getPosition().y / 64;
-		graph.setSecondRobotPos(make_pair(px, py));		//set the player coordinates
-
-
-
-		int x = _position.x / 64;
-		int y = _position.y / 64;
-		graph.setFirstRobotPos(make_pair(x, y));	//set zombie coordinates
-
-		//std::cout << "Player: " << px << " " << py << " Zombie: " << x << " " << y << std::endl;
-
-		path = graph.executeAStar();
-
-		graph.printPath(path);
-
-		inputFile.close();
-
-		mapread = true;
-
-		return graph;
-	}
-	else
-		return graph;
-}*/

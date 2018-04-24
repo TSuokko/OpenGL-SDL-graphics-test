@@ -32,6 +32,7 @@ protected:
 
 	void collideWithTile(glm::vec2 tilePos);
 
+	bool positionChanged;
 	bool surroundedByWalls;
 	int moves;
 	float smallestDistance;

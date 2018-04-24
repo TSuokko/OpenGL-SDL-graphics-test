@@ -11,28 +11,21 @@ public:
 	virtual void update(const std::vector<std::string>& levelData,
 		std::vector<Human*>& humans,
 		std::vector<Zombie*>& zombies);
-
-////////////////////////////////////////////////////////
-	//void aStar(std::vector<Human*>& humans);
 ////////////////////////////////////////////////////////
 private:
 	glm::vec2 _direction;
+	Human* chasePlayer(std::vector<Human*>& humans);
+////////////////////////////////////////////////////////
 	int moves;
 	float smallestDistance;
 	bool surroundedByWalls;
-	int frames;
-	Human* chasePlayer(std::vector<Human*>& humans);
-////////////////////////////////////////////////////////
-	void readMap(const std::string& FileName, const std::vector<std::string>& levelData, std::vector<Human*>& humans);
-
-
-	
+	void readMap(const std::string& FileName, std::vector<Human*>& humans);
 	bool mapread = false;
 	bool pathfound = false;
-////////////////////////////////////////////////////////
+	bool positionChanged = false;
 	std::vector<int> NodeDirection;
 	std::vector<glm::vec2> NodeCoords;
-	void movement();
+	void movement(std::vector<Human*>& humans);
 	std::string pathFind(const std::string& FileName, const int & xStart, const int & yStart,
 		const int & xFinish, const int & yFinish);
 	
