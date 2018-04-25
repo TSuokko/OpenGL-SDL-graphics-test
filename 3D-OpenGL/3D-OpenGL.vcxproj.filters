@@ -63,4 +63,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Shaders\FragmentShader.txt" />
+    <Text Include="Shaders\VertexShader.txt" />
+  </ItemGroup>
 </Project>

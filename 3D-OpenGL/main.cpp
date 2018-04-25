@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 // Include GLEW
 #include <GL/glew.h>
 // Include GLFW
@@ -9,10 +10,12 @@ GLFWwindow* window;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
-//#include <common/shader.hpp>
 #include "shader.h"
 #include "control.h"
-using namespace glm;
+#include "Cube3D.h"
+#include <time.h>
+
+//http://www.opengl-tutorial.org/beginners-tutorials/tutorial-8-basic-shading/
 
 /*
 float toRadians(float a)
@@ -34,6 +37,7 @@ void printVec2(const char* const name, const Vector2& v)
 	printf("%-12s = <%2.2f,%2.2f>\n", name, v.x, v.y);
 }
 */
+
 int main(void)
 {
 	// Initialise GLFW
@@ -97,7 +101,7 @@ int main(void)
 
 	// Camera matrix
 	glm::mat4 View = glm::lookAt(
-		glm::vec3(4, 3, -3), // Camera is at (4,3,3), in World Space
+		glm::vec3(4, 3, 3), // Camera is at (4,3,3), in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
@@ -106,109 +110,26 @@ int main(void)
 	// Our ModelViewProjection : multiplication of our 3 matrices
 	glm::mat4 MVP = Projection * View * Model; // Remember, matrix multiplication is the other way around
 
-	/*static const GLfloat g_vertex_buffer_data[] = {
-	   -1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
-	};*/
+	GLuint Texture = loadBMP_custom("Textures/uvtemplate2.bmp");
+	//GLuint Texture = loadDDS("Textures/uvmap.DDS");
+	// Get a handle for our "myTextureSampler" uniform
+	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
 
-	static const GLfloat g_vertex_buffer_data[] = {
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f
-	};
-
-	// One color for each vertex. They were generated randomly.
-	/*static const GLfloat g_color_buffer_data[] = {
-		0.5f,  0.7f,  0.2f,
-		0.6f,  0.1f,  0.4f,
-		0.3f,  0.5f,  0.8f,
-		0.8f,  0.5f,  0.2f,
-		0.4f,  0.6f,  0.2f,
-		0.3f,  0.7f,  0.2f,
-		0.5f,  0.7f,  0.7f,
-		0.5f,  0.4f,  0.7f,
-		0.3f,  0.5f,  0.1f,
-		0.4f,  0.5f,  0.8f,
-		0.5f,  0.8f,  0.6f,
-		0.1f,  0.5f,  0.8f,
-		0.1f,  0.1f,  0.5f,
-		0.7f,  0.3f,  0.9f,
-		0.4f,  0.6f,  0.1f,
-		0.5f,  0.7f,  0.2f,
-		0.6f,  0.1f,  0.4f,
-		0.3f,  0.5f,  0.8f,
-		0.8f,  0.5f,  0.2f,
-		0.4f,  0.6f,  0.2f,
-		0.3f,  0.7f,  0.2f,
-		0.5f,  0.7f,  0.7f,
-		0.5f,  0.4f,  0.7f,
-		0.3f,  0.5f,  0.1f,
-		0.4f,  0.5f,  0.8f,
-		0.5f,  0.8f,  0.6f,
-		0.1f,  0.5f,  0.8f,
-		0.1f,  0.1f,  0.5f,
-		0.7f,  0.3f,  0.9f,
-		0.4f,  0.6f,  0.1f,
-		0.5f,  0.7f,  0.3f,
-		0.1f,  0.9f,  0.1f,
-		0.3f,  0.6f,  0.3f,
-		0.6f,  0.2f,  0.4f,
-		0.8f,  0.8f,  0.3f,
-		0.9f,  0.1f,  0.8f
-	};*/
-
-
-
-	static GLfloat g_color_buffer_data[12 * 3 * 3];
-	for (int v = 0; v < 12 * 3; v++) {
-		g_color_buffer_data[3 * v + 0] = 0.3f;
-		g_color_buffer_data[3 * v + 1] = 0.2f;
-		g_color_buffer_data[3 * v + 2] = 0.7f;
-	}
+	// Read our .obj file
+	std::vector< glm::vec3 > vertices;
+	std::vector< glm::vec2 > uvs;
+	std::vector< glm::vec3 > normals; // Won't be used at the moment.
+	bool res = loadOBJ("Objects/cube.obj", vertices, uvs, normals);
 
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
 
-	GLuint colorbuffer;
-	glGenBuffers(1, &colorbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
+	GLuint uvbuffer;
+	glGenBuffers(1, &uvbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 
 	do {
 
@@ -227,6 +148,12 @@ int main(void)
 		// in the "MVP" uniform
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 
+		// Bind our texture in Texture Unit 0
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, Texture);
+		// Set our "myTextureSampler" sampler to use Texture Unit 0
+		glUniform1i(TextureID, 0);
+
 		// 1rst attribute buffer : vertices
 		glEnableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
@@ -239,12 +166,12 @@ int main(void)
 			(void*)0            // array buffer offset
 		);
 
-		// 2nd attribute buffer : colors
+		// 2nd attribute buffer : UVs
 		glEnableVertexAttribArray(1);
-		glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glVertexAttribPointer(
 			1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-			3,                                // size
+			2,                                // size : U+V => 2
 			GL_FLOAT,                         // type
 			GL_FALSE,                         // normalized?
 			0,                                // stride
@@ -265,7 +192,9 @@ int main(void)
 
 	// Cleanup VBO and shader
 	glDeleteBuffers(1, &vertexbuffer);
+	glDeleteBuffers(1, &uvbuffer);
 	glDeleteProgram(programID);
+	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
 
 	// Close OpenGL window and terminate GLFW
