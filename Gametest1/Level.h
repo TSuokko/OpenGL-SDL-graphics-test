@@ -5,6 +5,7 @@
 #include <DevyEngine\SpriteBatch.h>
 
 const int TILE_WIDTH = 64;
+const int  MAP_SIZE = 200;
 
 class Level
 {

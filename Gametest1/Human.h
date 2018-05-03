@@ -1,6 +1,9 @@
 #pragma once
 #include "Agent.h"
-
+#include <ctime>
+#include <random>
+#include <glm/gtx/rotate_vector.hpp>
+#include <DevyEngine/ResourceManager.h>
 class Player;
 
 class Human :public Agent
@@ -16,9 +19,6 @@ public:
 		std::vector<Zombie*>& zombies);
 
 private:
-	
-	
-
 	glm::vec2 _direction;
 	int frames;
 };

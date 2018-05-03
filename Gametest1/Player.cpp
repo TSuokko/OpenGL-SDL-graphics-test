@@ -16,10 +16,7 @@ void Player::init(float speed, glm::vec2 pos, DevyEngine::InputManager* input)
 	_speed = speed;
 	_position = pos;
 	_input = input;
-	_color.r = 255;
-	_color.g = 255;
-	_color.b = 255;
-	_color.a = 255;
+	_color.setColor(255, 255, 255, 255);
 }
 
 void Player::addGun(Gun* gun)
@@ -58,8 +55,6 @@ void Player::update(const std::vector<std::string>& levelData, std::vector<Human
 	{
 		_currentGunIndex = 1;
 	}
-
-	
 
 	collideWithLevel(levelData);
 

@@ -23,7 +23,7 @@ void RectangleMap::setWidth(int w)
 int RectangleMap::perimeter()
 {
 	return (2 * rHeight + 2 * rWidth);
-}//piiri
+}
 float RectangleMap::area()
 {
 	return rHeight * rWidth;

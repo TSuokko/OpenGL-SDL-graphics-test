@@ -1,12 +1,14 @@
 #pragma once
-#include <glm/glm.hpp>
 #include <DevyEngine\SpriteBatch.h>
+#include <DevyEngine\ResourceManager.h>
+#include <glm/glm.hpp>
+#include <algorithm>
+#include "Level.h"
 
 const float AGENT_WIDTH = 60.0f;
 const float AGENT_RADIUS = AGENT_WIDTH / 2.0f;
 class Zombie;
 class Human;
-
 
 class Agent
 {
@@ -32,7 +34,6 @@ protected:
 
 	void collideWithTile(glm::vec2 tilePos);
 
-	bool positionChanged;
 	bool surroundedByWalls;
 	int moves;
 	float smallestDistance;

@@ -1,8 +1,5 @@
 #include "Human.h"
-#include <ctime>
-#include <random>
-#include <glm/gtx/rotate_vector.hpp>
-#include <DevyEngine/ResourceManager.h>
+#include <DevyEngine\Vertex.h>
 
 Human::Human() :
 	frames(0)
@@ -19,10 +16,8 @@ void Human::init(float speed, glm::vec2 pos) {
 
 	//_health = 20;
 
-	_color.r = 255;
-	_color.g = 55;
-	_color.b = 55;
-	_color.a = 255;
+	//we set a different color for humans
+	_color.setColor(255, 55, 55, 255);
 
 	_speed = speed;
 	_position = pos;

@@ -10,10 +10,21 @@ namespace DevyEngine
 
 	struct Color
 	{
+		Color() :r(0), g(0), b(0), a(0) {}
+		Color(GLubyte R, GLubyte G, GLubyte B, GLubyte A) : r(R), g(G), b(B), a(A) {}
 		GLubyte r;
 		GLubyte g;
 		GLubyte b;
 		GLubyte a;
+
+		void setColor(GLubyte R, GLubyte G, GLubyte B, GLubyte A)
+		{
+			r = R;
+			g = G;
+			b = B;
+			a = A;
+		}
+
 	};
 
 	struct UV

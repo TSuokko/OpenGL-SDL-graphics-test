@@ -29,11 +29,7 @@ void Zombie::init(float speed, glm::vec2 pos)
 {
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
-
-	_color.r = 255;
-	_color.g = 55;
-	_color.b = 55;
-	_color.a = 255;
+	_color.setColor(255, 55, 55, 255);
 	moves = -1;
 	surroundedByWalls = false;
 	_speed = speed;
@@ -42,9 +38,7 @@ void Zombie::init(float speed, glm::vec2 pos)
 	_direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
 	// Make sure direction isn't zero
 	if (_direction.length() == 0) _direction = glm::vec2(1.0f, 0.0f);
-
 	_direction = glm::normalize(_direction);
-
 }
 
 
@@ -55,19 +49,25 @@ void Zombie::update(const std::vector<std::string>& levelData,
 {
 	Human* playerClose = chasePlayer(humans);
 
+	//if the player IS close
 	if (playerClose != nullptr)
 	{
+		//and the map hasn't been read
 		if (mapread == false)
 		{
+			//the amount of moves will be set to -1, since when moves are added to their vector, the first move will be move number 0 (since arrays start at 0)
 			moves = -1;
+			//read the map for pathfinding
 			readMap("Level1.txt", humans);
 		}
 		if (moves != -1)
 		{
+			//when the algorithm has gone it's course and the zombie has movement vectors, it's time to move the zombie.
 			movement(humans);
 		}
 		else
 		{
+			//as long as the zombie is not surrounded by walls, and movement has gone to -1, it's time to start over.
 			if (surroundedByWalls == false)
 			{
 				NodeCoords.clear();
@@ -76,12 +76,7 @@ void Zombie::update(const std::vector<std::string>& levelData,
 			}
 		}
 	}
-	/*else
-	{
-		//std::cout << "else";
-		mapread = false;
-		//moves = -1;
-	}*/
+	//level collision detection
 	collideWithLevel(levelData);
 
 }
@@ -110,60 +105,19 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 
 void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 {
+	//the map has been read, so it won't be read again until needed. 
 	mapread = true;
-
-	int endX = (int)humans[0]->getPosition().x / 64;
-	int endY = (int)humans[0]->getPosition().y / 64;
 	int startX = (int)_position.x / 64;
 	int startY = (int)_position.y / 64;
+	int endX = (int)humans[0]->getPosition().x / 64;
+	int endY = (int)humans[0]->getPosition().y / 64;
+	
 	std::string route = pathFind(FileName, startX, startY, endX, endY);
-
 	if (route == "")
 	{
 		std::cout << "An empty route generated!" << std::endl;
 		surroundedByWalls = true;
 	}
-	std::cout << route << std::endl << std::endl;
-	std::cout << "Moves: " << moves << std::endl;
-	/*if (route.length() > 0)
-	{
-		int j; char c;
-		int x = startX;
-		int y = startY;
-		map[x][y] = 2;
-
-		for (unsigned int i = 0; i < route.length(); i++)
-		{
-			c = route.at(i);
-			j = atoi(&c);
-			x = x + dx[j];
-			y = y + dy[j];
-			map[x][y] = 3;
-		}
-		map[x][y] = 4;
-		//Debug map and route print
-		/*
-		for (int y = 0; y<m; y++)
-		{	
-			for (int x = 0; x<n; x++)
-				if (map[x][y] == 0)
-				{
-					std::cout << " ";
-				}
-				else if (map[x][y] == 1)
-					std::cout << "#"; //obstacle
-				else if (map[x][y] == 2)
-					std::cout << "S"; //start
-				else if (map[x][y] == 3)
-				{				
-					std::cout << "O"; //route
-				}
-				else if (map[x][y] == 4)
-					std::cout << "F"; //finish
-			std::cout << std::endl;
-		}
-		
-	}*/
 }
 
 
@@ -171,32 +125,28 @@ void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 void Zombie::movement(std::vector<Human*>& humans)
 {
 	glm::vec2 delta(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
-
-	/*std::cout << "\nDelta: " << delta.x << " " << delta.y << "\n";
-	std::cout << "Position: " << _position.x/64 << " " << _position.y/64 << "\n";
-	std::cout << "NodeCoords: " << NodeCoords[moves].x << " " << NodeCoords[moves].y << "\n";*/
-
+	
+	//vertical movement
 	if (delta.x == 0){
 		_direction.x = 0;
 	}
 	else{	
-		//the pathfinding algorithm stores a vector of directions
+		//the pathfinding algorithm also stores a vector of directions
 		_direction.x = dx[NodeDirection[moves]];
-		//_direction.x = NodeCoords[moves-1].x - NodeCoords[moves].x;	//different not working method
 	}
+	//horizontal movement
 	if (delta.y == 0){
 		_direction.y = 0;
 	}
 	else{
 		_direction.y = dy[NodeDirection[moves]];
-		//_direction.y = NodeCoords[moves - 1].y - NodeCoords[moves].y; //different not working method
 	}
+	//if for some reason the zombie has bumped itself to a wrong location, for now as a quick fix 
+	//the zombie will teleport to it's original location before the bump
 	if (delta.x < -1 || delta.x > 1 || delta.y < -1 || delta.y > 1)
 	{
-		_direction.x = 0;
-		_direction.y = 0;	
-		_position.x = NodeCoords[moves].x * 64;
-		_position.y = NodeCoords[moves].y * 64;
+		_direction = glm::vec2(0, 0);
+		_position = glm::vec2(NodeCoords[moves].x * 64, NodeCoords[moves].y * 64);
 		moves = -1;
 	}
 	//main movement function
@@ -214,34 +164,34 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 	const int & xFinish, const int & yFinish)
 {
 	std::string line;										//current line 
-	char type;											//current character type on the map
+	char type;												//current character type on the map
 	std::ifstream inputFile(FileName.c_str());				//read the given .txt file
 															//write the values for the algorithm
-	if (inputFile)										//if reading the inputted file
+	if (inputFile)											//if reading the inputted file
 	{
 		std::cout << "Input file success" << std::endl;
 		std::getline(inputFile, line);
-		for (unsigned int y = 0; y < n; ++y)	// Loops through the y-coordinate
+		for (unsigned int y = 0; y < n; ++y)				// Loops through the y-coordinate
 		{
 			std::getline(inputFile, line);
-			for (unsigned int x = 0; x < m; ++x)	// Loops through the x-coordinate
+			for (unsigned int x = 0; x < m; ++x)			// Loops through the x-coordinate
 			{
 				type = line.at(x);
 				if (type == 35)
 				{
-					map[x][y] = 1; //   # symbol = value 1
+					map[x][y] = 1;  //   # symbol = value 1
 				}
 				if (type == 46)
 				{
-					map[x][y] = 0; //   . symbol = value 0
+					map[x][y] = 0;  //   . symbol = value 0
 				}
 
 			}
-			line.clear();								//erases the contents of the line
+			line.clear();			//erases the contents of the line
 		}
 		inputFile.close();
 	}
-
+	
 	//check if either point is surrounded
 	if (map[xStart + 1][yStart	  ] == 1 &&
 		map[xStart + 1][yStart + 1] == 1 &&
@@ -256,19 +206,12 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		surroundedByWalls = true;
 		return "";
 	}
-	if (map[xFinish + 1][yFinish	] == 1 &&
-		map[xFinish + 1][yFinish + 1] == 1 &&
-		map[xFinish	   ][yFinish + 1] == 1 &&
-		map[xFinish - 1][yFinish + 1] == 1 &&
-		map[xFinish - 1][yFinish	] == 1 &&
-		map[xFinish - 1][yFinish - 1] == 1 &&
-		map[xFinish	   ][yFinish - 1] == 1 &&
-		map[xFinish + 1][yFinish - 1] == 1)
+	if (map[xFinish][yFinish] == 1)
 	{
-		std::cout << "Finish Point surrounded by walls\n";
+		std::cout << "Finish Point in in wall\n";
 		return "";
 	}
-
+	
 	static std::priority_queue<node> pq[2]; // list of open (not-yet-tried) nodes
 	static int pqi; // pq index
 	static node* n0;
