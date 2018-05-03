@@ -60,8 +60,6 @@ void Zombie::update(const std::vector<std::string>& levelData,
 		if (mapread == false)
 		{
 			moves = -1;
-			//NodeCoords.clear();
-			//NodeDirection.clear();
 			readMap("Level1.txt", humans);
 		}
 		if (moves != -1)
@@ -78,10 +76,12 @@ void Zombie::update(const std::vector<std::string>& levelData,
 			}
 		}
 	}
-	else
+	/*else
 	{
-		mapread = false;		
-	}
+		//std::cout << "else";
+		mapread = false;
+		//moves = -1;
+	}*/
 	collideWithLevel(levelData);
 
 }
@@ -104,11 +104,6 @@ Human* Zombie::chasePlayer(std::vector<Human*>& humans)
 			smallestDistance = distance;
 			playerNear = humans[i];
 		}
-		else{
-			mapread = false;
-			//moves = -1;
-		}
-
 	}
 	return playerNear;
 }
@@ -176,60 +171,43 @@ void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 void Zombie::movement(std::vector<Human*>& humans)
 {
 	glm::vec2 delta(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
-	
+
+	/*std::cout << "\nDelta: " << delta.x << " " << delta.y << "\n";
+	std::cout << "Position: " << _position.x/64 << " " << _position.y/64 << "\n";
+	std::cout << "NodeCoords: " << NodeCoords[moves].x << " " << NodeCoords[moves].y << "\n";*/
+
 	if (delta.x == 0){
 		_direction.x = 0;
 	}
 	else{	
+		//the pathfinding algorithm stores a vector of directions
 		_direction.x = dx[NodeDirection[moves]];
+		//_direction.x = NodeCoords[moves-1].x - NodeCoords[moves].x;	//different not working method
 	}
 	if (delta.y == 0){
 		_direction.y = 0;
 	}
 	else{
 		_direction.y = dy[NodeDirection[moves]];
-	}
-	//main movement function
-	
-	_position += _direction * _speed;
-
-	//TODO: FIX when the zombie moves past the move check, and continues on.
-	//BUG FOUND: if the zombie's position has changed from it's normal route, it goes silly.
-	//Most commonly occures when two zombies bumb into each other
-	if (delta.x == 0 && delta.y == 0){
-		//because of how the nodes are generated in the pathfinding, 
-		//it must start from the back of the nodes and go backwards in order
-		positionChanged = false;
-		moves--;
+		//_direction.y = NodeCoords[moves - 1].y - NodeCoords[moves].y; //different not working method
 	}
 	if (delta.x < -1 || delta.x > 1 || delta.y < -1 || delta.y > 1)
 	{
 		_direction.x = 0;
-		_direction.y = 0;
-
-		std::cout << "memes";
-		/*
-		//delta = glm::vec2(NodeCoords[moves].x - (int)_position.x / 64.f, NodeCoords[moves].y - (int)_position.y / 64.f);
-		//moves++;
-		
-		//_position.x = (int)(_position.x / 64);
-		//_position.y = (int)(_position.y / 64);
-		
-
-		//mapread = false;
-		NodeCoords.clear();
-		NodeDirection.clear();
+		_direction.y = 0;	
+		_position.x = NodeCoords[moves].x * 64;
+		_position.y = NodeCoords[moves].y * 64;
 		moves = -1;
-		std::string newRoute = pathFind("Level1.txt", _position.x/64, _position.y/64 ,humans[0]->getPosition().x/64, humans[0]->getPosition().y/64);
-		if (newRoute == "")
-		{
-			std::cout << "An empty route generated!" << std::endl;
-			surroundedByWalls = true;
-		}
-		//delta = delta - delta;
-		//surroundedByWalls = true;
-		//*/
 	}
+	//main movement function
+	_position += _direction * _speed;
+	
+	//Most commonly occures when two zombies bumb into each other
+	if (delta.x == 0 && delta.y == 0){
+		//because of how the nodes are generated in the pathfinding, 
+		//it must start from the back of the nodes and go backwards in order
+		moves--;
+	}	
 }
 
 std::string Zombie::pathFind(const std::string& FileName, const int & xStart, const int & yStart,

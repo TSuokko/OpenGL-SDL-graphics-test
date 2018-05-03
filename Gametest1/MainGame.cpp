@@ -65,11 +65,10 @@ MainGame::MainGame() :
 //run the game and start initializing
 void MainGame::run()
 {
-	drawDungeon(time(NULL));
+	drawDungeon(time(NULL)); //randomly generated dungeon with random seed
 	initSystems();
 	initLevels();
 	gameloop();
-	//readMap("Level1.txt");
 }
 
 //Shader initialization
@@ -84,9 +83,10 @@ void MainGame::initShaders()
 
 void MainGame::initSystems()
 {
+	//initialize game engine
 	DevyEngine::init();
 
-	_window.create("GameEngine", _screenWidth, _screenHeight, 0);
+	_window.create("Another Zombie Survival Game", _screenWidth, _screenHeight, 0);
 	glClearColor(0.6, 0.6f, 0.7f, 1.0f); //grey background
 	initShaders();
 	
@@ -102,23 +102,22 @@ void MainGame::initLevels()
 	_currentLevel = 0;
 	
 	_player = new Player();
-	_player->init(10.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
+	//initialize player with speed = 6, position in the middle of the map, and working keyboard & mouse input
+	_player->init(6.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
 	_humans.push_back(_player);
 
+	//random positioning for the zombies. 
 	std::mt19937 randomEngine;
 	randomEngine.seed(time(nullptr));
-	
 	std::uniform_int_distribution<int> randX(2, _levels[_currentLevel]->getWidth() - 1);
 	std::uniform_int_distribution<int> randY(2, _levels[_currentLevel]->getHeight() - 1);
 
-	const float ZOMBIE_SPEED = 4.f;
-	//add NPC:s
+	const float ZOMBIE_SPEED = 8.f;
+	//add Zombies to the map
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
 		_zombies.push_back(new Zombie);
 		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
-		//glm::vec2 pos(120 *TILE_WIDTH , 120 *TILE_WIDTH );
-		std::cout << "\nX: " << pos.x / TILE_WIDTH << " Y:" << pos.y / TILE_WIDTH<< std::endl;
 		_zombies.back()->init(ZOMBIE_SPEED, pos);
 	}
 }
@@ -145,7 +144,6 @@ void MainGame::processInput()
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			_input.keyPress(_event.button.button);
-			std::cout <<_player->getPosition().x/64 + _input.getMouseCoords().x - 426 << " " << (int)_player->getPosition().y/64 + _input.getMouseCoords().y - 270<< std::endl;
 			break;
 		case SDL_MOUSEBUTTONUP:
 			_input.keyRelease(_event.button.button);
@@ -161,46 +159,44 @@ void MainGame::processInput()
 	
 void MainGame::drawGame()
 {
+	//opengl graphics stuff 
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	//using the engines color program 
 	_colorProgram.use();
 	glActiveTexture(GL_TEXTURE0);
-
 	GLint textureLocation = _colorProgram.getUniformLocation("mySampler");
 	glUniform1i(textureLocation, 0);
-
 	GLuint pLocation = _colorProgram.getUniformLocation("P");
 	glm::mat4 cameraMatrix = _camera.getCameraMatrix();
-
 	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
+	//draw the first generated level, since currentLevel is equal to 0
 	_levels[_currentLevel]->draw();
 
+	//player and zombie spritebatch initialization 
 	_agentSpriteBatch.begin();
-	
+	//character sizes
 	const glm::vec2 agentDims(AGENT_RADIUS * 2.0f);
 
+	//currently the only "human" is the player
 	for (unsigned int i = 0; i < _humans.size(); i++)
 	{
 		_humans[i]->draw(_agentSpriteBatch);
 	}
-
+	//draw all the zombies that were pushed into the vector
 	for (unsigned int i = 0; i < _zombies.size(); i++)
 	{
 		_zombies[i]->draw(_agentSpriteBatch);
 	}
-	
+	//end the opengl graphics stuff
 	_agentSpriteBatch.end();
-	
 	_agentSpriteBatch.renderBatch();
-
 	_colorProgram.unuse();
-	
 	_window.swapBuffer();
-
 }
 
+//experimentation wih code
 FILETIME Win32GetLastWriteTime(char* path)
 {
 	FILETIME time = {};
@@ -282,6 +278,8 @@ void MainGame::gameloop()
 
 		if (frameCounter == 100)
 		{
+
+			std::cout <<"FPS: " <<_fps<<"\n";
 			PlayerScore += 10;
 			//std::cout << "Current pos: "<<_player->getPosition().x/64 << " " << _player->getPosition().y/64 << std::endl;
 			//std::cout << PlayerScore << std::endl;
@@ -305,9 +303,6 @@ void MainGame::updateAgents()
 		_zombies[i]->update(_levels[_currentLevel]->getLevelData(),
 			_humans,
 			_zombies);
-		
-		//_zombies[i]->aStar(path);
-		
 	}
 
 
@@ -334,7 +329,7 @@ void MainGame::updateAgents()
 			if (PLAYER_HP == 0)
 			{
 				std::cout << "\nYour Score: " << PlayerScore << std::endl;
-				//DevyEngine::fatalError("Game Over");
+				DevyEngine::fatalError("Game Over");
 
 			}
 		}

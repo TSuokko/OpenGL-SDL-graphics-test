@@ -4,7 +4,7 @@ namespace DevyEngine
 	Camera2D::Camera2D() :
 		_position(0, 0),
 		_cameraMatrix(1.0f),
-		_scale(1.0f),
+		_scale(0.4f),
 		_matrixUpdate(true),
 		_screenWidth(500),
 		_screenHeight(500)
