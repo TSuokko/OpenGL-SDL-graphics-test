@@ -40,7 +40,6 @@ namespace DevyEngine
 	{
 		//invert y
 		screenCoords.y = _screenHeight - screenCoords.y;
-
 		//making 0 the center coordinate
 		screenCoords -= glm::vec2(_screenWidth / 2, _screenHeight / 2);
 		//scale the coordinates

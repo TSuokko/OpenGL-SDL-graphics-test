@@ -20,6 +20,7 @@
 #include <fstream>
 
 //gameplay headers
+#include "Gun.h"
 #include "Bullet.h"
 #include "Level.h"
 #include "Player.h"
@@ -49,6 +50,7 @@ private:
 	void drawGame();
 	void drawDungeon(unsigned int seed);
 	void updateAgents();
+	void updateBullets();
 
 	DevyEngine::Window _window;
 	int _screenWidth;

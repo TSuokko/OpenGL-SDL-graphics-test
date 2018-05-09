@@ -62,8 +62,8 @@ void MainGame::initLevels()
 	_currentLevel = 0;
 	
 	_player = new Player();
-	//initialize player with speed = 6, position in the middle of the map, and working keyboard & mouse input
-	_player->init(6.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input);
+	//initialize player with speed = 7, position in the middle of the map, and working keyboard & mouse input
+	_player->init(7.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input, &_camera, &_bullets);
 	_humans.push_back(_player);
 
 	//random positioning for the zombies. 
@@ -72,7 +72,7 @@ void MainGame::initLevels()
 	std::uniform_int_distribution<int> randX(2, MAP_SIZE - 1);
 	std::uniform_int_distribution<int> randY(2, MAP_SIZE - 1);
 
-	const float ZOMBIE_SPEED = 8.f;
+	const float ZOMBIE_SPEED = 4.f;
 	//add Zombies to the map
 	for (int i = 0; i < _levels[_currentLevel]->getNumNPC(); i++)
 	{
@@ -80,6 +80,12 @@ void MainGame::initLevels()
 		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
 		_zombies.back()->init(ZOMBIE_SPEED, pos);
 	}
+
+	//set up players guns
+	_player->addGun(new Gun("Pistol", 30, 1, 0.55f, 30, 20.f));
+	_player->addGun(new Gun("Shotgun", 60, 20, 0.7f, 5, 20.f));
+	_player->addGun(new Gun("Machine Gun", 5, 1, 1.0f, 15, 20.f));
+
 }
 
 void MainGame::processInput()
@@ -151,12 +157,27 @@ void MainGame::drawGame()
 	{
 		_zombies[i]->draw(_agentSpriteBatch);
 	}
+	//draw bullets
+	for (unsigned int i = 0; i < _bullets.size(); i++)
+	{
+		_bullets[i].draw(_agentSpriteBatch);
+	}
+
 	//end the opengl graphics stuff
 	_agentSpriteBatch.end();
 	_agentSpriteBatch.renderBatch();
 	_colorProgram.unuse();
 	_window.swapBuffer();
 }
+
+void MainGame::updateBullets()
+{
+	for (int i = 0; i < _bullets.size(); i++)
+	{
+		_bullets[i].update(_humans, _zombies);
+	}
+}
+
 
 //experimentation wih code using c-hotloading, didn't really work, but still wanna save it. 
 /*FILETIME Win32GetLastWriteTime(char* path)
@@ -225,6 +246,9 @@ void MainGame::gameloop()
 		_time += 0.1f;
 		//agent movement and collision updates
 		updateAgents();
+
+		updateBullets();
+
 		//track player position, camera is targeted to the middle of the player
 		_camera.setPosition(_player->getPosition()+glm::vec2(TILE_WIDTH/2, TILE_WIDTH/2));
 		_camera.update();
