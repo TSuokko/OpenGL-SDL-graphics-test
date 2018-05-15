@@ -10,7 +10,7 @@ Agent::~Agent()
 
 void Agent::draw(DevyEngine::SpriteBatch& _spriteBatch)
 {
-	static int textureID = DevyEngine::ResourceManager::getTexture("Textures/jumpgame/PNG/CharacterLeft_Walk1.png").id;
+	static int textureID = DevyEngine::ResourceManager::getTexture("Textures/pepe_1.png").id;
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 	glm::vec4 destRect(_position.x, _position.y, AGENT_WIDTH, AGENT_WIDTH);
 	_spriteBatch.draw(destRect, uvRect, textureID, 0.0, _color);
@@ -64,6 +64,15 @@ bool Agent::collideWithAgent(Agent* agent)
 	return false;
 }
 
+bool Agent::applyDamage(float damage)
+{
+	_health -= damage;
+	if (_health <= 0)
+	{
+		return true;
+	}
+	return false;
+}
 
 void Agent::checkTilePosition(const std::vector<std::string>& levelData, std::vector<glm::vec2>& collideTilePosition, float x, float y)
 {

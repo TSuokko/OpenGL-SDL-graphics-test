@@ -14,7 +14,7 @@ void Human::init(float speed, glm::vec2 pos) {
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
 
-	//_health = 20;
+	_health = 20;
 
 	//we set a different color for humans
 	_color.setColor(255, 55, 55, 255);

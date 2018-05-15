@@ -1,5 +1,5 @@
-﻿  MainGame.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(105): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(175): warning C4018: '<': signed/unsigned mismatch
+﻿  Agent.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(34): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(87): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

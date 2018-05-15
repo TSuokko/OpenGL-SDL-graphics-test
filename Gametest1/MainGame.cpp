@@ -63,7 +63,7 @@ void MainGame::initLevels()
 	
 	_player = new Player();
 	//initialize player with speed = 7, position in the middle of the map, and working keyboard & mouse input
-	_player->init(7.0f, _levels[_currentLevel]->getStartPlayerPos(), &_input, &_camera, &_bullets);
+	_player->init(3.5f, _levels[_currentLevel]->getStartPlayerPos(), &_input, &_camera, &_bullets);
 	_humans.push_back(_player);
 
 	//random positioning for the zombies. 
@@ -82,9 +82,9 @@ void MainGame::initLevels()
 	}
 
 	//set up players guns
-	_player->addGun(new Gun("Pistol", 30, 1, 0.55f, 30, 20.f));
-	_player->addGun(new Gun("Shotgun", 60, 20, 0.7f, 5, 20.f));
-	_player->addGun(new Gun("Machine Gun", 5, 1, 1.0f, 15, 20.f));
+	_player->addGun(new Gun("Pistol", 10, 1, 0.2f, 50, 20.f));
+	_player->addGun(new Gun("Shotgun", 30, 12, 0.4f, 5, 20.f));
+	_player->addGun(new Gun("Machine Gun", 2, 1, 0.4f, 15, 20.f));
 
 }
 
@@ -172,9 +172,44 @@ void MainGame::drawGame()
 
 void MainGame::updateBullets()
 {
-	for (int i = 0; i < _bullets.size(); i++)
+	//update with world
+	for (int i = 0; i < _bullets.size();)
 	{
-		_bullets[i].update(_humans, _zombies);
+		if (_bullets[i].update(_levels[_currentLevel]->getLevelData()))
+		{
+			_bullets[i] = _bullets.back();
+			_bullets.pop_back();
+		}else{
+			i++;
+		}
+	}
+
+	for (int i = 0; i < _bullets.size();i++)
+	{
+	
+		//collide with humans and zombies
+		for (int j = 0; j < _zombies.size(); j++)
+		{
+			if (_bullets[i].collideWithAgent(_zombies[j]))
+			{
+				//damage zombie
+				if (_zombies[j]->applyDamage(_bullets[i].getDamage()))
+				{
+					delete _zombies[j];
+					_zombies[j] = _zombies.back();
+					_zombies.pop_back();
+				}else{
+					j++;
+				}
+				_bullets[i] = _bullets.back();
+				_bullets.pop_back();
+			
+				i--;
+				break;
+			}else{
+				j++;
+			}
+		}
 	}
 }
 
@@ -263,7 +298,7 @@ void MainGame::gameloop()
 		if (frameCounter == 100)
 		{
 			//also shows current fps
-			std::cout <<"FPS: " <<_fps<<"\n";
+			//std::cout <<"FPS: " <<_fps<<"\n";
 			PlayerScore += 10;
 			frameCounter = 0;
 		}
@@ -414,7 +449,7 @@ void MainGame::drawDungeon(unsigned int seed)
 	std::cout << "\n=== DUNGEON GENERATOR v0.2 ===\n\n";
 	std::ofstream myfile("Level1.txt");
 	//change the number for the amount of zombies you want in game
-	myfile << "_numNPC: 25\n";
+	myfile << "_numNPC: 100\n";
 
 	for (int j = 0; j < MAP_SIZE; j++)
 	{

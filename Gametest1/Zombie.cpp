@@ -27,6 +27,7 @@ Zombie::~Zombie()
 
 void Zombie::init(float speed, glm::vec2 pos)
 {
+	_health = 150;
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randDir(-1.0f, 1.0f);
 	_color.setColor(255, 55, 55, 255);
@@ -115,7 +116,7 @@ void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 	std::string route = pathFind(FileName, startX, startY, endX, endY);
 	if (route == "")
 	{
-		std::cout << "An empty route generated!" << std::endl;
+		//std::cout << "An empty route generated!" << std::endl;
 		surroundedByWalls = true;
 	}
 }
@@ -169,7 +170,7 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 															//write the values for the algorithm
 	if (inputFile)											//if reading the inputted file
 	{
-		std::cout << "Input file success" << std::endl;
+		//std::cout << "Input file success" << std::endl;
 		std::getline(inputFile, line);
 		for (unsigned int y = 0; y < n; ++y)				// Loops through the y-coordinate
 		{
@@ -202,13 +203,13 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		map[xStart	  ][yStart - 1] == 1 &&
 		map[xStart + 1][yStart - 1] == 1)
 	{
-		std::cout << "Start Point surrounded by walls\n";
+		//std::cout << "Start Point surrounded by walls\n";
 		surroundedByWalls = true;
 		return "";
 	}
 	if (map[xFinish][yFinish] == 1)
 	{
-		std::cout << "Finish Point in in wall\n";
+		//std::cout << "Finish Point in in wall\n";
 		return "";
 	}
 	

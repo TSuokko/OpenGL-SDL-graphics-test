@@ -25,6 +25,8 @@ public:
 
 	void draw(DevyEngine::SpriteBatch& _spriteBatch);
 
+	bool applyDamage(float damage);
+
 	glm::vec2 getPosition() const { return _position; };
 
 protected:
@@ -41,6 +43,7 @@ protected:
 	glm::vec2 _direction;
 	DevyEngine::Color _color;
 	float _speed;
+	float _health;
 
 };
 
