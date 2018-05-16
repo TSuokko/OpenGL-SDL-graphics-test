@@ -121,6 +121,7 @@
     <ClCompile Include="Cube3D.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="OpenGL_Object.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="control.h" />
     <ClInclude Include="Cube3D.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="OpenGL_Object.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
