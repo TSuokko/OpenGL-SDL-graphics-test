@@ -1,3 +1,39 @@
-﻿  main.cpp
+﻿  shader.cpp
+  main.cpp
+  control.cpp
+  Vector4.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector4.cpp(5): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector4.cpp(17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Vector3.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector3.h(17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector3.cpp(22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Vector2.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector2.h(16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector2.cpp(11): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  OpenGL_Object.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\opengl_object.cpp(36): warning C4018: '<': signed/unsigned mismatch
+  Matrix.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector3.h(17): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\vector2.h(16): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Cube3D.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(16): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(99): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(110): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(118): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(123): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(128): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(134): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\cube3d.cpp(190): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+  Generating Code...
+  LINK : C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.exe not found or not built by the last incremental link; performing full link
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.exe
   3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.pdb (Partial PDB)
