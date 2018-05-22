@@ -15,7 +15,7 @@ GLuint loadBMP_custom(const char * imagepath)
 	// Open the file
 	FILE * file = fopen(imagepath, "rb");
 	if (!file) {
-		printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath);
+		printf("%s could not be opened!\n", imagepath);
 		getchar();
 		return 0;
 	}
@@ -133,7 +133,7 @@ bool loadOBJ(const char * path,
 			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
 			int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 			if (matches != 9) {
-				printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+				printf("File can't be read by the simple parser \n");
 				return false;
 			}
 			vertexIndices.push_back(vertexIndex[0]);
@@ -189,7 +189,7 @@ GLuint loadDDS(const char * imagepath) {
 	/* try to open the file */
 	fp = fopen(imagepath, "rb");
 	if (fp == NULL) {
-		printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath); getchar();
+		printf("%s could not be opened!\n", imagepath); getchar();
 		return 0;
 	}
 
