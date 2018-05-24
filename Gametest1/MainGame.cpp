@@ -35,7 +35,7 @@ void MainGame::run()
 //Shader initialization
 void MainGame::initShaders()
 {
-	_colorProgram.compileShaders("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt");
+	_colorProgram.compileShaders("Shaders/VertexShader_z.txt", "Shaders/FragmentShader_z.txt");
 	_colorProgram.addAttribute("vertexPosition");
 	_colorProgram.addAttribute("vertexColor");
 	_colorProgram.addAttribute("vertexUV");

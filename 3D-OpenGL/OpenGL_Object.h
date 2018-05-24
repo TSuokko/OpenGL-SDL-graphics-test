@@ -24,9 +24,9 @@ private:
 	GLuint MatrixID;
 	GLuint ViewMatrixID;
 	GLuint ModelMatrixID;
-	GLuint Texture;
 	GLuint TextureID;
 	GLuint LightID;
+	GLuint Texture;
 	GLuint vertexbuffer;
 	GLuint uvbuffer;
 	GLuint normalbuffer;

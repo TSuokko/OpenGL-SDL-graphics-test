@@ -118,6 +118,50 @@ void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 	{
 		surroundedByWalls = true;
 	}
+	/*HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	//debug show path
+
+	if (route.length() > 0)
+	{
+		int j; char c;
+		int x = startX;
+		int y = startY;
+		map[x][y] = 2;
+		for (unsigned int i = 0; i < route.length(); i++)
+		{
+			c = route.at(i);
+			j = atoi(&c);
+			x = x + dx[j];
+			y = y + dy[j];
+			map[x][y] = 3;
+		}
+		map[x][y] = 4;
+
+		// display the map with the route
+		for (int y = 0; y < m; y++)
+		{
+			SetConsoleTextAttribute(h, FOREGROUND_RED);
+			for (int x = 0; x < n; x++)
+				if (map[x][y] == 0)
+				{
+					std::cout << " ";
+				}
+				else if (map[x][y] == 1)
+					std::cout << "#"; //obstacle
+				else if (map[x][y] == 2)
+					std::cout << "S"; //start
+				else if (map[x][y] == 3)
+				{
+					SetConsoleTextAttribute(h, FOREGROUND_GREEN);
+					std::cout << "O"; //route
+					SetConsoleTextAttribute(h, FOREGROUND_RED);
+				}
+				else if (map[x][y] == 4)
+					std::cout << "F"; //finish
+			printf("\n");
+		}
+
+	}*/
 }
 
 
@@ -251,6 +295,10 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 			while (!(x == xStart && y == yStart)){
 				j = dir_map[x][y];
 				c = '0' + (j + dir / 2) % dir;
+<<<<<<< HEAD
+=======
+				//std::cout << "x: "<< x << " y: " <<y << std::endl;
+>>>>>>> eb351295e8170b21919227ec89a72c1cf4ee9716
 				NodeCoords.push_back(glm::vec2(x,y));
 				NodeDirection.push_back((j + dir / 2) % dir);
 				moves++;

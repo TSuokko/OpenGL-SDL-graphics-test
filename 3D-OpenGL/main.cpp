@@ -36,14 +36,14 @@ void printVec2(const char* const name, const Vector2& v)
 
 int main(void)
 {
-	// Initialise GLFW
+	// Init GLFW
 	if (!glfwInit())
 	{
 		fprintf(stderr, "Failed to initialize GLFW\n");
 		getchar();
 		return -1;
 	}
-	// Open a window and create its OpenGL context
+	// Open glfw window
 	window = glfwCreateWindow(1024, 768, "Learning OpenGL", NULL, NULL);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
@@ -52,19 +52,19 @@ int main(void)
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	// Initialize GLEW
-	glewExperimental = true; // Needed for core profile
+	// Init GLEW
+	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 		getchar();
 		glfwTerminate();
 		return -1;
 	}
-	// Ensure we can capture the escape key being pressed below
+	//keyboard
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	// Hide the mouse and enable unlimited mouvement
+	// mouse, with no cursor
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	// Set the mouse at the center of the screen
+	// center the mouse
 	glfwPollEvents();
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 	// background color
@@ -76,6 +76,7 @@ int main(void)
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
 
+<<<<<<< HEAD
 	
 	
 
@@ -86,16 +87,36 @@ int main(void)
 	OpenGL_Object Object2;
 	Object2.init("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt", "Textures/uvtemplate1.bmp");
 	Object2.createObject("Objects/cube.obj", glm::vec3(5.0, 0.0, -1.0));
+=======
+	const char *VertexShader = "Shaders/VertexShader.txt";
+	const char *FragmentShader = "Shaders/FragmentShader.txt";
+	const char *Stone_TextureFile = "Textures/uvtemplate1.bmp";
+
+	//object creation method
+
+	OpenGL_Object Object1;
+	Object1.init(VertexShader, FragmentShader, Stone_TextureFile);
+	Object1.createObject("Objects/cube.obj", glm::vec3(1.0, 0.0,-1.0));
+
+	OpenGL_Object Object2;
+	Object2.init(VertexShader, FragmentShader, Stone_TextureFile);
+	Object2.createObject("Objects/Suzanne.obj", glm::vec3(-3.0, -2.0, 4.0));
+>>>>>>> eb351295e8170b21919227ec89a72c1cf4ee9716
+
+	OpenGL_Object Object3;
+	Object3.init(VertexShader, FragmentShader, Stone_TextureFile);
+	Object3.createObject("Objects/cube.obj", glm::vec3(-1.0, 2.0, 2.5));
 
 
-
+	//draw objects
 	
 	do {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		Object1.drawObject(window);	
 		Object2.drawObject(window);
-
+		Object3.drawObject(window);
+		//swap buffers so both show at the same time
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	} // Check if the ESC key was pressed or the window was closed
@@ -104,8 +125,9 @@ int main(void)
 
 	// Cleanup VBO and shader
 	Object1.cleanUp();
-	//Object2.cleanUp();
-	// Close OpenGL window and terminate GLFW
+	Object2.cleanUp();
+	Object3.cleanUp();
+	// Close OpenGL window and terminate glfw
 	glfwTerminate();
 
 	return 0;

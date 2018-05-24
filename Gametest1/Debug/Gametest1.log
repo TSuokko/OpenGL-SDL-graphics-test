@@ -1,5 +1,15 @@
-﻿  Agent.cpp
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(34): warning C4018: '<': signed/unsigned mismatch
-c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\agent.cpp(87): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+﻿  Zombie.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(31): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(180): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\zombie.cpp(187): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  MainGame.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\bullet.h(16): warning C4244: 'return': conversion from 'const int' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(105): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(176): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(187): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\gametest1\maingame.cpp(191): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  LINK : C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe not found or not built by the last incremental link; performing full link
+     Creating library C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.lib and object C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exp
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.exe
   Gametest1.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\Gametest1.pdb (Partial PDB)

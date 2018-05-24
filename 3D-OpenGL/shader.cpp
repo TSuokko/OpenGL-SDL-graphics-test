@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 //using namespace glm;
 
@@ -60,6 +61,32 @@ void Shader::setMat4(const std::string &name, const glm::mat4 &mat)
 {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
+=======
+#include <stdio.h>
+#include <string>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+#include <sstream>
+#include <stdlib.h>
+#include <string.h>
+
+#include <GL/glew.h>
+
+// Include GLFW
+#include <GLFW/glfw3.h>
+
+// Include GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+//using namespace glm;
+
+#include "shader.h"
+
+//check learn opengl advanced lighting tutorial
+
+>>>>>>> eb351295e8170b21919227ec89a72c1cf4ee9716
 
 GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_path) {
 
@@ -77,7 +104,11 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 		VertexShaderStream.close();
 	}
 	else {
+<<<<<<< HEAD
 		printf("Impossible to open %s!\n", vertex_file_path);
+=======
+		printf("Cannot to open %s!\n", vertex_file_path);
+>>>>>>> eb351295e8170b21919227ec89a72c1cf4ee9716
 		getchar();
 		return 0;
 	}
@@ -111,8 +142,6 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 		printf("%s\n", &VertexShaderErrorMessage[0]);
 	}
 
-
-
 	// Compile Fragment Shader
 	printf("Compiling shader : %s\n", fragment_file_path);
 	char const * FragmentSourcePointer = FragmentShaderCode.c_str();
@@ -127,8 +156,6 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 		glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
 		printf("%s\n", &FragmentShaderErrorMessage[0]);
 	}
-
-
 
 	// Link the program
 	printf("Linking program\n");
@@ -149,7 +176,6 @@ GLuint LoadShaders(const char * vertex_file_path, const char * fragment_file_pat
 
 	glDetachShader(ProgramID, VertexShaderID);
 	glDetachShader(ProgramID, FragmentShaderID);
-
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
 

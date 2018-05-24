@@ -41,6 +41,7 @@ void OpenGL_Object::createObject(const char *ObjectPath, glm::vec3 coordinates)
 {
 	bool res = loadOBJ(ObjectPath, vertices, uvs, normals);
 	
+	//move the object to certain coordinates 
 	for (int i = 0; i < vertices.size(); i++)
 	{
 		vertices[i] += coordinates;
