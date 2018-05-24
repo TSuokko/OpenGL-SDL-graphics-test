@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+
+bool blinn = false;
+bool blinnKeyPressed = false;
+
 OpenGL_Object::OpenGL_Object()
 {
 }
@@ -16,10 +20,13 @@ void OpenGL_Object::init(const char *VertShaderPath,
 	const char *FragShaderPath, 
 	const char *BMPTexturePath)
 {
+
+
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 	// Create and compile our GLSL program from the shaders
 	programID = LoadShaders(VertShaderPath, FragShaderPath);
+	
 	// Get a handle for our "MVP" uniform
 	MatrixID = glGetUniformLocation(programID, "MVP");
 	ViewMatrixID = glGetUniformLocation(programID, "V");
@@ -27,6 +34,7 @@ void OpenGL_Object::init(const char *VertShaderPath,
 
 	Texture = loadBMP_custom(BMPTexturePath);
 	GLuint TextureID = glGetUniformLocation(programID, "myTextureSampler");
+
 }
 
 void OpenGL_Object::createObject(const char *ObjectPath, glm::vec3 coordinates)
@@ -56,6 +64,8 @@ void OpenGL_Object::createObject(const char *ObjectPath, glm::vec3 coordinates)
 
 void OpenGL_Object::drawObject(GLFWwindow* window)
 {
+	processInput(window);
+
 	// Use our shader
 	glUseProgram(programID);
 
@@ -75,6 +85,11 @@ void OpenGL_Object::drawObject(GLFWwindow* window)
 
 	glm::vec3 lightPos = glm::vec3(4, 4, 4);
 	glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
+
+	//glUniform3fv(glGetUniformLocation(programID, "viewPos"), 1, );
+	glUniform1i(glGetUniformLocation(programID, "blinn"), blinn);
+
+	//std::cout << (blinn ? "Blinn-Phong" : "Phong") << std::endl;
 	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Texture);
@@ -134,4 +149,20 @@ void OpenGL_Object::cleanUp()
 	glDeleteProgram(programID);
 	glDeleteTextures(1, &Texture);
 	glDeleteVertexArrays(1, &VertexArrayID);
+}
+
+void OpenGL_Object::processInput(GLFWwindow *window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS && !blinnKeyPressed)
+	{
+		blinn = !blinn;
+		blinnKeyPressed = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_RELEASE)
+	{
+		blinnKeyPressed = false;
+	}
 }

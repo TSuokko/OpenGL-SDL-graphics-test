@@ -42,8 +42,6 @@ void Zombie::init(float speed, glm::vec2 pos)
 	_direction = glm::normalize(_direction);
 }
 
-
-//static int frameCounter = 0;
 void Zombie::update(const std::vector<std::string>& levelData,
 	std::vector<Human*>& humans,
 	std::vector<Zombie*>& zombies)
@@ -56,19 +54,22 @@ void Zombie::update(const std::vector<std::string>& levelData,
 		//and the map hasn't been read
 		if (mapread == false)
 		{
-			//the amount of moves will be set to -1, since when moves are added to their vector, the first move will be move number 0 (since arrays start at 0)
+			//the amount of moves will be set to -1, 
+			//since when moves are added to their vector, 
+			//the first move will be move number 0
 			moves = -1;
 			//read the map for pathfinding
 			readMap("Level1.txt", humans);
 		}
 		if (moves != -1)
 		{
-			//when the algorithm has gone it's course and the zombie has movement vectors, it's time to move the zombie.
+			//when the algorithm is done calculating, move the zombie.
 			movement(humans);
 		}
 		else
 		{
-			//as long as the zombie is not surrounded by walls, and movement has gone to -1, it's time to start over.
+			//as long as the zombie is not surrounded by walls, 
+			//and movement has gone to -1,  start over.
 			if (surroundedByWalls == false)
 			{
 				NodeCoords.clear();
@@ -79,7 +80,6 @@ void Zombie::update(const std::vector<std::string>& levelData,
 	}
 	//level collision detection
 	collideWithLevel(levelData);
-
 }
 
 
@@ -116,7 +116,6 @@ void Zombie::readMap(const std::string& FileName, std::vector<Human*>& humans)
 	std::string route = pathFind(FileName, startX, startY, endX, endY);
 	if (route == "")
 	{
-		//std::cout << "An empty route generated!" << std::endl;
 		surroundedByWalls = true;
 	}
 }
@@ -168,25 +167,18 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 	char type;												//current character type on the map
 	std::ifstream inputFile(FileName.c_str());				//read the given .txt file
 															//write the values for the algorithm
-	if (inputFile)											//if reading the inputted file
-	{
-		//std::cout << "Input file success" << std::endl;
+	if (inputFile){											//if reading the inputted file
 		std::getline(inputFile, line);
-		for (unsigned int y = 0; y < n; ++y)				// Loops through the y-coordinate
-		{
+		for (unsigned int y = 0; y < n; ++y) {				// Loops through the y-coordinate
 			std::getline(inputFile, line);
-			for (unsigned int x = 0; x < m; ++x)			// Loops through the x-coordinate
-			{
+			for (unsigned int x = 0; x < m; ++x){			// Loops through the x-coordinate
 				type = line.at(x);
-				if (type == 35)
-				{
+				if (type == 35){
 					map[x][y] = 1;  //   # symbol = value 1
 				}
-				if (type == 46)
-				{
+				if (type == 46){
 					map[x][y] = 0;  //   . symbol = value 0
 				}
-
 			}
 			line.clear();			//erases the contents of the line
 		}
@@ -201,15 +193,12 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		map[xStart - 1][yStart	  ] == 1 &&
 		map[xStart - 1][yStart - 1] == 1 &&
 		map[xStart	  ][yStart - 1] == 1 &&
-		map[xStart + 1][yStart - 1] == 1)
-	{
-		//std::cout << "Start Point surrounded by walls\n";
+		map[xStart + 1][yStart - 1] == 1){
 		surroundedByWalls = true;
 		return "";
 	}
-	if (map[xFinish][yFinish] == 1)
-	{
-		//std::cout << "Finish Point in in wall\n";
+	if (map[xFinish][yFinish] == 1){
+
 		return "";
 	}
 	
@@ -241,8 +230,7 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 
 	//a* search
 	delete n0;
-	while (!pq[pqi].empty())
-	{
+	while (!pq[pqi].empty()){
 		// get the current node w/ the highest priority
 		// from the list of open nodes
 		n0 = new node(pq[pqi].top().getxPos(), pq[pqi].top().getyPos(),
@@ -256,18 +244,13 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		closed_nodes_map[x][y] = 1;
 
 		// quit searching when the goal state is reached
-		//if((*n0).estimate(xFinish, yFinish) == 0)
-		if (x == xFinish && y == yFinish)
-		{
-			//std::cout << x <<" "<< y << std::endl;
+		if (x == xFinish && y == yFinish){
 			// generate the path from finish to start
 			// by following the directions
 			std::string path = "";
-			while (!(x == xStart && y == yStart))
-			{
+			while (!(x == xStart && y == yStart)){
 				j = dir_map[x][y];
 				c = '0' + (j + dir / 2) % dir;
-				//std::cout << "x: "<< x << "y: " <<y << std::endl;
 				NodeCoords.push_back(glm::vec2(x,y));
 				NodeDirection.push_back((j + dir / 2) % dir);
 				moves++;
@@ -284,12 +267,13 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 		}
 
 		// generate moves (child nodes) in all possible directions
-		for (i = 0; i<dir; i++)
-		{
+		for (i = 0; i<dir; i++){
+
 			xdx = x + dx[i]; ydy = y + dy[i];
+
 			if (!(xdx<0 || xdx>n - 1 || ydy<0 || ydy>m - 1 || map[xdx][ydy] == 1
-				|| closed_nodes_map[xdx][ydy] == 1))
-			{
+				|| closed_nodes_map[xdx][ydy] == 1)){
+
 				// generate a child node
 				m0 = new node(xdx, ydy, n0->getLevel(),
 					n0->getPriority());
@@ -297,17 +281,15 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 				m0->updatePriority(xFinish, yFinish);
 
 				// if it is not in the open list then add into that
-				if (open_nodes_map[xdx][ydy] == 0)
-				{
+				if (open_nodes_map[xdx][ydy] == 0){
 					open_nodes_map[xdx][ydy] = m0->getPriority();
 					pq[pqi].push(*m0);
 					// mark its parent node direction
 					delete m0;
 					dir_map[xdx][ydy] = (i + dir / 2) % dir;
-
 				}
-				else if (open_nodes_map[xdx][ydy]>m0->getPriority())
-				{
+				else if (open_nodes_map[xdx][ydy]>m0->getPriority()){
+
 					// update the priority info
 					open_nodes_map[xdx][ydy] = m0->getPriority();
 					// update the parent direction info
@@ -317,17 +299,17 @@ std::string Zombie::pathFind(const std::string& FileName, const int & xStart, co
 					// except the node to be replaced will be ignored
 					// and the new node will be pushed in instead
 					while (!(pq[pqi].top().getxPos() == xdx &&
-						pq[pqi].top().getyPos() == ydy))
-					{
+						pq[pqi].top().getyPos() == ydy)){
+
 						pq[1 - pqi].push(pq[pqi].top());
 						pq[pqi].pop();
 					}
 					pq[pqi].pop(); // remove the wanted node
 
-								   // empty the larger size pq to the smaller one
+					// empty the larger size pq to the smaller one
 					if (pq[pqi].size()>pq[1 - pqi].size()) pqi = 1 - pqi;
-					while (!pq[pqi].empty())
-					{
+					while (!pq[pqi].empty()){
+
 						pq[1 - pqi].push(pq[pqi].top());
 						pq[pqi].pop();
 					}

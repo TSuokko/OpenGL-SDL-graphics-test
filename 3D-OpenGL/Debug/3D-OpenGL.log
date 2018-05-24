@@ -1,3 +1,5 @@
 ﻿  main.cpp
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\shader.h(74): warning C4101: 'infoLog': unreferenced local variable
+c:\users\tuomassuo\desktop\opengl-sdl-graphics-test\3d-opengl\shader.h(73): warning C4101: 'success': unreferenced local variable
   3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.exe
   3D-OpenGL.vcxproj -> C:\Users\TuomasSuo\Desktop\OpenGL-SDL-graphics-test\Debug\3D-OpenGL.pdb (Partial PDB)

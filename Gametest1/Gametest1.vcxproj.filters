@@ -90,4 +90,7 @@
   <ItemGroup>
     <Text Include="Level1.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

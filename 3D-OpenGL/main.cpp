@@ -2,22 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "OpenGL_Object.h"
-// Include GLEW
-//#include <GL/glew.h>
-// Include GLFW
-//#include <GLFW/glfw3.h>
 GLFWwindow* window;
 // Include GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
-/*#include "shader.h"
-#include "control.h"
-#include "Cube3D.h"*/
 #include <time.h>
-
-
 
 /*
 float toRadians(float a)
@@ -39,6 +30,8 @@ void printVec2(const char* const name, const Vector2& v)
 	printf("%-12s = <%2.2f,%2.2f>\n", name, v.x, v.y);
 }
 */
+
+
 
 
 int main(void)
@@ -75,7 +68,7 @@ int main(void)
 	glfwPollEvents();
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 	// background color
-	glClearColor(0.8f, 0.5f, 0.4f, 0.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
@@ -84,15 +77,15 @@ int main(void)
 	glEnable(GL_CULL_FACE);
 
 	
-
+	
 
 	OpenGL_Object Object1;
 	Object1.init("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt", "Textures/uvtemplate1.bmp");
-	Object1.createObject("Objects/cube.obj", glm::vec3(1.0, 0.0,-1.0));
+	Object1.createObject("Objects/Suzanne.obj", glm::vec3(1.0, 0.0,-1.0));
 
 	OpenGL_Object Object2;
 	Object2.init("Shaders/VertexShader.txt", "Shaders/FragmentShader.txt", "Textures/uvtemplate1.bmp");
-	Object2.createObject("Objects/Suzanne.obj", glm::vec3(-3.0, -2.0, 4.0));
+	Object2.createObject("Objects/cube.obj", glm::vec3(5.0, 0.0, -1.0));
 
 
 
